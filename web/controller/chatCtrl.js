@@ -4,32 +4,36 @@
  * and open the template in the editor.
  */
 
-(function() {
-      'use strict';
+(function () {
+    'use strict';
 
-      app.controller('chatCtrl', chatCtrl);
-      
-      chatCtrl.$inject = ['$scope','$rootScope','$state'];
-      
-      function chatCtrl($scope,$rootScope,$state) {
-            $scope.showSpinner = true;
-            $rootScope.banner=false;
-            $rootScope.botones=false;
-            $rootScope.chatURL = $rootScope.chatURL ? $rootScope.chatURL : "";
-            $rootScope.cerrar = true;
-            
-            $scope.initView=function(){
-                if($rootScope.chatURL==""){
-                    window.location.href="/myit/";
-                }else{
-                    $("#siteloader").html('<object data="' + $rootScope.chatURL + '" />');
-                    $scope.showSpinner = false;
-                }
-                
-            };
-            
-            $scope.initView();
-            
-      }
+    app.controller('chatCtrl', chatCtrl);
+
+    chatCtrl.$inject = ['$scope', '$rootScope', '$state'];
+
+    function chatCtrl($scope, $rootScope, $state) {
+        $scope.showSpinner = true;
+        $rootScope.banner = false;
+        $rootScope.botones = false;
+        $rootScope.chatURL = $rootScope.chatURL ? $rootScope.chatURL : "";
+        $rootScope.cerrar = true;
+
+        $scope.initView = function () {
+            if ($rootScope.chatURL == "") {
+                window.location.href = "/myit/";
+            } else {
+                $("#siteloader").html('<object data="' + $rootScope.chatURL + '" />');
+                $scope.showSpinner = false;
+            }
+
+        };
+
+        $rootScope.goHome = function () {
+            $state.go("inicio");
+        };
+
+        $scope.initView();
+
+    }
 })();
 

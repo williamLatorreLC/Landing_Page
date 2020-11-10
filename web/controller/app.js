@@ -1,7 +1,7 @@
 var app = angular.module("myApp", ["ui.router", "ui.bootstrap", ]);
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
-        $urlRouterProvider.otherwise('/inicio');
+        //$urlRouterProvider.otherwise('/inicio');
         $stateProvider
                 .state('inicio', {
                     url: "/inicio",
@@ -21,6 +21,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                     controller: "myITstore"
 
                 })
+                .state('NuevaRuta', {
+                    url: "/MyITStore",
+                    templateUrl: "view/MyITStore.html",
+                    controller: "myITstore"
+                })
 
                 .state('chat', {
                     url: "/chat",
@@ -34,24 +39,27 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         $rootScope.botones = true;
         $rootScope.cerrar = false;
         $state.go('inicio');
-        $rootScope.banners = [{"idbanners": 1, "ruta": "", "estado": 1}];
+        $rootScope.banners = [{"id": 1, "ruta": "", "estado": 1}];
 
         $rootScope.myInterval = 5000;
         $rootScope.noWrapSlides = false;
         $rootScope.active = 0;
-        
-        $rootScope.cerrarchat = function(){
-            $state.go("inicio"); 
+
+        $rootScope.cerrarchat = function () {
+            $state.go("inicio");
         }
 
         $rootScope.getBanners = function () {
             $http({
-                url: "https://claroteayuda.wigilabs.com/banners?estado=1",
-                method: 'GET'
+                url: "./api/banners/1",
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json"
+                }
             }).then(function (res) {
-                if (res.data.error == 0 && res.data.response.length > 0) {
-                        $rootScope.banners = res.data.response;
-                } 
+                if (res.data.isError == false && res.data.response.length > 0) {
+                    $rootScope.banners = res.data.response;
+                }
             }, function (res, data, status) {
                 console.log(res);
             });

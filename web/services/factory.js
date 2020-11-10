@@ -7,8 +7,8 @@
 
     function servicio($http) {
         return {
-            host:"https://claroteayuda.wigilabs.com/loginMyIT/",
-            host2:"https://claroteayuda.wigilabs.com/banners?estado=1",
+            host:"https://myit.claro.com.co:8443/myit/loginMyIT/",
+            host2:"https://myit.claro.com.co:8443/myit/banners?estado=1",
             Post: Post,
             Get: Get
         };
