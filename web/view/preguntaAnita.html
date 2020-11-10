@@ -1,0 +1,188 @@
+ 
+<section ng-controller="preguntaAnita">
+    <div class="card div" ng-show="showAnita" >
+        <div class="card card-body" style="background-image: url(img/found.png);background-repeat: no-repeat;background-position: bottom; border-radius:11px; " >
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-12 mt-4 pl-4">
+                           <img src="img/Logo.png" class="logo"> 
+                        </div>
+                        <div class="col-md-12 text-center">
+                           <img src="img/anita.png" class="anita"> 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 textoSup">
+                    <div class="col-md-12">
+                        <p class="texto1">¿Necesitas ayuda?</p>    
+                    </div>
+                    <div class="col-md-12">
+                       <p class="texto2">¡Pregúntale a An<span class="it">IT</span>a</p>     
+                    </div>
+                    <div class="col-md-12">
+                       <p class="texto3">Inicia tu conversación con AnITa<br>
+                        desde un navegador Microsoft Edge<br> 
+                        o Google Chrome.
+                       </p>     
+                    </div>
+                    <div class="col-md-12" style="margin-bottom: 11%;">
+                      <a data-toggle="modal" data-target="#myModal" ui-sref-active="activestate" class="boton_4 d">Ingresa aquí</a> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!------------------------vista principal responsive------------------->
+    <div class="containerRes" ng-show="showAnita">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12" style="background-image: url(img/fondoRes.png)">
+                    <div class="container-fluid"> 
+                        <div class="row">
+                            <div class="col-12 text-center mt-3">
+                                <img src="img/Logo.png" class="logoRes">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center ">
+                                <h2 class="pt-4" style="font-weight: 200;line-height: 0px;font-size: 2.7rem;">¿Necesitas ayuda?</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2 style="line-height: 35px;font-size: 2.8rem;">¡Pregúntale a An<span class="it">IT</span>a!</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2 style="font-size: 2.1rem; font-weight: 400">Inicia tu conversación con AnITa <br>y resuelve tus inquietudes.</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center mb-3">
+                                <button class="boton_13 m" ng-click="showLoginChat()" ui-sref-active="activestate" >Ingresa aquí</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+                 <div class="col-12 text-left" style="background-color: #F6F6F6">
+                     <div class="row">
+                         <div class="col-8 p-4">
+                             <p class="parrafo">Con MyIT reporta tus casos<br> de <span style="color: #DC3545;font-weight: bold;">manera sencilla</span><p> 
+                             <p class="parrafo2">Registra y consulta tus casos asociados a servicios de IT.</p> 
+                             <button class="boton_14 n" onclick = "location='https://play.google.com/store/apps/details?id=com.brm.claroTeAyuda'">Descarga la app <img src="img/androidR.png" class="iconos"></button>
+                         </div> 
+                         <div class="col-4 p-0 pt-4">
+                             <img src="img/phone.png" class="img-fluid">
+                         </div>
+                     </div>
+                 </div>
+             </div> 
+        </div>
+    </div>
+    <!----------------------------login------------------------------------------------------->
+    <!-- The Modal -->
+    <div class="modal " id="myModal" ng-hide="showLogin">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content " style="border-radius: 10px">
+                <!-- Modal Header -->
+                <div class="modal-header border-0" style="background-image: Url(img/bannerprin.png) ">
+                    <img src="img/Logo.png" class="imagen">
+                    <button type="button" data-dismiss="modal" class="cerrarModal"><i class="fas fa-times"></i></button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body border-0 modalB">
+                    <p class="textolog">Ingresa los datos de acceso<br> de la mesa de servicios <span style="font-weight: 600">IT</span>.</p>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer border-0">
+                    <div class="container">    
+                        <form name="loginmyIt" ng-submit="$parent.loginmyIt()">
+                            <div class="form-group">
+                                <label for="email" class="contraseña1">Usuario MyIT</label>
+                                <input type="text" class="form-control input"  ng-model="$parent.data.user" placeholder="Ingresa tu usuario" name="email" >
+                            </div>
+                                <label for="pwd" class="contraseña1">Contraseña</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="{{iconoojo}}" class="form-control input"  ng-model="$parent.data.pass" placeholder="Ingresa tu contraseña" name="pswd" >
+                          <div class="input-group-append">
+                                <span class="input-group-text" ng-click="showCambio()">
+                                    <i ng-if="toggle==false" class="fa fa-eye"></i>
+                                    <i ng-if="toggle==true" class="fa fa-eye-slash"></i>
+                                </span>
+                          </div>  
+                        </div>
+                    </div>
+                            <div class="form-group">
+                                <button type="submit" class="boton_15 x ">Ingresa aquí</button>
+                            </div>
+                        </form>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-----------------------------------------vista de login responsive--------->
+    <div ng-hide="loginMovil">
+        <div class="row">
+            <div class="col-md-12 col-12" style="background-image: url(img/fondoRes.png)">
+                <div class="row">
+                    <div class="col-12 pl-4">
+                        <img ng-click="hideLogin()" src="img/flechasalida.png" class="flechaRes">
+                        <img src="img/Logo.png" class="logoRes1">
+                    </div>
+                    <div class="col-12 pl-5">
+                        <p class="textRes">Inicia tu conversación<br>con An<spam class="textoRo">IT</spam>a</p>
+                    </div>
+                    <div class="col-12 text-center">
+                        <img src="img/candado.png">
+                    </div>
+                    <div class="col-12 text-center">
+                       <p class="textRes1 text-center">Ingresa los datos de acceso<br>de la mesa de servicios IT.</p>
+                    </div>
+                    <div class="col-12">
+                       <form name="loginmyIt" ng-submit="$parent.loginmyIt()">
+                            <div class="divR">
+                                <div class="form-group focus-input">
+                                    <label for="email" class="userM">Usuario MyIT</label>
+                                    <input type="text" class="form-control input1s"  ng-model="$parent.data.user" placeholder="Ingresa tu usuario" name="email">
+                                    <div class="line-red">
+                                    </div>
+                                </div>
+                                <div class="form-group focus-input">
+                                    <label for="pwd" class="contraseña3">Contraseña</label>
+                                    <div class="input-group">
+                                        <input type="{{iconoojo}}" class="form-control input1s" ng-model="$parent.data.pass" placeholder="Ingresa tu contraseña" name="pswd" >
+                                        <div class="line-red">
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" ng-click="showCambio()">
+                                                <i ng-if="toggle==false" class="fa fa-eye"></i>
+                                                <i ng-if="toggle==true" class="fa fa-eye-slash"></i>
+                                            </span>   
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="boton_18 z" type="submit">Ingresa aquí</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 text-center">
+                       <img src="img/footer1.png" class="footer1"> 
+                    </div>    
+                </div>            
+            </div>
+        </div>
+    </div>
+</section>
+
+<!------------------------------------->
+
+
+
+
+
