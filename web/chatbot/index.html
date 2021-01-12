@@ -1,64 +1,83 @@
 <!DOCTYPE html>
 <html lang="es-MX">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>Chatbot</title>
-	
-	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
-	<script>
-		var nombre,apellido,id;
-		//$(document).ready(function(){
-			var nombre = getQueryVariable("name");
-			var apellido = getQueryVariable("lastName");
-			var id = getQueryVariable("ProfileId");
-			/*
-			var tipo = "chat";
-			
-			var url = "//aws3.inbenta.com/claro_co_chat_app/jsonp/inbenta.js?mode="+tipo+"&name="+nombre+"&email="+correo;
-			//var url = "//u03.inbenta.com/claro_co_chat_app_migration/jsonp/inbenta.js?mode="+tipo+"&name="+nombre+"&email="+correo;
-			var s = document.createElement( 'script' );
-			s.setAttribute( 'src', url);
-			document.body.appendChild(s);
-			*/
-			function getQueryVariable(variable) {
-			  var query = window.location.search.substring(1);
-			  var vars = query.split("&");
-			  var res = "test";
-			  for (var i=0;i<vars.length;i++) {
-				var pair = vars[i].split("=");
-				if (pair[0] == variable) {
-				  res = pair[1];
-				  break;
-				}
-			  }
-			  res = decodeURIComponent(res);
-			  res = decodeURI(res);
-			  return res;
-			}
-		//});
-	</script>
-       
-    <!--Theme-->
-    <link rel="stylesheet" type="text/css" href="style-theme-claro.css"/>
-    
-    <!--Chatbot-->
-    <!--<script src="http://sdk.inbenta.io/chatbot/1/inbenta-chatbot-sdk.js"></script>-->
-    <script src="https://sdk.inbenta.io/chatbot/1.38.0/inbenta-chatbot-sdk.js"></script>
-	
-    <!--Hyperchat: adapters-->
-    <script src="js/adapters/hyperchatbot.js"></script>
-    <script src="js/adapters/nl-escalation-adapter.js"></script>
-    <script src="js/adapters/survey.js"></script>
-	
-    
-    <!--Configuracion SDK-->
-    <script src="js/config-chatbot-hyperchat.js"></script>
-	
-	
-  </head>
-  <body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <title>Chatbot</title>
 
-  </body>
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script>
+            var nombre, apellido, id;
+            //$(document).ready(function(){
+            var nombre = getQueryVariable("name");
+            var apellido = getQueryVariable("lastName");
+            var id = getQueryVariable("ProfileId");
+            /*
+             var tipo = "chat";
+             
+             var url = "//aws3.inbenta.com/claro_co_chat_app/jsonp/inbenta.js?mode="+tipo+"&name="+nombre+"&email="+correo;
+             //var url = "//u03.inbenta.com/claro_co_chat_app_migration/jsonp/inbenta.js?mode="+tipo+"&name="+nombre+"&email="+correo;
+             var s = document.createElement( 'script' );
+             s.setAttribute( 'src', url);
+             document.body.appendChild(s);
+             */
+            function getQueryVariable(variable) {
+                var query = window.location.search.substring(1);
+                var vars = query.split("&");
+                var res = "test";
+                for (var i = 0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if (pair[0] == variable) {
+                        res = pair[1];
+                        break;
+                    }
+                }
+                res = decodeURIComponent(res);
+                res = decodeURI(res);
+                return res;
+            }
+            //});
+        </script>
+
+        <!--Theme-->
+        <link rel="stylesheet" type="text/css" href="style-theme-claro.css"/>
+
+        <!--Chatbot-->
+        <!--<script src="http://sdk.inbenta.io/chatbot/1/inbenta-chatbot-sdk.js"></script>-->
+        <script src="https://sdk.inbenta.io/chatbot/1.38.0/inbenta-chatbot-sdk.js"></script>
+
+        <!--Hyperchat: adapters-->
+        <script src="js/adapters/hyperchatbot.js"></script>
+        <script src="js/adapters/nl-escalation-adapter.js"></script>
+        <script src="js/adapters/survey.js"></script>
+
+
+        <!--Configuracion SDK-->
+        <script src="js/config-chatbot-hyperchat.js"></script>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-175402192-1"></script>
+
+        <script>
+
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+
+
+
+            gtag('config', 'UA-175402192-1');
+
+        </script>
+
+
+    </head>
+    <body>
+
+    </body>
 </html>

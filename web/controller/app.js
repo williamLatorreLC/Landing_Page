@@ -39,7 +39,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         $rootScope.botones = true;
         $rootScope.cerrar = false;
         $state.go('inicio');
-        $rootScope.banners = [{"id": 1, "ruta": "", "estado": 1}];
+        $rootScope.banners = [];
 
         $rootScope.myInterval = 5000;
         $rootScope.noWrapSlides = false;

@@ -14,18 +14,20 @@
         <div class="container-fluid conVista" ng-show="banner">             
             <header class="header" >
                 
-                <div style="height: auto">
+                <div style="height: auto" ng-if="banners.length!=0">
                     <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
                         <div uib-slide ng-repeat="slide in banners track by $index" index="$index">
                             <img  ng-src="{{slide.ruta}}" class="img-fluid img-banner">
                         </div>
                     </div>
                 </div>
-                <!--<div class="row rowLogores" ng-hide="mostrar">
-                    <div class="col-md-12 col-12 p-0">
-                        <img src="img/bannerRes.png" class="img img-fluid"> 
+                <div style="height: auto" ng-if="banners.length==0">
+                    <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                        <div uib-slide index="0">
+                            <img  src="img/default/1.jpg" class="img-fluid img-banner">
+                        </div>
                     </div>
-                </div>-->
+                </div>
             </header>
         </div>
         <div class="container-fluid"> 
@@ -46,7 +48,17 @@
                     </div>
                 </div>
             </div>
-            <footer class ="footerNor footer-bottom mt-2">
+            <footer class ="footerNor footer-bottom mt-2" ng-hide="cerrar">
+                <div class="row text-center mt-2">
+                    <div class="col-md-6 col-4 text-right">
+                        <img src="img/claro.png" class="claro">
+                    </div>
+                    <div class="col-md-6 col-8 p-0 text-left">
+                        <p class="textoclaro">Claro Colombia 2019. Todos los derechos reservados</p>
+                    </div>
+                </div>
+            </footer>
+            <footer class ="footerNor footer-bottom mt-2" ng-show="cerrar" style="bottom:0 !important">
                 <div class="row text-center mt-2">
                     <div class="col-md-6 col-4 text-right">
                         <img src="img/claro.png" class="claro">
