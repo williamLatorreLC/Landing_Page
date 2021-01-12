@@ -1,116 +1,102 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
-
-<head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-175402192-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-175402192-1');
-    </script>
-    <title>MyIT</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style.css" rel="stylesheet">
-    <link href="css/sweetalert2.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <!--<link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">    -->
-</head>
-
-<body style="overflow-x:hidden;">
-    <div class="container-fluid conVista" ng-show="banner">
-        <header class="header">
-
-            <div style="height: auto" ng-if="banners.length!=0">
-                <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-                    <div uib-slide ng-repeat="slide in banners track by $index" index="$index">
-                        <img ng-src="{{slide.ruta}}" class="img-fluid img-banner">
+    <head>
+        <title>MyIT</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+        <link href="css/sweetalert2.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+        <!--<link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">    -->
+    </head>
+    <body style="overflow-x:hidden;">
+        <div class="container-fluid conVista" ng-show="banner">             
+            <header class="header" >
+                
+                <div style="height: auto" ng-if="banners.length!=0">
+                    <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                        <div uib-slide ng-repeat="slide in banners track by $index" index="$index">
+                            <img  ng-src="{{slide.ruta}}" class="img-fluid img-banner">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div style="height: auto" ng-if="banners.length==0">
-                <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-                    <div uib-slide index="0">
-                        <img src="img/default/1.jpg" class="img-fluid img-banner">
+                <div style="height: auto" ng-if="banners.length==0">
+                    <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                        <div uib-slide index="0">
+                            <img  src="img/default/1.jpg" class="img-fluid img-banner">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </header>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12" ng-show="cerrar">
-                <div class="col-xs-8 offset-xs-2 col-sm-8 offset-sm-2 col-md-4 offset-md-2">
-                    <button class="boton_20 t" style="z-index: 9999;position: absolute"><a style="color: white"
-                            href="#!/inicio">cerrar chat</a></button>
-                </div>
-            </div>
-            <div class="col-md-12 botones p-3 mtBotonsResp" ng-show="botones">
-                <a ui-sref="inicio" ui-sref-active="activestate" ng-click="gtag('event', 'bt_preguntaleanita'); gtagPage('pt_home');" class="boton_1 a">Pregúntale a AnITa</a>
-                <a ui-sref="MyIT" class="boton_2 b" ng-click="gtag('event', 'bt_myit'); gtagPage('pt_myit');" ui-sref-active="activestate">MyIT</a>
-                <a ui-sref="store" class="boton_3 c" ng-click="gtag('event', 'bt_myitstore'); gtagPage('pt_myitstore');" ui-sref-active="activestate">MyIT Store</a>
-            </div>
-            <div class="" style="width: 100%">
-                <div ui-view>
-
-                </div>
-            </div>
+            </header>
         </div>
-        <footer class="footerNor footer-bottom mt-2" ng-hide="cerrar">
-            <div class="row text-center mt-2">
-                <div class="col-md-6 col-4 text-right">
-                    <img src="img/claro.png" class="claro">
+        <div class="container-fluid"> 
+            <div class="row">
+                <div class="col-12" ng-show="cerrar">
+                    <div class="col-xs-8 offset-xs-2 col-sm-8 offset-sm-2 col-md-4 offset-md-2" > 
+                        <button class="boton_20 t" style="z-index: 9999;position: absolute"><a style="color: white" href="#!/inicio">cerrar chat</a></button>
+                    </div>
                 </div>
-                <div class="col-md-6 col-8 p-0 text-left">
-                    <p class="textoclaro">Claro Colombia 2019. Todos los derechos reservados</p>
+                <div class="col-md-12 botones p-3 mtBotonsResp" ng-show="botones">
+                    <a ui-sref="inicio" ui-sref-active="activestate" class="boton_1 a">Pregúntale a AnITa</a>
+                    <a ui-sref="MyIT" class="boton_2 b" ui-sref-active="activestate">MyIT</a>
+                    <a ui-sref="store" class="boton_3 c" ui-sref-active="activestate">MyIT Store</a>
+                </div>
+                <div class="" style="width: 100%">
+                    <div ui-view>
+
+                    </div>
                 </div>
             </div>
-        </footer>
-        <footer class="footerNor footer-bottom mt-2" ng-show="cerrar" style="bottom:0 !important">
-            <div class="row text-center mt-2">
-                <div class="col-md-6 col-4 text-right">
-                    <img src="img/claro.png" class="claro">
+            <footer class ="footerNor footer-bottom mt-2" ng-hide="cerrar">
+                <div class="row text-center mt-2">
+                    <div class="col-md-6 col-4 text-right">
+                        <img src="img/claro.png" class="claro">
+                    </div>
+                    <div class="col-md-6 col-8 p-0 text-left">
+                        <p class="textoclaro">Claro Colombia 2019. Todos los derechos reservados</p>
+                    </div>
                 </div>
-                <div class="col-md-6 col-8 p-0 text-left">
-                    <p class="textoclaro">Claro Colombia 2019. Todos los derechos reservados</p>
+            </footer>
+            <footer class ="footerNor footer-bottom mt-2" ng-show="cerrar" style="bottom:0 !important">
+                <div class="row text-center mt-2">
+                    <div class="col-md-6 col-4 text-right">
+                        <img src="img/claro.png" class="claro">
+                    </div>
+                    <div class="col-md-6 col-8 p-0 text-left">
+                        <p class="textoclaro">Claro Colombia 2019. Todos los derechos reservados</p>
+                    </div>
                 </div>
-            </div>
-        </footer>
-        <footer class="footerResp" ng-hide="mostrar">
-            <div class="row text-center mt-2">
-                <div class="col-md-6 col-4 text-right">
-                    <img src="img/claro.png" class="claro">
+            </footer>
+            <footer class ="footerResp" ng-hide="mostrar">
+                <div class="row text-center mt-2">
+                    <div class="col-md-6 col-4 text-right">
+                        <img src="img/claro.png" class="claro">
+                    </div>
+                    <div class="col-md-6 col-8 p-0 text-left">
+                        <p class="textoclaro">Claro Colombia 2019. Todos los derechos reservados</p>
+                    </div>
                 </div>
-                <div class="col-md-6 col-8 p-0 text-left">
-                    <p class="textoclaro">Claro Colombia 2019. Todos los derechos reservados</p>
-                </div>
-            </div>
-        </footer>
-    </div>
+            </footer>
+        </div>
 
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="plugins/angularjs/angular.min.js"></script>
-    <script src="plugins/angularjs/angular-ui-router.js"></script>
-    <script src="plugins/angularjs/angular-animate.js"></script>
-    <script src="plugins/angularjs/angular-sanitize.js"></script>
-    <script src="plugins/sweetalert2.js"></script>
-    <script src="css/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/js/all.js"
-        data-auto-replace-svg="nest"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
-    <script src="controller/app.js"></script>
-    <script src="controller/preguntaAnita.js"></script>
-    <script src="controller/chatCtrl.js"></script>
-    <script src="controller/myIT.js"></script>
-    <script src="controller/myITstore.js"></script>
-    <script src="controller/index.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script> 
+        <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="plugins/angularjs/angular.min.js"></script>
+        <script src="plugins/angularjs/angular-ui-router.js"></script>
+        <script src="plugins/angularjs/angular-animate.js"></script>
+        <script src="plugins/angularjs/angular-sanitize.js"></script>
+        <script src="plugins/sweetalert2.js"></script>
+        <script src="css/bootstrap/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/js/all.js" data-auto-replace-svg="nest"></script>
+        <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+        <script src="controller/app.js"></script>
+        <script src="controller/preguntaAnita.js"></script>
+        <script src="controller/chatCtrl.js"></script>
+        <script src="controller/myIT.js"></script>
+        <script src="controller/myITstore.js"></script>
+        <script src="controller/index.js"></script>
 
-</body>
-
+    </body>   
 </html>

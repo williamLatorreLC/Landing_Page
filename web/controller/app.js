@@ -48,10 +48,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         $rootScope.cerrarchat = function () {
             $state.go("inicio");
         }
-        
-        $rootScope.gtagPage = function(page){
-            gtag('config', 'UA-175402192-1', { 'page_title' : page });
-        }
 
         $rootScope.getBanners = function () {
             $http({
