@@ -41,21 +41,12 @@ Contributor(s):
 -->
 <hibernate-configuration>
 
-  <session-factory>
-    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-
-
-        
-        <!-- prod -->
-        <property name="hibernate.connection.url">jdbc:mysql://172.24.43.53:3306/bdprlndpg?autoReconnect=true</property>
-        <property name="hibernate.connection.username">chatbotadm</property>
-        <property name="hibernate.connection.password">chatbotAdm2020*</property>
-        <!-- -->
-
-        <property name="show_sql">false</property>
+    <session-factory>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="current_session_context_class">thread</property>
-        <mapping class="co.com.claro.myit.db.BannerEntity"/>
+        <property name="hibernate.archive.autodetection">class</property>
+        <mapping class="co.com.claro.myit.db.BannerEntity" />
         <mapping class="co.com.claro.myit.db.AvatarEntity"/>
         
     </session-factory>
