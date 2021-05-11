@@ -13,10 +13,7 @@
 
     function chatCtrl($scope, $rootScope, $state) {
         $scope.showSpinner = true;
-        $rootScope.banner = false;
-        $rootScope.botones = false;
         $rootScope.chatURL = $rootScope.chatURL ? $rootScope.chatURL : "";
-        $rootScope.cerrar = true;
 
         $scope.initView = function () {
             if ($rootScope.chatURL == "") {

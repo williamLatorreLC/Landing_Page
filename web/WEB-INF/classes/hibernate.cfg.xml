@@ -47,7 +47,7 @@ Contributor(s):
 
 
         
-        <!-- qa -->
+        <!-- prod -->
         <property name="hibernate.connection.url">jdbc:mysql://172.24.43.53:3306/bdprlndpg?autoReconnect=true</property>
         <property name="hibernate.connection.username">chatbotadm</property>
         <property name="hibernate.connection.password">chatbotAdm2020*</property>
@@ -56,6 +56,7 @@ Contributor(s):
         <property name="show_sql">false</property>
         <property name="current_session_context_class">thread</property>
         <mapping class="co.com.claro.myit.db.BannerEntity"/>
+        <mapping class="co.com.claro.myit.db.AvatarEntity"/>
         
     </session-factory>
 </hibernate-configuration>
