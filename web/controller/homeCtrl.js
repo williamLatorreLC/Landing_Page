@@ -11,6 +11,8 @@ app.controller("homeCtrl", function ($scope, $window, $state, servicios, $rootSc
     $scope.active = 0;
     $rootScope.infoUser = {};
     $scope.modalInstance = null;
+    
+    $rootScope.Tagging("Home","pt_home");
 
     $scope.getBanners = function () {
         servicios.Get("banners/1", function (Data) {
@@ -48,6 +50,7 @@ app.controller("homeCtrl", function ($scope, $window, $state, servicios, $rootSc
     };
 
     $scope.open = function (parentSelector) {
+        $rootScope.Tagging("Home","pt_encuestas");
         var parentElem = parentSelector ?
                 angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
         $scope.modalInstance = $uibModal.open({
@@ -74,6 +77,7 @@ app.controller("homeCtrl", function ($scope, $window, $state, servicios, $rootSc
     };
 
     $scope.getSurveys = function () {
+        $rootScope.Tagging("Home","bt_home_encuestas");
         servicios.Post(
                 "surveys/GetList",
                 {
@@ -124,11 +128,13 @@ app.controller("homeCtrl", function ($scope, $window, $state, servicios, $rootSc
     };
 
     $scope.abrirChat = function () {
+        $rootScope.Tagging("Home","bt_home_chatbot");
         $scope.modalInstance = null;
         $state.go('chat');
     };
 
     $scope.myITStore = function (parentSelector) {
+        $rootScope.Tagging("Home","bt_home_store");
         var parentElem = parentSelector ?
                 angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
         $scope.modalInstance = $uibModal.open({
@@ -155,6 +161,7 @@ app.controller("homeCtrl", function ($scope, $window, $state, servicios, $rootSc
     };
 
     $scope.myITModal = function (parentSelector) {
+        $rootScope.Tagging("Home","bt_home_it");
         var parentElem = parentSelector ?
                 angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
         $scope.modalInstance = $uibModal.open({
@@ -212,6 +219,7 @@ app.controller("homeCtrl", function ($scope, $window, $state, servicios, $rootSc
     }
 
     $scope.cerrarsesion = function () {
+        $rootScope.Tagging("Home","bt_home_cerrarsesion");
         servicios.Post('logout', {"token": sessionStorage.X_MYIT_INFO}, function (Data) {
             if (Data.isError === false) {
                 sessionStorage.clear();

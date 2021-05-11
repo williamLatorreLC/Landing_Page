@@ -9,9 +9,12 @@ app.controller("loginCtrl", function ($scope, servicios, blockUI,$state,$rootSco
     };
     
     $rootScope.userData={};
+    
+    $rootScope.Tagging("Login","pt_login");
 
 
     $scope.login = function () {
+        $rootScope.Tagging("Login","bt_login_iniciarsesion");
         if ($scope.usuario.user !== "" && $scope.usuario.pass !== "") {
             block.start('Cargando...');
             servicios.Post('loginMyIT', $scope.usuario, function (Data) {
