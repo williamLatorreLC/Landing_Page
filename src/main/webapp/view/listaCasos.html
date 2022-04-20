@@ -1,0 +1,419 @@
+<div ng-include="'view/headerCasos.html'" ng-controller="headerCtrl"></div>
+
+<div class="container-fluid paddingX mt-5" block-ui="screenBlockUI">
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 mt-md-2">
+            <h3 class="titleRegister">
+                Lista de casos
+            </h3>
+            <p class="subTitleRegister">
+                Todo
+            </p>
+
+        </div>
+
+        <div class="col-xl-2  col-lg-6 col-md-12 mt-md-2">
+            <button type="button" class="btn btn-outline-danger btn-block" ng-click="openForm()">Crear Caso</button>
+        </div>
+        <div class="col-xl-2 col-lg-3  col-md-12 d-flex align-items-start mb-lg-0 mt-md-2" ng-if="infoUser.ProfileId!='4'">
+            <div class="containerButtonFiltro position-relative w-100">
+                <input type="text" placeholder="Caso" ng-model="search.criterio" ng-change="listAll()">
+                <button type="button" ng-click="searchCase()">
+                    Filtrar
+                </button>
+            </div>
+        </div>
+        <div class="col-xl-2 col-lg-3  col-md-12 d-flex align-items-start mt-md-2">
+            <div class="containerButtonFiltro position-relative w-100">
+                <input type="text" ng-model="filterList">
+                <img src="img/iconSearch.png" class="iconSearch" alt="">
+            </div>
+        </div>    
+    </div>
+
+
+    <div class="row mt-4 ">
+        <div class="col-lg-6 mt-md-2" ng-repeat="caso in listaCasos| filter:filterList">
+            <div class="card w-100 cardListaCasos box-my p-0" style="z-index: 1;">
+                <div class="card-body px-5">
+                    <div class="w-100 d-flex align-items-center justify-content-between mb-2 mt-2">
+                        <div class="d-flex align-items-center">
+                            <p class="font-weight-bold m-0">{{caso.TIPODEFALLA}}</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <p class="grayColor m-0 mr-2">{{caso.FECHAREGISTRO}}</p>
+                            <p class="font-weight-bold m-0">{{caso.PRIORIDADINCIDENTE}}</p>
+                        </div>
+                    </div>
+                    <div class="w-100 mb-2">
+                        <div>
+                            <p class="font-weight-light m-0">ID Petición: {{caso.CONSECUTIVO}}</p>
+                        </div>
+                    </div>
+                    <div class="w-100 mb-2">
+                        <div>
+                            <p class="font-weight-bold blueColor m-0">Estado</p>
+                        </div>
+                    </div>
+                    <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+                        <div>
+                            <p class="font-weight-light m-0">{{caso.ESTADO=='1000'?'Asignado':caso.ESTADO=='2000'?'En curso':'Resuelto'}}</p>
+                        </div>
+
+                        <div>
+                            <p class="pinkColor m-0 cpointer"  ng-click="caseDetails(caso)" >Ver detalle</p>
+                        </div>
+                    </div>
+                    <div class="cpointer pinkColor" ng-show="caso.comentarios.length > 0" ng-click="openComentarios(caso.comentarios)">Ver comentarios</div>
+                </div>
+            </div>
+            <!--            <div class="card w-100 cardListaCasos box-my p-0" style="margin-top: -7px;border-top: 0;" ng-show="caso.NOTADETRABAJO != null">
+                            
+                        </div>-->
+        </div>
+    </div>
+    <br>
+</div>
+
+<!-- Modal Comentarios-->
+<div class="modal fade" id="modalComentarios" tabindex="-1" role="dialog" aria-labelledby="modalComentarios" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modalInfo" role="document">
+        <div class="modal-content pt-4 pb-5 px-4">
+            <div class="modal-header d-flex align-items-center justify-content-end p-0 border-0">
+                <img src="img/iconClose.png" class="cpointer" data-dismiss="modal" alt="">
+            </div>
+            <div class="modal-body">
+                <div class="w-100 border-bottom mb-3 pb-2">
+                    <h4 class="font-weight-bold">Comentarios de la petición</h4>
+                </div>
+                <div class="card-body px-5">
+                    <div class="w-100 mb-2">
+                        <div class="mt-1" ng-repeat="comentario in comentarios">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p class="m-0 grayColor">{{comentario.nombre}}</p>
+                            </div>
+                            <div>
+                                <p class="font-weight-light m-0">{{comentario.nota}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 row">
+                    <div class="col-xl-4 col-lg-6 col-md-12 mt-md-2">
+                        <button type="button" class="btn btn-outline-success btn-block"  data-dismiss="modal">Cerrar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Documentos-->
+<div class="modal fade" id="modalDocumentos" tabindex="-1" role="dialog" aria-labelledby="modalDocumentos" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modalInfo" role="document">
+        <div class="modal-content pt-4 pb-5 px-4">
+            <div class="modal-header d-flex align-items-center justify-content-end p-0 border-0">
+                <img src="img/iconClose.png" class="cpointer" data-dismiss="modal" alt="">
+            </div>
+            <div class="modal-body">
+                <div class="w-100 border-bottom mb-3 pb-2">
+                    <h4 class="font-weight-bold">Documentos Adjuntos de la petición</h4>
+                </div>
+                <div class="card-body px-2">
+                    <div class="w-100 box-my px-4 mt-3 col-12" ng-show="documentos.length > 0">
+                        <div class="w-100 d-flex py-1" ng-repeat="doc in documentos">
+                            <div class="w-75">
+                                <p class="font-weight-light m-0">{{doc.nombre}}</p>
+                            </div>
+                            <div class="w-25 d-flex align-items-center justify-content-center">
+                                <img src="img/download.png" ng-click="downloadFile(doc.nombre, doc.file)"  class="deleteIcon cpointer" style="height: 20px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 row">
+                    <div class="col-xl-4 col-lg-6 col-md-12 mt-md-2">
+                        <button type="button" class="btn btn-outline-success btn-block"  data-dismiss="modal">Cerrar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalInfoCaso" tabindex="-1" role="dialog" aria-labelledby="modalInfoCaso" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modalInfo" role="document">
+        <div class="modal-content pt-4 pb-5 px-4">
+            <div class="modal-header d-flex align-items-center justify-content-end p-0 border-0">
+                <img src="img/iconClose.png" class="cpointer" data-dismiss="modal" alt="">
+            </div>
+            <div class="modal-body">
+                <div class="w-100 border-bottom mb-3 pb-2">
+                    <h4 class="font-weight-bold">Detalle de la petición</h4>
+                </div>
+                <div class="w-100 d-flex align-items-center justify-content-between mb-2 mt-2">
+                    <div class="d-flex align-items-center">
+                        <p class="font-weight-bold m-0">{{details.TIPODEFALLA}}</p>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <p class="grayColor m-0 mr-3">{{details.FECHAREGISTRO}}</p>
+                        <p class="font-weight-bold m-0">{{details.PRIORIDADINCIDENTE}}</p>
+                    </div>
+                </div>
+                <div class="w-100 mb-2">
+                    <div>
+                        <p class="font-weight-light m-0">ID Petición: {{details.NROMYIT}}</p>
+                    </div>
+                </div>
+                <div class="w-100 mb-2">
+                    <div>
+                        <p class="font-weight-bold blueColor m-0">Estado</p>
+                    </div>
+                </div>
+                <div class="w-100 d-flex align-items-center justify-content-between pb-4 mb-3 border-bottom">
+                    <div>
+                        <p class="font-weight-light m-0">{{details.ESTADO=='1000'?'Asignado':details.ESTADO=='2000'?'En curso':'Resuelto'}}</p>
+                    </div>
+                </div>
+
+                <div class="w-100 d-flex justify-content-between">
+                    <div>
+                        <p class="font-weight-bold">Pedido para:</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <img src="img/persona.png" alt="">
+                        </div>
+                        <div class="pl-2">
+                            <p class="font-weight-bold m-0 mb-1">{{details.NOMBRE}}</p>
+                            <p class="font-weight-light m-0 mb-1">{{details.CORREO}} | ###</p>
+                            <p class="font-weight-bold m-0 mb-1">Descripción: <span class="font-weight-light">{{details.DESCRIPCIONDETALLADA}}</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-100 box-my px-4 mt-3" ng-show="documentos.length > 0">
+                    <p class="font-weight-bold m-0 mb-1">Documentos Adjuntos</p>
+                    <div class="w-100 d-flex py-1" ng-repeat="doc in documentos| limitTo:5">
+                        <div class="w-75">
+                            <p class="font-weight-light m-0">{{doc.nombre}}</p>
+                        </div>
+                        <div class="w-25 d-flex align-items-center justify-content-center">
+                            <img src="img/download.png" ng-click="downloadFile(doc.nombre, doc.file)"  class="deleteIcon cpointer" style="height: 20px">
+                        </div>
+                    </div>
+                    <p class="pinkColor m-0 cpointer"  ng-show="documentos.length > 5" data-dismiss="modal" ng-click="openAllDocuments()">Ver todos los documentos</p>
+                </div>
+
+                <div class="w-100 box-my px-4 mt-3">
+                    <p class="font-weight-bold m-0 mb-1">Detalle de petición</p>
+                    <p class="font-weight-light m-0 mb-1">Estado: {{details.ESTADO=='1000'?'Asignado':details.ESTADO=='2000'?'En curso':'Resuelto'}}</p>
+                    <p class="font-weight-light m-0 mb-1">Enviado: {{details.FECHACREACION}}</p>
+                    <p class="pinkColor m-0 cpointer" data-toggle="modal" data-target="#modalSubInfoCaso" data-dismiss="modal">Ver detalle de la petición</p>
+                </div>
+                <div class="col-12 row" ng-if="infoUser.esResolutor">
+                    <div class="col-xl-4 col-lg-6 col-md-12 mt-md-2">
+                        <button type="button" class="btn btn-outline-success btn-block" ng-click="resolverCaso(details, '#modalInfoCaso')" data-dismiss="modal">Solucionar</button>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-12 mt-md-2">
+                        <button type="button" class="btn btn-outline-info btn-block" ng-click="escalar(details, '#modalInfoCaso')">Escalar</button>
+                    </div>
+                </div>
+                <div class="col-12 row" ng-if="!infoUser.esResolutor">
+                    <div class="col-xl-4 col-lg-6 col-md-12 mt-md-2">
+                        <button type="button" class="btn btn-outline-success btn-block" ng-click="openGestion('#modalInfoCaso')" data-dismiss="modal">Gestionar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalGestion" tabindex="-1" role="dialog" aria-labelledby="modalGestion" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modalInfo" role="document">
+        <div class="modal-content pt-4 pb-5 px-4">
+            <div class="modal-header d-flex align-items-center justify-content-end p-0 border-0">
+                <img src="img/iconClose.png" class="cpointer" data-dismiss="modal" alt="">
+            </div>
+            <div class="modal-body">
+                <div class="w-100 border-bottom mb-3 pb-2">
+                    <h4 class="font-weight-bold">Gestionar petición</h4>
+                </div>
+                <form ng-submit="gestionarCaso('#modalGestion')">
+                    <div class="w-100 d-flex align-items-center justify-content-between mb-2 mt-2">
+                        <div class="form-group row">
+                            <div class="col-lg-12 col-md-12 col-12">
+                                <label for="" class="col-sm-12 col-form-label pl-0">Documentos Adjuntos</label>
+                                <input type="file" id="documentos" name="file" class="form-control-file" maxnum="5" ng-model="files" selectNgFiles base-sixty-four-input multiple onload="onLoad" maxsize="3072" accept=".eml,.msg,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf,image/*">
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-show="dataGestion.documentos.length >= 1">
+                        <div class="col-lg-12 col-md-12 col-12">
+                            <div class="box-my d-flex w-100 px-5 py-4" style="border-bottom-right-radius: 0;border-bottom-left-radius: 0;">
+                                <div class="w-75">
+                                    <p class="font-weight-bold m-0">Documentos actuales</p>
+                                </div>
+                                <div  class="w-25">
+                                    <p class="font-weight-light m-0 text-center">Eliminar</p>
+                                </div>
+                            </div>
+                            <div class="box-my w-100 px-5 py-0" style=" border-top-left-radius: 0;border-top-right-radius: 0;">
+                                <div class="w-100 d-flex py-3" ng-repeat="documento in dataGestion.documentos">
+                                    <div class="w-75">
+                                        <p class="font-weight-light m-0">{{documento.nombre}}</p>
+                                    </div>
+                                    <div class="w-25 d-flex align-items-center justify-content-center">
+                                        <img src="img/deleteIcon.png" ng-click="deleteDocument($index)" class="deleteIcon" style="cursor: pointer;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-100 d-flex align-items-center justify-content-between mb-2 mt-2">
+                        <div class="col-lg-12 col-md-12 col-12">
+                            <label for="" class="col-sm-12 col-form-label pl-0">Nota<strong>*</strong></label>
+                            <textarea class="form-control"  rows="4" ng-model="dataGestion.nota" required="true"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-12 row">
+                        <div class="col-xl-4 col-lg-6 col-md-12 mt-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-block" data-dismiss="modal">Cancelar</button>
+                        </div>
+                        <div class="col-xl-4 col-lg-6 col-md-12 mt-md-2">
+                            <button type="submit" class="btn btn-outline-info btn-block">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEscalar" tabindex="-1" role="dialog" aria-labelledby="modalEscalar" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modalInfo" role="document">
+        <div class="modal-content pt-4 pb-5 px-4">
+            <div class="modal-header d-flex align-items-center justify-content-end p-0 border-0">
+                <img src="img/iconClose.png" class="cpointer" data-dismiss="modal" alt="">
+            </div>
+            <div class="modal-body">
+                <div class="w-100 border-bottom mb-3 pb-2">
+                    <h4 class="font-weight-bold">Escalar petición</h4>
+                </div>
+                <form ng-submit="escalarCaso(details, '#modalEscalar')">
+                    <div class="w-100 d-flex align-items-center justify-content-between mb-2 mt-2">
+                        <div class="col-lg-12 col-md-12 col-12">
+                            <label for="" class="col-sm-12 col-form-label pl-0">Organización / Gerencia<strong>*</strong></label>
+                            <select name="organizaciones" id="organizaciones" ng-model="escalarData.organizacion" required="true" ng-change="getGroups(escalarData.organizacion)">
+                                <option value="{{organizacion.organizacion}}" ng-repeat="organizacion in organizaciones" ng-if="(organizacion |           json) !=           '{}'">{{organizacion.organizacion}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-100 d-flex align-items-center justify-content-between mb-2 mt-2">
+                        <div class="col-lg-12 col-md-12 col-12">
+                            <label for="" class="col-sm-12 col-form-label pl-0">Nombre del grupo de soporte<strong>*</strong></label>
+                            <select name="grupos" id="grupos" ng-model="escalarData.grupo" required="true"  ng-change="getMembers(escalarData.grupo)">
+                                <option value="{{grupo}}" ng-repeat="grupo in grupos" ng-if="(grupo |           json) !=           '{}'">{{grupo.grupo}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-100 d-flex align-items-center justify-content-between mb-2 mt-2">
+                        <div class="col-lg-12 col-md-12 col-12">
+                            <label for="" class="col-sm-12 col-form-label pl-0">Usuario asignado a petición</label>
+                            <select name="grupos" id="grupos" ng-model="escalarData.usuarioAsignado" required="false">
+                                <option value="{{miembro}}" ng-repeat="miembro in miembros" ng-if="(miembro |           json) !=           '{}'">{{miembro.nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-100 d-flex align-items-center justify-content-between mb-2 mt-2">
+                        <div class="col-lg-12 col-md-12 col-12">
+                            <label for="" class="col-sm-12 col-form-label pl-0">Nota<strong>*</strong></label>
+                            <textarea class="form-control"  rows="4" ng-model="escalarData.nota" required="true"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-12 row">
+                        <div class="col-xl-4 col-lg-6 col-md-12 mt-md-2">
+                            <button type="button" class="btn btn-outline-danger btn-block" data-dismiss="modal">Cancelar</button>
+                        </div>
+                        <div class="col-xl-4 col-lg-6 col-md-12 mt-md-2">
+                            <button type="submit" class="btn btn-outline-info btn-block">Escalar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSubInfoCaso" tabindex="-1" role="dialog" aria-labelledby="modalSubInfoCaso" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modalInfo" role="document">
+        <div class="modal-content pt-4 pb-5 px-4">
+            <div class="modal-header d-flex align-items-center justify-content-end p-0 border-0">
+                <img src="img/iconClose.png"  class="cpointer" data-dismiss="modal" alt="">
+            </div>
+            <div class="modal-body">
+                <div class="w-100 border-bottom mb-3 pb-2">
+                    <h4 class="font-weight-bold">Detalle de la petición</h4>
+                </div>
+                <div class="w-100 d-flex align-items-center justify-content-between mb-2 mt-2">
+                    <div class="d-flex align-items-center">
+                        <p class="font-weight-bold m-0">{{details.TIPODEFALLA}}</p>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <p class="grayColor m-0 mr-3">{{details.FECHAREGISTRO}}</p>
+                        <p class="font-weight-bold m-0">{{details.PRIORIDADINCIDENTE}}</p>
+                    </div>
+                </div>
+                <div class="w-100 mb-2">
+                    <div>
+                        <p class="font-weight-light m-0">ID Petición: {{details.NROMYIT}}</p>
+                    </div>
+                </div>
+                <div class="w-100 mb-2">
+                    <div>
+                        <p class="font-weight-bold blueColor m-0">Estado</p>
+                    </div>
+                </div>
+                <div class="w-100 d-flex align-items-center justify-content-between pb-4 mb-3 border-bottom">
+                    <div>
+                        <p class="font-weight-light m-0">{{details.ESTADO=='1000'?'Asignado':details.ESTADO=='2000'?'En curso':'Resuelto'}}</p>
+                    </div>
+                </div>
+
+                <div class="w-100 mt-2">
+                    <div class="w-100 d-flex justify-content-between">
+                        <div>
+                            <p class="font-weight-bold m-0">Estado</p>
+                        </div>
+                        <div>
+                            <p class="font-weight-light m-0 mb-1">{{details.ESTADO=='1000'?'Asignado':details.ESTADO=='2000'?'En curso':'Resuelto'}}</p>
+                        </div>
+                    </div>
+                    <div class="w-100 d-flex justify-content-between">
+                        <div>
+                            <p class="font-weight-bold m-0">Enviado</p>
+                        </div>
+                        <div>
+                            <p class="font-weight-light m-0 mb-1">{{details.FECHACREACION}}</p>
+                        </div>
+                    </div>
+                    <div class="w-100 d-flex justify-content-between">
+                        <div>
+                            <p class="font-weight-bold m-0">Última actualización</p>
+                        </div>
+                        <div>
+                            <p class="font-weight-light m-0 mb-1">{{details.FECHACREACION}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
