@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jdbc-data-source xmlns="http://xmlns.oracle.com/weblogic/jdbc-data-source">
+  <name>myit_oracle</name>
+  <jdbc-driver-params>
+    <url>jdbc:oracle:thin:@(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST = 100.126.98.26)(PORT = 1850)))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = SRV_LANPDB)))</url>
+    <driver-name>oracle.jdbc.OracleDriver</driver-name>
+    <properties>
+      <property>
+        <name>user</name>
+        <value>LANADM</value>
+      </property>
+      <property>
+        <name>password</name>
+        <value>UserLand2!2*</value>
+      </property>
+    </properties>
+  </jdbc-driver-params>
+  <jdbc-data-source-params>
+    <jndi-name>myit_oracle</jndi-name>
+  </jdbc-data-source-params>
+</jdbc-data-source>

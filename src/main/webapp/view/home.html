@@ -1,0 +1,243 @@
+<div class="row ">
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-body p-3 force-scroll" id="modal-body">
+           <div class="column"">
+                <div class="row col-md-12 m0 mb-4" ng-repeat="item in $ctrl.items">
+                    <div class="col-md-8">
+                        <p class="m0 p0 ">{{item.SurveyFor}}</p>
+                    </div>
+                     <div class="col-md-8">
+                        <p class="m0 p0">ID de petición: {{item.Originating_Request_ID}}</p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="m0 p0">{{item.Fecha}} - {{item.Hora}}</p>
+                    </div>
+                     <div class="col-md-12 force-center mt-1">
+                        <div class="col-md-5">
+                            <button type="button" ng-click="$ctrl.surveyDetails(item)" accesskey="t" class="btn btn-warning p-1 text-white w100p" style="font-size: inherit;">{{item.showDetails?"ocultar detalle":"ver detalle"}}</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center mt-2" ng-show="item.showDetails">
+                        <p class="">{{item.Case_Description}}</p>
+                    </div>
+                     <div class="col-md-12 text-center mt-3">
+                        <p class="fwb">¿La solución a tu solicitud fue satisfactoria?</p>
+                    </div>
+                    <div class="col-md-12 force-center" ng-show="item.SelectedValue==null">
+                        <div class="p4 inner">
+                            <img src="img/encuestas/2.png"  ng-click="item.SelectedValue=2" class="cpointer" ng-mouseover="item.Hover2=true" ng-mouseleave="item.Hover2=false" ng-class="{'w35':!item.Hover2,'w45':item.Hover2}"/>
+                        </div>
+                        <div class="p4 inner">
+                            <img src="img/encuestas/4.png" ng-if="item.SelectedValue==null" ng-click="item.SelectedValue=4" class="cpointer" ng-mouseover="item.Hover4=true" ng-mouseleave="item.Hover4=false" ng-class="{'w35':!item.Hover4,'w45':item.Hover4}"/>
+                        </div>
+                         <div class="p4 inner">
+                            <img src="img/encuestas/6.png" ng-click="item.SelectedValue=6" class="cpointer" ng-mouseover="item.Hover6=true" ng-mouseleave="item.Hover6=false" ng-class="{'w35':!item.Hover6,'w45':item.Hover6}"/>
+                        </div>
+                         <div class="p4 inner">
+                            <img src="img/encuestas/8.png" ng-click="item.SelectedValue=8" class="cpointer" ng-mouseover="item.Hover8=true" ng-mouseleave="item.Hover8=false" ng-class="{'w35':!item.Hover8,'w45':item.Hover8}"/>
+                        </div>
+                         <div class="p4 inner">
+                            <img src="img/encuestas/10.png" ng-click="item.SelectedValue=10" class="cpointer" ng-mouseover="item.Hover10=true" ng-mouseleave="item.Hover10=false" ng-class="{'w35':!item.Hover10,'w45':item.Hover10}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12 force-center" ng-hide="item.SelectedValue==null">
+                        <div class="p4 inner">
+                            <img src="img/encuestas/2.png"  ng-show="item.SelectedValue==2" class="w45"/>
+                            <img src="img/encuestas/2-gris.png" ng-hide="item.SelectedValue==2" ng-click="item.SelectedValue=2" class="cpointer" ng-mouseover="item.Hover2=true" ng-mouseleave="item.Hover2=false" ng-class="{'w35':!item.Hover2,'w45':item.Hover2}"/>
+                        </div>
+                        <div class="p4 inner">
+                            <img src="img/encuestas/4.png" ng-show="item.SelectedValue==4" class="w45"/>
+                            <img src="img/encuestas/4-gris.png" ng-hide="item.SelectedValue==4" ng-click="item.SelectedValue=4" class="cpointer" ng-mouseover="item.Hover4=true" ng-mouseleave="item.Hover4=false" ng-class="{'w35':!item.Hover4,'w45':item.Hover4}"/>
+                        </div>
+                         <div class="p4 inner">
+                            <img src="img/encuestas/6.png" ng-show="item.SelectedValue==6" class="w45"/>
+                            <img src="img/encuestas/6-gris.png" ng-hide="item.SelectedValue==6" ng-click="item.SelectedValue=6" class="cpointer" ng-mouseover="item.Hover6=true" ng-mouseleave="item.Hover6=false" ng-class="{'w35':!item.Hover6,'w45':item.Hover6}"/>
+                        </div>
+                         <div class="p4 inner">
+                            <img src="img/encuestas/8.png" ng-show="item.SelectedValue==8" class="w45"/>
+                            <img src="img/encuestas/8-gris.png" ng-hide="item.SelectedValue==8" ng-click="item.SelectedValue=8" class="cpointer" ng-mouseover="item.Hover8=true" ng-mouseleave="item.Hover8=false" ng-class="{'w35':!item.Hover8,'w45':item.Hover8}"/>
+                        </div>
+                         <div class="p4 inner">
+                            <img src="img/encuestas/10.png" ng-show="item.SelectedValue==10" class="w45"/>
+                            <img src="img/encuestas/10-gris.png" ng-hide="item.SelectedValue==10" ng-click="item.SelectedValue=10" class="cpointer" ng-mouseover="item.Hover10=true" ng-mouseleave="item.Hover10=false" ng-class="{'w35':!item.Hover10,'w45':item.Hover10}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12 force-center mt-2" ng-hide="item.SelectedValue==null">
+                        <textarea class="form-control" ng-model="item.Comentario" placeholder="dejanos tu comentario" id="comentario" rows="3"></textarea>
+                        
+                    </div>
+                    <div class="col-md-12 force-center mt-1" ng-hide="item.SelectedValue==null">
+                        <div class="col-md-4">
+                            <button type="button" ng-click="$ctrl.enviar(item)"  class="btn btn-danger">Enviar</button>
+                        </div>
+                        
+                    </div>
+                </div>
+           </div>
+        </div>
+    </script>
+     <script type="text/ng-template" id="myITStoreModalContent.html">
+        <div class="modal-body p-3" id="modal-body">
+           <div class="column mt-2">
+                <p>Ten en cuenta las siguientes recomendaciones</p>
+                <ul>    
+                  <li>La URL solo funciona con el Navegador Internet Explorer.</li>
+                  <li>Esta URL solo está disponible para los usuarios directos de Claro y equipos propiedad de Claro.</li>
+                  <li>MYIT Store solo está disponible para equipos de cómputo.</li>
+                  <li>Para los usuarios y equipos de Hitss no está disponible.</li>
+                  <li>Para los equipos de terceros, aliados y/o rentados la URL no está disponible.</li>
+                  <li>Para los usuarios que usen equipos rentados la URL no está disponible.</li>
+                  <li>Para los usuarios directos de claro que usan escritorios virtuales Citrix no está disponible.</li>
+                </ul>
+           </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()" accesskey="g">Cancelar</button>
+            <button class="btn btn-success" type="button" ng-click="$ctrl.dominio()" accesskey="p">Continuar</button>
+        </div>
+    </script>
+     <script type="text/ng-template" id="myITModalContent.html">
+        <div class="modal-body p-3" id="modal-body">
+           <div class="column align-self-center align-content-center text-center mt-2">
+                <div class="btnoption inner w-50 text-center" ng-click="$ctrl.usuario()" accesskey="h"> 
+                    <span class="h maletin inner"></span>
+                     <span class="inner ml-2">Usuario de MyIT</span>
+                </div>
+           </div>
+           <div class="column align-self-center align-content-center text-center mt-4">
+                <div class="btnoption inner w-50 text-center" ng-click="$ctrl.usuario1()" accesskey="r"> 
+                    <span class="h hombre inner"></span>
+                     <span class="inner ml-2">Usuario Resolutor</span>
+                </div>
+           </div>
+        </div>
+    </script>
+ 
+    <div class="col-12 p-0 d-none d-md-block">
+        <div class="container-fluid conVista" ng-show="banner">             
+            <header class="header" >
+                <div style="height: auto" ng-if="banners.length != 0">
+                    <div uib-carousel active="0" interval="5000" no-wrap="noWrapSlides">
+                        <div uib-slide ng-repeat="slide in banners track by $index" index="$index">
+                            <img  ng-src="{{slide.ruta}}" class="img-fluid img-banner">
+                        </div>
+                    </div>
+                </div>
+                <div style="height: auto" ng-if="banners.length == 0">
+                    <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                        <div uib-slide index="0">
+                            <img  src="img/default/1.jpg" class="img-fluid img-banner">
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+
+    </div>
+</div>
+<div class="row mt-0 mt-md-2">
+    <div class="w100p" style="position: absolute;bottom: 0" >
+            <div class="siteloader embed-responsive">
+                <div id="siteloader" ng-hide="!chatOpen"></div>
+            </div>
+        </div>
+    <div class="col-md-4 col-12 pl-md-4 py-2" ng-style="!menu && {'background-color':'#dc3545'}">
+        <!--style="box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);"-->
+        <img src="img/home/icn-logo-my-it.png" alt="img-fluid" style="height: 70px;" srcset="">
+        <img src="img/home/ICN_Menu.svg" class="float-right mt-4 d-block d-md-none" alt="" srcset="" ng-if="menu"
+             ng-click="openMenu()" accesskey="m">
+        <img src="img/home/icon_menublanco.svg" class="float-right mt-4 d-block d-md-none" alt="" srcset=""
+             ng-if="!menu" ng-click="openMenu()" accesskey="m">
+    </div>
+    <div class="col-12" ng-hide="menu">
+        <div class="row h-100 position-fixed w-100 menu align-content-start">
+            <div class="col-12 item-menu">
+                {{infoUser.First_Name}} {{infoUser.Last_Name}} <img src="img/home/icon-man.png" class="ml-2" alt="">
+            </div>
+            <div class="col-12 item-menu" ng-click="getSurveys()"  accesskey="y" ng-if="!infoUser.esContingencia">
+                <!-- ng-click="redirect('estadisticas')" -->
+                Encuestas <img src="img/home/icn-encuestas-menu-lateral-responsive.png" class="ml-2" alt="">
+            </div>
+            <div class="col-12 item-menu" ng-click="cerrarsesion()" accesskey="c">
+                Cerrar sesión <img src="img/home/icn-cerrar-sesi-n-menu-lateral-responsive.png" class="ml-2" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="col-12  d-block d-md-none mt-3" style="box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);">
+        <div class="row">
+            <div class="col-6">
+                <img src="img/home/img-home.png" class="img-fluid" alt=""/>
+            </div>
+            <div class="col-8 position-absolute mt-4" style="right: 0;" >
+                <div class="btnanita" ng-if="!chatOpen" ng-hide="!menu"> 
+                    <img src="img/home/anita.png" class="ml-2 cpointer float" alt="" ng-click="abrirChat()" accesskey="a">
+                </div>
+                <div class="col-12 text-center" style="font-weight: 500;">
+                    <p class="m-0 title-home" style="font-size: 14px; line-height: 14px;">Las herramientas de gestión de
+                        la mesa de servicios</p>
+                    <p class="title-red mb-4" style="font-size: 20px; line-height: 25px;">MÁS CERCA DE TI</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-12 align-self-center text-right pr-4 d-none d-md-block">
+
+        <div class="btnanita" > 
+            <img src="img/home/anita.png" class="ml-2 cpointer float" alt="" ng-if="!chatOpen" ng-click="abrirChat()" accesskey="a">
+            <!--<span class="fwb">Pregúntale a AnITa</span> ¿Necesitas ayuda?-->
+        </div>
+        <div class="btnencuestas d-inline-block ml-2" ng-click="getSurveys()" accesskey="y" ng-if="!infoUser.esContingencia"> 
+            Encuestas 
+            <img src="img/home/icn-encuentas.png" class="ml-2" alt="">
+        </div>
+        <span class="ml-4">{{infoUser.First_Name}} {{infoUser.Last_Name}}</span>
+        <img src="img/home/icn-cerrar-sesi-n.png" ng-click="cerrarsesion()" class="ml-2 cpointer" alt="" accesskey="c">
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-5 col-12 d-none d-md-block pl-0">
+                <div style="height: auto" ng-if="avatars.length != 0">
+                    <div uib-carousel active="0" interval="5000" no-wrap="noWrapSlides" class="avatar">
+                        <div uib-slide ng-repeat="slide in avatars track by $index" index="$index">
+                            <img  ng-src="{{slide.imagen}}" class="img-fluid" style="width: 470px !important;object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+                <div style="height: auto" ng-if="avatars.length == 0">
+                    <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                        <div uib-slide index="0">
+                            <img src="img/home/img-home.png"  class="img-fluid" alt="" style="width: 470px !important;object-fit: cover;" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="derechos col-12 text-center p-2" style="z-index: -1; background-color: #da1024;"><br></div>
+            </div>
+            <div class="derechos col-md-7 col-12 text-center p-2 d-none d-md-block" style="z-index: -1; background-color: #da1024;">Claro Colombia 2020. Todos los
+                derechos reservados</div>
+            <div class="col-md-7 col-12 mt-5">
+                <div class="row">
+                    <div class="col-md-7 offset-md-1 text-center d-none d-md-block" style="font-weight: 500;">
+                        <p class="m-0 title-home">Las herramientas de gestión de la mesa de servicios</p>
+                        <p class="title-red mb-4">MÁS CERCA DE TI</p>
+                    </div>
+                    <div class="col-md-7 offset-md-1 mt-4 mb-4">
+                        <div class="row justify-content-around">
+                            <div class="col-md-5 p10 col-10 box-my text-center cpointer" ng-click="myITModal()" accesskey="i">
+                                <img src="img/home/img-pcdesktop.png" alt="" style="width: 100px">
+                                <p class="font-weight-bold my-1">My<span style="color: #dc3545;">IT</span></p>
+                                <p class="mt-2">Con MyIT reporta tus casos de manera sencilla. Registra y consulta tus
+                                    casos asociados a servicios de IT.</p>
+                            </div>
+                            <div class="col-md-5 p10 col-10 box-my text-center mt-3 mt-md-0 cpointer" ng-click="myITStore()" accesskey="s">
+                                <img src="img/home/icon-store.png" alt="" style="width: 100px">
+                                <p class="font-weight-bold my-1">MyIT <span style="color: #dc3545;">Store</span></p>
+                                <p class="mt-2">Ingresa a la tienda desde un navegador Internet Explorer.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
