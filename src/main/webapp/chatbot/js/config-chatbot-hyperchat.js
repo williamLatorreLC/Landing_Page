@@ -1,4 +1,4 @@
-//Version 5.14 Generada el 9 de Abril 2021
+//Version 5.19 Generada el 28 de Abril2022
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -74,7 +74,7 @@ function getSessionVariable(variable) {
         }
 
     } else {
-      console.log("Informacion de sesion X_MYIT_INFO no encontrada se inicializará el chatbot con valores default");
+      console.log("Informacion de sesion X_MYIT_INFO no encontrada se inicializará el chatbot con valores default. " + variable);
     }
 
     return value;
@@ -113,6 +113,8 @@ var var_ipDiagnosticar = '';
 
 var var_impact = '';
 var var_urgency = '';
+var var_extra_info = '';
+
 var var_isIncident = false;
 
 var var_adjuntar_archivo_nota = false;
@@ -143,16 +145,16 @@ function initChatbot(type){
         value  : 'NoAgentsAvailable' }
 
     //Configuracion HyperChat
-    SDKHCAdapter.configure({ appId            : 'BkPqCzngX',
+    SDKHCAdapter.configure({ appId: 'BkPqCzngX',
         importBotHistory : true,
         region           : 'us',
         lang             : 'es',
         fileUploadsActive: true,
-        room             : function () {
+        room: function () {
             return '1';//cola de chat 1: Soporte | 2: Pruebas
         },
-        surveys          : { id: 7 },
-		transcript: { download: true }
+        surveys   : { id: 7 },
+		    transcript: { download: true },
     });
 
 
@@ -498,7 +500,7 @@ function setCategory (clr_id){
 		ychatbot = chatBot;
 
         chatBot.subscriptions.onDisplaySystemMessage(function(messageData, next){
-    		console.log('escalate', messageData);
+
             if(messageData.message === "escalate-chat") {
               ychatbot.api.addVariable('FIRST_NAME', nomred).then(function(){
                 ychatbot.api.addVariable('EMAIL_ADDRESS', mail)
@@ -639,16 +641,25 @@ function showCavList(chatbot,cavs){
 
 function getDirectCallToCreate(datos){
 
-	var checkDirectCall = [];
-	checkDirectCall.push(datos.Product_Categorization_Tier_1);
-	checkDirectCall.push(datos.Product_Categorization_Tier_2);
-	checkDirectCall.push(datos.Product_Categorization_Tier_3);
+  var checkDirectCall = [];
+  checkDirectCall.push(datos.Product_Categorization_Tier_1);
+  checkDirectCall.push(datos.Product_Categorization_Tier_2);
+  checkDirectCall.push(datos.Product_Categorization_Tier_3);
 
-	checkDirectCall.push(datos.Service_Categorization_Tier_1);
-	checkDirectCall.push(datos.Service_Categorization_Tier_2);
-	checkDirectCall.push(datos.Status_PDA);
+  checkDirectCall.push(datos.Service_Categorization_Tier_1);
+  checkDirectCall.push(datos.Service_Categorization_Tier_2);
+  checkDirectCall.push(datos.Status_PDA);
 
-	var direct_call_option = 'create_case';
+  //No importa Product_Categorization_Tier_2
+  var checkDirectCall_2 = [];
+	checkDirectCall_2.push(datos.Product_Categorization_Tier_1);
+	checkDirectCall_2.push(datos.Product_Categorization_Tier_3);
+
+	checkDirectCall_2.push(datos.Service_Categorization_Tier_1);
+	checkDirectCall_2.push(datos.Service_Categorization_Tier_2);
+	checkDirectCall_2.push(datos.Status_PDA);
+
+	var direct_call_option = 'create_case'; //ID 2186 - Crear solicitud
 
 	if(typeof(datos.Product_Name) != 'undefined' && datos.Product_Name.trim()){
 		xchatbot.api.addVariable('CLRID_PRODUCT_NAME', datos.Product_Name);
@@ -659,19 +670,82 @@ function getDirectCallToCreate(datos){
 	} else {
 		//FIXME revisar si se tiene que hacer esta verificacion
 	}
+  //No importa Product_Categorization_Tier_2
+  //Product_Categorization_Tier_1.Product_Categorization_Tier_3.Service_Categorization_Tier_1.Service_Categorization_Tier_2.Status_PDA
+  switch(checkDirectCall_2.join('.').toLowerCase()){
+    case 'hardware.hardware.servicios de it para it.soporte.enabled':
+      //Flujo_Soporte - Hardware
+      //Tipo de Hardware = Service_Categorization_Tier_2
+      //Elemento de Hardware=Product_Name
+      var_extra_info = "\nTipo de Hardware: " + datos.Product_Categorization_Tier_2;
+      var_extra_info += "\nElemento de Hardware: " + datos.Product_Name;
+      break;
+    case 'software.bases de datos.servicios de it para it.soporte.enabled':
+      //Flujo_Soporte - Bases de datos
+      direct_call_option = 'create_case_type_soporte_bases_datos';
+      var_extra_info = "\nTipo de base de datos: " + datos.Product_Name;
+      break;
+    default:
+      //ya manda  a 'create_case'
+      //continua el flujo
+      break;
+  }
 
+  //Product_Categorization_Tier_1.Product_Categorization_Tier_2.Product_Categorization_Tier_3.Service_Categorization_Tier_1.Service_Categorization_Tier_2.Status_PDA
 	switch(checkDirectCall.join('.').toLowerCase()){
+    case 'servicio.seguridad.infraestructura de seguridad.mi seguridad de la informacion.soporte.enabled':
+      //Flujo_Soporte - Infraestructura de Seguridad
+      //Subtema=Product_Name
+      var_extra_info = "\nSubtema: " + datos.Product_Name;
+      direct_call_option = 'create_case_type_1'; //placa o hostname del equipo
+      break;
+    case 'software.aplicacion.middleware.servicios de it para it.soporte.enabled':
+      //Flujo_Soporte - Middleware
+      //Modulo=Product_Name
+      //Falla presentada=Service_Categorization_Tier_3
+      var_extra_info = "\nModulo: " + datos.Product_Name;
+      var_extra_info += "\nFalla Presentada: " + datos.Service_Categorization_Tier_3;
+      direct_call_option = 'create_case_type_soporte_middleware';
+      break;
+    case 'software.aplicacion.soporte al negocio.mis aplicaciones del negocio.soporte.enabled':
+      //Flujo_Soporte - Mis Aplicaciones de Negocio
+      //Modulo=Product_Name
+      var_extra_info = "\nModulo: " + datos.Product_Name;
+      break;
+    case 'facilidades.comunicacion.salas virtuales.mis comunicaciones y herramientas colaborativas.soporte.enabled':
+      //Flujo_Soporte - Salas virtuales
+      //Sala=Product_Name
+      //Tipo de falla = Service Categorization Tier 3
+      var_extra_info = "\nSala: " + datos.Product_Name;
+      var_extra_info += "\nTipo de falla: " + datos.Service_Categorization_Tier_3;
+      break;
 
+    case 'facilidades.herramientas.office365.mis comunicaciones y herramientas colaborativas.soporte.enabled':
+      //Flujo_Soporte - Office365
+      //Herramienta=Product_Name
+      //Tipo de falla = Service Categorization Tier 3
+      var_extra_info = "\nHerramienta: " + datos.Product_Name;
+      var_extra_info += "\nTipo de falla: " + datos.Service_Categorization_Tier_3;
+      break;
+
+    case 'software.base de datos.bases de datos.servicios de it para it.asesorias y solicitudes.enabled':
+        //Flujo_Asesorias y Solicitudes - Bases de datos
+        //Tipo de base de datos=Product_Name
+        //Base destino = Service Categorization Tier 3
+        var_extra_info = "\nTipo de base de datos: " + datos.Product_Name;
+        var_extra_info += "\nBase destino: " + datos.Service_Categorization_Tier_3;
+        direct_call_option = 'create_case_type_asesorias_bases_datos';
+        break;
 		case 'servicio.software.microsoft office.mi estacion de trabajo y conectividad.soporte.enabled':
 		case 'servicio.hardware.pc de escritorio.mi estacion de trabajo y conectividad.soporte.enabled':
 		case 'servicio.hardware.portatil.mi estacion de trabajo y conectividad.soporte.enabled':
 		case 'servicio.software.microsoft office.mi estacion de trabajo y conectividad.soporte.enabled':
 		case 'servicio.software.otras herramientas de oficina.mi estacion de trabajo y conectividad.soporte.enabled':
 		case 'servicio.periferico.perifericos / accesorios.mi estacion de trabajo y conectividad.soporte.enabled':
-			direct_call_option = 'create_case_type_1';
+			direct_call_option = 'create_case_type_1'; //placa o hostname del equipo
 			break;
 		case 'servicio.seguridad.infraestructura de seguridad.mi seguridad de la informacion.asesorias y solicitudes.enabled': //FIXME FALTA PRODUCT NAME, ES NECESARIO?
-			direct_call_option = 'create_case_type_2';
+			direct_call_option = 'create_case_type_2'; //direccion ip del equipo
 			break;
 		default:
 			//ya manda  a 'create_case'
@@ -891,7 +965,7 @@ function gestionaRespuesta(chatbot) {
 
                         var_isIncident = obj.datos.Flow == 'Incidente' ? true : false;
 
-						var directCallOption = getDirectCallToCreate(obj.datos);
+						            var directCallOption = getDirectCallToCreate(obj.datos);
 
                         var directMessageData = {
                             message: 'Crear caso',
@@ -1018,18 +1092,33 @@ function gestionaRespuesta(chatbot) {
 
                         break;
 
+                    case "create_case_params_extra_info":
+
+                            next = false;
+
+                            xchatbot.actions.sendMessage({message: var_extra_info});
+
+                            var_extra_info = "";
+
+                            break;
+
                     case "create_case_params":
 
                         next = false;
 
-                        var createCaseParams = JSON.stringify({'site':var_site,
-                                                    'customer_type':var_customer_type,
-                                                    'clr_id':var_clr_id,
-                                                    'user':usuarioid,
-                                                    'impact': var_impact,
-                                                    'urgency': var_urgency,
-                                                    }
-                                                    );
+                        var paramsObj = {'site':var_site,
+                          'customer_type':var_customer_type,
+                          'clr_id':var_clr_id,
+                          'user':usuarioid, //fixme
+                          'impact': var_impact,
+                          'urgency': var_urgency
+                        };
+
+                        if(var_extra_info){
+                          paramsObj['extra_info'] = var_extra_info;
+                        }
+
+                        var createCaseParams = JSON.stringify(paramsObj);
 
                         xchatbot.actions.sendMessage({message: createCaseParams});
 
@@ -1039,6 +1128,7 @@ function gestionaRespuesta(chatbot) {
 
                         var_impact = "";
                         var_urgency = "";
+                        var_extra_info = "";
 
                         var_isIncident = false;
 
@@ -1551,6 +1641,59 @@ var diagnosticoCMC = (function (window, undefined) {
 
 })(window, undefined);
 
+var changeEmail = (function (window, undefined) {
+
+    var change = function(values){
+
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://asistentevirtual.claro.com.co/webhooks_mesa_servicios/public/webhook/mesaservicio/actualizar_email_myit');
+        xhr.setRequestHeader('X-REQUEST-KEY', 'RlQojyfYpHOaTSytik0Bk7fgbX0JiPzj');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function() {
+
+            var msj = 'Ocurrió un erro al realizar el cambio de tu email. Intentalo mas tarde';
+
+            if (xhr.status === 200) {
+                var datos = JSON.parse(xhr.responseText);
+
+                try {
+
+                    if(datos.status == 'success'){
+                        msj = datos.chatbot_response;
+                    } else {
+                        //
+                    }
+
+                    xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+
+                }catch (e) {
+                    xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+                }
+
+            } else {
+                xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+            }
+
+            xchatbot.actions.enableInput();
+
+        };
+
+        xchatbot.actions.disableInput();
+        xchatbot.actions.displayChatbotMessage({type:"answer",message: "Por favor espera. Este proceso puede tardar algunos momentos."});
+
+        xhr.send(JSON.stringify(values));
+
+    }
+
+    return {
+        change : function (datos) {
+            return change(datos);
+        }
+    };
+
+})(window, undefined);
+
 var webhookLoader = (function (window, undefined) {
 
     var show = function(){
@@ -1579,19 +1722,18 @@ var webhookLoader = (function (window, undefined) {
 
 
 var diagnosticarRed = function(values){
-
-    var_ipDiagnosticar = values.ip;
-
+  var_ipDiagnosticar = values.ip;
 }
 
 var diagnosticarCMC = function(values){
-
-    if(values.min || values.coid){
-        diagnosticoCMC.runTest(values);
-    }
-
+  if(values.min || values.coid){
+      diagnosticoCMC.runTest(values);
+  }
 }
 
+var cambiarEmail = function(values){
+    changeEmail.change(values);
+}
 
 /**
  * This adapter creator export an adapter which hides the conversation window when the user types end in the query. It accepts
@@ -1721,6 +1863,10 @@ function CLAROlaunchNLEsclationForm(checkAgents,escalateNLForm,rejectedEscalatio
     chatBot.subscriptions.onEscalateToAgent(function(escalationData, next) {
 
         var checkCustomForm = lastCustomEscalateForm;
+
+        escalationData.cargo = getSessionVariable("Job_Title");
+        escalationData.ubicacion = getSessionVariable("Site");
+        escalationData.perfil = getSessionVariable("ProfileId");
 
       chatBot.api.track('CONTACT_ATTENDED',{value:"TRUE"});
 
