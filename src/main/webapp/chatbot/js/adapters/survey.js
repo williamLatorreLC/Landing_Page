@@ -10,7 +10,7 @@ function showSurvey(surveyID) {
         surveyProcess='Finished';
           //
           console.log("resetea Sesión cuando se termina de contestar la encuesta")
-        chatbot.actions.resetSession();
+        //chatbot.actions.resetSession();
       }
     }
     chatbot.subscriptions.onResetSession(function(next) {
@@ -37,7 +37,7 @@ function showSurvey(surveyID) {
           surveyProcess = 'Finished';
             //
             console.log("resetea Sesión al cerrar ventana cuando la encuesta aun está incompleta");
-          chatbot.actions.resetSession();
+          //chatbot.actions.resetSession();
         }else {
           return next(messageData)
         }
