@@ -299,8 +299,8 @@ app.controller('ModalMyITInstanceCtrl', function ($uibModalInstance, items, $win
 
 
     $ctrl.usuario = function () {
-        //$window.open('https://myit.claro.com.co:8443/dwp/app');
-        $window.open('https://myit.claro.com.co:8443/ux/myitapp/');
+        $window.open('https://myit.claro.com.co:8443/dwp/app');
+        //$window.open('https://myit.claro.com.co:8443/ux/myitapp/');
     };
     $ctrl.usuario1 = function () {
         $window.open('https://myitfull.claro.com.co:8443/arsys/shared/login.jsp?/arsys/');
