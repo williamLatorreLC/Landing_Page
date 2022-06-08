@@ -1,4 +1,4 @@
-//Version 5.19 Generada el 28 de Abril2022
+//Version 6.1 Generada el 16 de Mayo 2022
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -111,6 +111,10 @@ var var_tipoDiagnostico = '';
 var var_cavSeleccionado = '';
 var var_ipDiagnosticar = '';
 
+var var_org = '';
+var var_dep = '';
+var var_release_support_response = '';
+
 var var_impact = '';
 var var_urgency = '';
 var var_extra_info = '';
@@ -129,8 +133,8 @@ function initChatbot(type){
 
     var surveyID = 7;
 
-	var DomainKey = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJwcm9qZWN0IjoiY2xhcm9fY29fc2VydmljaW9zSVRfY2hhdGJvdF9lcyIsImRvbWFpbl9rZXlfaWQiOiJCVzVsVFFDd3Y0ODlpWmRua2lwM0p3OjoifQ.OGp-xTI0cPojEhlXi3WTB87ZcrSsrJNFhD_-UanvsV4NUInB6HQ6EqhVFp3Xiwt2xsNWTfSD3_lOVJHpAB_58Q';
-    //var DomainKey = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJwcm9qZWN0IjoiY2xhcm9fY29fc2VydmljaW9zSVRfY2hhdGJvdF9lcyIsImRvbWFpbl9rZXlfaWQiOiJCWEZNNXhqZV9aSFZGRU0yaG4wMnN3OjoifQ.YDNhj2vByXsv6VShdUNndzWRwMape77ZRNqV3_9zMbb_3NUMo7-lsOQKdAEILoUVCvRnV78bzEjD_HOC3O-i3A';
+	  //var DomainKey = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJwcm9qZWN0IjoiY2xhcm9fY29fc2VydmljaW9zSVRfY2hhdGJvdF9lcyIsImRvbWFpbl9rZXlfaWQiOiJCVzVsVFFDd3Y0ODlpWmRua2lwM0p3OjoifQ.OGp-xTI0cPojEhlXi3WTB87ZcrSsrJNFhD_-UanvsV4NUInB6HQ6EqhVFp3Xiwt2xsNWTfSD3_lOVJHpAB_58Q';
+    var DomainKey = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJwcm9qZWN0IjoiY2xhcm9fY29fc2VydmljaW9zSVRfY2hhdGJvdF9lcyIsImRvbWFpbl9rZXlfaWQiOiJCWEZNNXhqZV9aSFZGRU0yaG4wMnN3OjoifQ.YDNhj2vByXsv6VShdUNndzWRwMape77ZRNqV3_9zMbb_3NUMo7-lsOQKdAEILoUVCvRnV78bzEjD_HOC3O-i3A';
     var ApiKey = 'LDjoN3GfFSUEt1LixzSLOYFx78IY6/RrQcRWoQa5Z4I=';
 
     //Rejected escalation will display What else can I do for you? as a chatbotMessage
@@ -344,13 +348,15 @@ function setSite (site){
             directCall: 'show_customer_types', //seleccionado el site hay que solicitar tipo de usuario
         }
 
-        xchatbot.actions.sendMessage(directMessageData);
+        xchatbot.actions.sendMessage(directMessageData).then(function(){
 
-        const userMessageData = {
-            message: 'Ubicación: ' + site,
-        }
+          const userMessageData = {
+              message: 'Ubicación: ' + site,
+          }
 
-        xchatbot.actions.displayUserMessage(userMessageData);
+          xchatbot.actions.displayUserMessage(userMessageData);
+
+        });
     }
 
 }
@@ -381,7 +387,7 @@ function setImpact (impact){
                 message: var_impact + '|' + var_urgency,
             }
 
-			xchatbot.api.addVariable('IMPACT_URGENCY', var_impact + '|' + var_urgency);
+			      //xchatbot.api.addVariable('IMPACT_URGENCY', var_impact + '|' + var_urgency);
 
             xchatbot.actions.sendMessage(directMessageData);
         }
@@ -401,7 +407,7 @@ function setUrgency (urgency){
                 message: var_impact + '|' + var_urgency,
             }
 
-			xchatbot.api.addVariable('IMPACT_URGENCY', var_impact + '|' + var_urgency);
+			      //xchatbot.api.addVariable('IMPACT_URGENCY', var_impact + '|' + var_urgency);
 
             xchatbot.actions.sendMessage(directMessageData);
         }
@@ -421,15 +427,17 @@ function setDiagnosisType (diagnosis_type,texto){
             directCall: 'select_cav', //seleccionado sl tipo de cliente hay que solicitar las categorias
         }
 
-		xchatbot.api.addVariable('DIAGNOSIS_TYPE', var_tipoDiagnostico);
+		    //xchatbot.api.addVariable('DIAGNOSIS_TYPE', var_tipoDiagnostico);
 
-        xchatbot.actions.sendMessage(directMessageData);
+        xchatbot.actions.sendMessage(directMessageData).then(function(){
 
-        const userMessageData = {
-            message: texto,
-        }
+          const userMessageData = {
+              message: texto,
+          }
 
-        xchatbot.actions.displayUserMessage(userMessageData);
+          xchatbot.actions.displayUserMessage(userMessageData);
+
+        });
 
     }
 }
@@ -442,15 +450,16 @@ function setCavZone (cav_zone){
             message: cav_zone,
         }
 
-        xchatbot.actions.sendMessage(directMessageData);
+        xchatbot.actions.sendMessage(directMessageData).then(function(){
 
-        const userMessageData = {
-            message: cav_zone,
-        }
+          const userMessageData = {
+              message: cav_zone,
+          }
 
-		xchatbot.api.addVariable('CAV_ZONE', cav_zone);
+  		    //xchatbot.api.addVariable('CAV_ZONE', cav_zone);
+          xchatbot.actions.displayUserMessage(userMessageData);
 
-        xchatbot.actions.displayUserMessage(userMessageData);
+        });
 
     }
 }
@@ -462,14 +471,15 @@ function setCustomerType (customer_type){
 
         var_customer_type = customer_type;
 
-        var directMessageData = {
-            message: var_customer_type,
-            directCall: 'show_categories', //seleccionado sl tipo de cliente hay que solicitar las categorias
-        }
+		    //xchatbot.api.addVariable('CUSTOMER_TYPE', var_customer_type);
 
-		xchatbot.api.addVariable('CUSTOMER_TYPE', var_customer_type);
+          var directMessageData = {
+              message: var_customer_type,
+              directCall: 'show_categories', //seleccionado sl tipo de cliente hay que solicitar las categorias
+          }
 
-        xchatbot.actions.sendMessage(directMessageData);
+          xchatbot.actions.sendMessage(directMessageData);
+
     }
 }
 
@@ -479,14 +489,65 @@ function setCategory (clr_id){
 
         var_clr_id = clr_id;
 
+		    //xchatbot.api.addVariable('CLRID', var_clr_id);
+
+          var directMessageData = {
+              message: var_clr_id,
+              directCall: 'show_instructions', //capturados los parametros hay que solicitar la scripción detallada
+          }
+
+          xchatbot.actions.sendMessage(directMessageData);
+
+    }
+}
+
+//Flujo_Personalizacion_Diseño_Servicios
+function setOrganization (org){
+
+    if(org != null){
+
+        var_org = org;
+
         var directMessageData = {
-            message: var_clr_id,
-            directCall: 'show_instructions', //capturados los parametros hay que solicitar la scripción detallada
+            message: org,
         }
 
-		xchatbot.api.addVariable('CLRID', var_clr_id);
+		    //xchatbot.api.addVariable('REQUEST_ORGANIZATION', org); //FIXME probablemente no se necesita
 
-        xchatbot.actions.sendMessage(directMessageData);
+        xchatbot.actions.sendMessage(directMessageData).then(function(){
+
+          const userMessageData = {
+              message: 'Área: ' + org,
+          }
+
+          xchatbot.actions.displayUserMessage(userMessageData);
+        });
+
+    }
+}
+
+//Flujo_Personalizacion_Diseño_Servicios
+function setDepartment (dep){
+
+    if(dep != null){
+
+        var_dep = dep;
+
+        var directMessageData = {
+            message: dep,
+        }
+
+		    //xchatbot.api.addVariable('REQUEST_DEPENDENCY', dep); //FIXME probablemente no se necesita
+
+        xchatbot.actions.sendMessage(directMessageData).then(function(){
+
+          const userMessageData = {
+              message: 'Gerencia: ' + dep,
+          }
+
+          xchatbot.actions.displayUserMessage(userMessageData);
+        });
+
     }
 }
 
@@ -600,6 +661,61 @@ function showCustomerTypes(chatbot,types){
         for (var type in types) {
             if (types.hasOwnProperty(type)) {
                 select += "<option value='"+type+"'>"+types[type]+"</option>";
+            }
+        }
+
+        message += select + '</select>';
+
+    } catch (e) {
+        //mensaje ya es DEFAULT
+    }
+
+    return message;
+
+};
+
+//Flujo_Personalizacion_Diseño_Servicios
+function showOrganizations(organizations){
+
+    organizations = JSON.parse(organizations);
+
+    var message = 'Area Solicitante:<br/>';
+
+    try {
+
+        var select = '<select id="organization" onchange="setOrganization(this.value)">';
+
+        select += "<option>--Selecciona--</option>";
+        for (var org in organizations.datos) {
+            if (organizations.datos.hasOwnProperty(org)) {
+                select += "<option value='"+org+"'>"+organizations.datos[org]+"</option>";
+            }
+        }
+
+        message += select + '</select>';
+
+    } catch (e) {
+        //mensaje ya es DEFAULT
+    }
+
+    return message;
+
+};
+
+//Flujo_Personalizacion_Diseño_Servicios
+function showDepartments(departments){
+    var message = 'Gerencia Solicitante:<br/>';
+
+    departments = JSON.parse(departments);
+
+    try {
+
+        var select = '<select id="department" onchange="setDepartment(this.value)">';
+
+        select += "<option>--Selecciona--</option>";
+        for (var dep in departments.datos) {
+            if (departments.datos.hasOwnProperty(dep)) {
+                select += "<option value='"+dep+"'>"+departments.datos[dep]+"</option>";
             }
         }
 
@@ -736,10 +852,10 @@ function getDirectCallToCreate(datos){
         var_extra_info += "\nBase destino: " + datos.Service_Categorization_Tier_3;
         direct_call_option = 'create_case_type_asesorias_bases_datos';
         break;
-		case 'servicio.software.microsoft office.mi estacion de trabajo y conectividad.soporte.enabled':
+
+    case 'servicio.software.microsoft office.mi estacion de trabajo y conectividad.soporte.enabled':
 		case 'servicio.hardware.pc de escritorio.mi estacion de trabajo y conectividad.soporte.enabled':
 		case 'servicio.hardware.portatil.mi estacion de trabajo y conectividad.soporte.enabled':
-		case 'servicio.software.microsoft office.mi estacion de trabajo y conectividad.soporte.enabled':
 		case 'servicio.software.otras herramientas de oficina.mi estacion de trabajo y conectividad.soporte.enabled':
 		case 'servicio.periferico.perifericos / accesorios.mi estacion de trabajo y conectividad.soporte.enabled':
 			direct_call_option = 'create_case_type_1'; //placa o hostname del equipo
@@ -747,6 +863,30 @@ function getDirectCallToCreate(datos){
 		case 'servicio.seguridad.infraestructura de seguridad.mi seguridad de la informacion.asesorias y solicitudes.enabled': //FIXME FALTA PRODUCT NAME, ES NECESARIO?
 			direct_call_option = 'create_case_type_2'; //direccion ip del equipo
 			break;
+    case 'servicio.tecnico.diseño de servicios.servicios de it para it.asesorias y solicitudes.enabled':
+
+      //Flujo_Personalizacion_Diseño_Servicios
+      if(datos.Service_Categorization_Tier_3.toLowerCase() == 'acercamiento entrega operaciones introduccion del servicio'){
+
+        //categoria:
+        //Acercamiento entrega operaciones introducción del servicio
+
+        direct_call_option = 'create_case_type_acercamiento_entrega';
+      } else {
+        //categoria:
+        //Capacitación proceso introducción del servicio
+        //Acercamiento entrega operaciones introducción del servicio
+        //Seguimiento de entrega a operaciones
+        //Validación de entregables
+        //Asesoría catálogo de servicio/diseño de servicio
+        //Actualización árbol categorización / catálogo de servicios
+        //Crear/Modificar/Eliminar Grupos Resolutores
+
+        direct_call_option = 'create_case_type_disenio_servicios';
+      }
+
+      break;
+
 		default:
 			//ya manda  a 'create_case'
 			break;
@@ -842,6 +982,16 @@ function gestionaRespuesta(chatbot) {
     var customer_type = var_customer_type;
     var usuario_red = usuarioid;
     var clr_id = var_clr_id;
+
+    chatbot.subscriptions.onSendMessage( function(messageData, next) {
+
+      if(var_release_support_response == 'waiting'){
+        var_release_support_response = messageData.message.toLowerCase();
+      }
+
+       return next(messageData);
+     }
+    );
 
     chatbot.subscriptions.onDisplayChatbotMessage(function(messageData, next) {
         let originalString = 'Hola {nombre} soy Anita, tu asistente virtual, ¿En qué puedo ayudarte?';
@@ -1024,6 +1174,43 @@ function gestionaRespuesta(chatbot) {
 
                 messageData = mensaje;
 
+                if(typeof(messageData.actionField) != 'undefined' && messageData.actionField && Object.keys(messageData.actionField).length > 0){
+
+                  switch(messageData.actionField.variableName){
+                    case 'release_support':
+                        var_release_support_response = 'waiting';
+                      break;
+                      case 'support_responsible':
+
+                        if(var_release_support_response == 'no'){
+                          xchatbot.actions.sendMessage({message: "NA"});
+                          next = false;
+                        }
+
+                      break;
+
+                      case 'support_infrastructure':
+
+                        if(var_release_support_response == 'no'){
+                          xchatbot.actions.sendMessage({message: "NA"});
+                          next = false;
+                        }
+
+                      break;
+
+                      case 'support_period':
+
+                        if(var_release_support_response == 'no'){
+                          xchatbot.actions.sendMessage({message: "1"});
+                          next = false;
+                        }
+
+                        break;
+
+                  }
+
+                }
+
                 switch(messageData.message){
 
                     case "ignorar_archivo":
@@ -1043,6 +1230,20 @@ function gestionaRespuesta(chatbot) {
 
                     case "ignorar":
                         next = false;
+                        break;
+
+                    case 'select_request_organization':
+
+                        designService.getOrganizations();
+                        next = false;
+
+                        break;
+
+                    case 'select_request_department':
+
+                        designService.getDepartments();
+                        next = false;
+
                         break;
 
                     case 'select_impact_urgency':
@@ -1125,6 +1326,8 @@ function gestionaRespuesta(chatbot) {
                         var_customer_type = "";
                         var_site = "";
                         var_clr_id = "";
+
+                        var_release_support_response = "";
 
                         var_impact = "";
                         var_urgency = "";
@@ -1442,8 +1645,10 @@ var diagnosticoRed = (function (window, undefined) {
         }
 
         xchatbot.actions.displayUserMessage(userMessageData);
-		xchatbot.api.addVariable('DIAGNOSIS_TYPE', var_tipoDiagnostico);
-		xchatbot.api.addVariable('CAV', cav);
+
+	      xchatbot.api.addVariable('DIAGNOSIS_TYPE', var_tipoDiagnostico).then(function(){
+	        xchatbot.api.addVariable('CAV', cav);
+        });
 
         xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://asistentevirtual.claro.com.co/webhooks_mesa_servicios/public/webhook/diagnosticadorservicios/prueba');
@@ -1527,7 +1732,7 @@ var diagnosticoRed = (function (window, undefined) {
 				cons_log = cons;
             }
 
-			xchatbot.api.addVariable('DIAGNOSIS_RESULT', cons_log);
+			      xchatbot.api.addVariable('DIAGNOSIS_RESULT', cons_log);
 
             var contenido = {
                 sideWindowTitle: titulo,
@@ -1693,6 +1898,121 @@ var changeEmail = (function (window, undefined) {
     };
 
 })(window, undefined);
+
+var designService = (function (window, undefined) {
+
+    var getOrganizations = function(){
+
+        xhr = new XMLHttpRequest();
+
+        xhr.open('POST', 'https://asistentevirtual.claro.com.co/webhooks_mesa_servicios/public/webhook/mesaservicio/obtener_areas');
+        xhr.setRequestHeader('X-REQUEST-KEY', 'RlQojyfYpHOaTSytik0Bk7fgbX0JiPzj');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function() {
+
+            var msj = 'Ocurrió un error al obtener las areas. Porfavor escribe el area';
+
+            if (xhr.status === 200) {
+                var datos = JSON.parse(xhr.responseText);
+
+                try {
+
+                  if(datos.status == 'success'){
+                      htmlOrganizations = showOrganizations(datos.chatbot_response);
+
+                      var contenido = {
+                          sideWindowTitle: 'Selecciona área',
+                          sideWindowContent: htmlOrganizations
+                      };
+
+                      xchatbot.actions.showSideWindow(contenido);
+
+                  } else {
+                      xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+                  }
+
+                } catch (e) {
+                  console.log(e);
+                    xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+                }
+
+            } else {
+                xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+            }
+
+            xchatbot.actions.enableInput();
+
+        };
+
+        xchatbot.actions.disableInput();
+
+        xhr.send();
+
+    }
+
+    var getDepartments = function(){
+
+        xhr = new XMLHttpRequest();
+
+        xhr.open('POST', 'https://asistentevirtual.claro.com.co/webhooks_mesa_servicios/public/webhook/mesaservicio/obtener_gerencias');
+        xhr.setRequestHeader('X-REQUEST-KEY', 'RlQojyfYpHOaTSytik0Bk7fgbX0JiPzj');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function() {
+
+            var msj = 'Ocurrió un error al obtener el catalogo de gerencias. Porfavor escribe la gerencia';
+
+            if (xhr.status === 200) {
+                var datos = JSON.parse(xhr.responseText);
+
+                try {
+
+                    if(datos.status == 'success'){
+                        htmlDepartments = showDepartments(datos.chatbot_response);
+
+                        var contenido = {
+                            sideWindowTitle: 'Selecciona gerencia',
+                            sideWindowContent: htmlDepartments
+                        };
+
+                        xchatbot.actions.showSideWindow(contenido);
+
+                    } else {
+                        xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+                    }
+
+                } catch (e) {
+                    console.log(e);
+                    xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+                }
+
+            } else {
+                xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+            }
+
+            xchatbot.actions.enableInput();
+
+        };
+
+        xchatbot.actions.disableInput();
+
+        xhr.send(JSON.stringify({'org': var_org }));
+
+    }
+
+    return {
+        getOrganizations : function () {
+            return getOrganizations();
+        },
+        getDepartments : function () {
+            return getDepartments();
+        }
+    };
+
+})(window, undefined);
+
+
 
 var webhookLoader = (function (window, undefined) {
 
