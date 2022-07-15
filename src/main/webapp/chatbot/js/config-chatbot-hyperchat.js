@@ -1,4 +1,4 @@
-//Version 6.1 Generada el 16 de Mayo 2022
+//Version 7.1 Generada el 15 de Junio 2022
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -122,6 +122,7 @@ var var_extra_info = '';
 var var_isIncident = false;
 
 var var_adjuntar_archivo_nota = false;
+var var_flujo_felicitacion = false;
 
 var categoriesTries = 1;
 
@@ -472,13 +473,27 @@ function setCustomerType (customer_type){
         var_customer_type = customer_type;
 
 		    //xchatbot.api.addVariable('CUSTOMER_TYPE', var_customer_type);
+        var directMessageData = {
+            message: var_customer_type,
+            directCall: 'show_categories', //seleccionado sl tipo de cliente hay que solicitar las categorias
+        }
 
-          var directMessageData = {
-              message: var_customer_type,
-              directCall: 'show_categories', //seleccionado sl tipo de cliente hay que solicitar las categorias
-          }
+        if(var_flujo_felicitacion){
 
-          xchatbot.actions.sendMessage(directMessageData);
+            var_clr_id = "18220";
+
+            var directMessageData = {
+                message: var_clr_id,
+                directCall: 'show_instructions',
+            }
+
+        } else {
+
+            //
+
+        }
+
+        xchatbot.actions.sendMessage(directMessageData);
 
     }
 }
@@ -809,6 +824,7 @@ function getDirectCallToCreate(datos){
 
   //Product_Categorization_Tier_1.Product_Categorization_Tier_2.Product_Categorization_Tier_3.Service_Categorization_Tier_1.Service_Categorization_Tier_2.Status_PDA
 	switch(checkDirectCall.join('.').toLowerCase()){
+
     case 'servicio.seguridad.infraestructura de seguridad.mi seguridad de la informacion.soporte.enabled':
       //Flujo_Soporte - Infraestructura de Seguridad
       //Subtema=Product_Name
@@ -886,6 +902,10 @@ function getDirectCallToCreate(datos){
       }
 
       break;
+      case 'servicio.calidad.sugerencias y felicitaciones myit.buzon de sugerencias e informacion.sugerencias y felicitaciones myit.enabled':
+        //Flujo felicitaciones
+        direct_call_option = 'create_case_congratulation'; //flujo felicitaciones
+        break;
 
 		default:
 			//ya manda  a 'create_case'
@@ -1027,6 +1047,9 @@ function gestionaRespuesta(chatbot) {
             //Se esta mostrndo un tipo de mensaje en especifico
             //Vamos a construir una respuesta con base en la informacion asignada al objeto
             switch(messageData.attributes.DIRECT_CALL){
+                    case 'felicitacion_myit':
+                        var_flujo_felicitacion = true;
+                      break;
                     case 'select_diagnosis_test_type':
                             messageData.message += "<br><button class='chatbot_button' onclick='setDiagnosisType(\"ultima_milla\",\"Última milla\")'>Última milla</button>";
                             messageData.message += "<br><button class='chatbot_button' onclick='setDiagnosisType(\"citrix\",\"Citrix\")'>Citrix</button>";
@@ -1125,6 +1148,11 @@ function gestionaRespuesta(chatbot) {
                         xchatbot.actions.sendMessage(directMessageData);
 
                         break;
+                    case "create_congratulation":
+
+                      messageData.message = obj.datos.message;
+
+                      break;
 
                     case "create_case":
 
@@ -1491,6 +1519,15 @@ var tratamiento = (function (window, undefined) {
                     for (var i = 0; i < datos.datos.notas.length; i++) {
                         cons += '<br/><div><strong>Fecha de la nota:</strong> ' + datos.datos.notas[i].fecha_nota + ' </div> ' +
                             '<div><strong>Información:</strong> '+ datos.datos.notas[i].descripcion_nota + ' </div> ';
+
+                            if(typeof(datos.datos.notas[i].archivos) != 'undefined'){
+
+                              for (var j = 0; j < datos.datos.notas[i].archivos.length; j++) {
+                                cons += "<br/><button class='chatbot_button' onclick='downloadBase64File(\"" + datos.datos.notas[i].archivos[j].archivo_nombre+ "\",\"" + datos.datos.notas[i].archivos[j].archivo_contenido+ "\",\"" + datos.datos.notas[i].archivos[j].archivo_mime_type+ "\")'>"+datos.datos.notas[i].archivos[j].archivo_nombre+"</button>";
+                              }
+
+                            }
+
                     }
 
                     cons += '<br/><button onclick="addNote()">Agregar nota</button>';
@@ -1523,6 +1560,14 @@ var tratamiento = (function (window, undefined) {
                     for (var i = 0; i < datos.datos.notas.length; i++) {
                         cons += '<br/><div><strong>Fecha de la nota:</strong> ' + datos.datos.notas[i].fecha_nota + ' </div> ' +
                             '<div><strong>Información:</strong> '+ datos.datos.notas[i].descripcion_nota + ' </div> ';
+
+                        if(typeof(datos.datos.notas[i].archivos) != 'undefined'){
+
+                          for (var j = 0; j < datos.datos.notas[i].archivos.length; j++) {
+                            cons += "<br/><button class='chatbot_button' onclick='downloadBase64File(\"" + datos.datos.notas[i].archivos[j].archivo_nombre+ "\",\"" + datos.datos.notas[i].archivos[j].archivo_contenido+ "\",\"" + datos.datos.notas[i].archivos[j].archivo_mime_type+ "\")'>"+datos.datos.notas[i].archivos[j].archivo_nombre+"</button>";
+                          }
+
+                        }
                     }
 
                     cons += '<br/><button onclick="addNote()">Agregar nota</button>';
@@ -1566,6 +1611,14 @@ var tratamiento = (function (window, undefined) {
                     for (var i = 0; i < datos.datos.caso.notas.length; i++) {
                         cons += '<br/><div><strong>Fecha de la Nota:</strong> ' + datos.datos.caso.notas[i].fecha_nota + ' </div> ' +
                             '<div><strong>Información:</strong> '+ datos.datos.caso.notas[i].descripcion_nota + ' </div> ';
+
+                            if(typeof(datos.datos.caso.notas[i].archivos) != 'undefined'){
+
+                              for (var j = 0; j < datos.datos.caso.notas[i].archivos.length; j++) {
+                                cons += "<br/><button class='chatbot_button' onclick='downloadBase64File(\"" + datos.datos.caso.notas[i].archivos[j].archivo_nombre+ "\",\"" + datos.datos.caso.notas[i].archivos[j].archivo_contenido+ "\",\"" + datos.datos.caso.notas[i].archivos[j].archivo_mime_type+ "\")'>"+datos.datos.caso.notas[i].archivos[j].archivo_nombre+"</button>";
+                              }
+
+                            }
                     }
 
                     cons += '<br/><button onclick="addNote()">Agregar nota</button>';
@@ -2053,6 +2106,16 @@ var diagnosticarCMC = function(values){
 
 var cambiarEmail = function(values){
     changeEmail.change(values);
+}
+
+//,contentType, base64Data
+function downloadBase64File(fileName,base64Data,contentType) {
+
+     const linkSource = `data:${contentType};base64,${base64Data}`;
+     const downloadLink = document.createElement("a");
+     downloadLink.href = linkSource;
+     downloadLink.download = fileName;
+     downloadLink.click();
 }
 
 /**
