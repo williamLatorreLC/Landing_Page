@@ -1,123 +1,128 @@
 .contain-myit {
-    width        : 100%;
+    width: 100%;
     padding-right: 15px !important;
-    padding-left : 15px;
-    margin-right : auto;
-    margin-left  : auto;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .row {
-    display      : -ms-flexbox;
-    display      : flex;
+    display: -ms-flexbox;
+    display: flex;
     -ms-flex-wrap: wrap;
-    flex-wrap    : wrap;
-    margin-right : -15px;
-    margin-left  : -15px;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.visually-hidden {
+    display: none;
 }
 
 body {
-    margin          : 0;
-    font-family     : -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    font-size       : 0.9rem;
-    font-weight     : 500;
-    line-height     : 1.2;
-    color           : #212529;
-    text-align      : left;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #212529;
+    text-align: left;
     background-color: #fff;
-    background-image:  url("../../img/backgroud.png");
-    background-repeat:no-repeat;
-    background-size:cover;
-   
+    background-image: url("./img/backgroud.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-x: hidden;
+
 }
 
 .imagenlogin {
-    background-image   : url("../../img/login/img-login.png");
-    height             : 100vh;
+    background-image: url("./img/login/img-login.png");
+    height: 100vh;
     background-position: top;
-    background-size    : contain;
-    background-repeat  : no-repeat;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .formlogin {
-    background-image   : url("../../img/login/img-back.png");
-    height             : 100vh;
+    background-image: url("./img/login/img-back.png");
+    height: 100vh;
     background-position: center;
-    background-size    : cover;
-    background-repeat  : no-repeat;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .formlogin input {
-    padding         : 15px;
-    border-radius   : 5px;
-    box-shadow      : 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     background-color: #ffffff;
-    border          : 0;
-    width           : 100%;
+    border: 0;
+    width: 100%;
 }
 
 .formlogin button {
-    border-radius   : 5px;
-    box-shadow      : 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    border-radius: 5px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     background-color: #dc3545;
-    border          : 0;
-    color           : #ffffff;
-    font-weight     : 500;
-    padding         : 12px;
-    width           : 100%;
+    border: 0;
+    color: #ffffff;
+    font-weight: 500;
+    padding: 12px;
+    width: 100%;
 }
 
 .imagenestadisticas {
-    background-image   : url("../../img/estadisticas/img-estad-sticas.png");
-    height             : 100vh;
+    background-image: url("./img/estadisticas/img-estad-sticas.png");
+    height: 100vh;
     background-position: top left;
-    background-size    : auto;
-    background-repeat  : no-repeat;
+    background-size: auto;
+    background-repeat: no-repeat;
 }
 
 .contain-home {
-    background-image   : url("../../img/home/icn-back-gris.png");
+    background-image: url("./img/home/icn-back-gris.png");
     background-position: center;
-    background-size    : cover;
-    background-repeat  : no-repeat;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .btnencuestas {
-    padding         : 10px 25px;
-    border-radius   : 20px;
-    box-shadow      : 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    padding: 10px 25px;
+    border-radius: 20px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     background-color: #ffffff;
-    border          : 0;
-    cursor          : pointer;
+    border: 0;
+    cursor: pointer;
 }
 
 .btnoption {
-    padding         : 10px 15px;
-    border-radius   : 15px;
-    box-shadow      : 2px 3px 3px 2px rgba(0, 0, 0, 0.16);
+    padding: 10px 15px;
+    border-radius: 15px;
+    box-shadow: 2px 3px 3px 2px rgba(0, 0, 0, 0.16);
     background-color: #ffffff;
-    border          : 1px solid grey;
-    cursor          : pointer;
-    display         : inline-flex;
-    align-content   : center;
-    align-items     : center;
-    align-self      : center;
-    justify-content : center;
-    justify-items   : center;
-    justify-self    : center;
+    border: 1px solid grey;
+    cursor: pointer;
+    display: inline-flex;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
 }
 
 
 .box-my {
-    border-radius   : 20px;
-    box-shadow      : 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    border-radius: 20px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     background-color: #ffffff;
-    padding         : 15px 45px;
+    padding: 15px 45px;
 }
 
 .title-red {
     font-weight: 900;
-    color      : #db3444;
-    font-size  : 45px;
+    color: #db3444;
+    font-size: 45px;
     line-height: 45px;
 }
 
@@ -126,15 +131,15 @@ body {
 }
 
 .derechos {
-    position        : absolute;
+    position: absolute;
     background-color: #da1024;
-    color           : #ffffff;
-    bottom          : 0;
-    right           : 0;
+    color: #ffffff;
+    bottom: 0;
+    right: 0;
 }
 
 .box-head {
-    padding   : 10px 25px;
+    padding: 10px 25px;
     box-shadow: 5px 3px 6px 0 rgba(0, 0, 0, 0.16);
 }
 
@@ -143,120 +148,130 @@ body {
 }
 
 .filterestadisticas select {
-    padding         : 15px 12px;
-    border-radius   : 5px;
-    box-shadow      : 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-    border          : 0;
+    padding: 15px 12px;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    border: 0;
     /* width        : 20%;*/
 }
 
 .filterestadisticas button {
-    padding         : 15px 20px;
-    border-radius   : 5px;
-    box-shadow      : 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-    color           : #ffffff;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    color: #ffffff;
     background-color: #dc3545;
-    border          : 0;
+    border: 0;
 }
 
 .box-estadisticas {
-    padding      : 25px;
+    padding: 25px;
     border-radius: 20px;
-    box-shadow   : 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-    height       : 100%;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    height: 100%;
 }
 
 .title-estadistica {
-    color      : #dc3545 !important;
-    font-size  : 25px;
+    color: #dc3545 !important;
+    font-size: 25px;
     font-weight: 500;
 }
 
 .dato-estadistica {
-    font-size  : 10vh;
+    font-size: 10vh;
     font-weight: 500;
 }
 
 .menu {
-    padding         : 0;
+    padding: 0;
     background-color: #ffffff;
-    z-index         : 1;
+    z-index: 1;
 }
 
 .item-menu {
     border-bottom: solid 1px #e6e6e6;
-    padding      : 18px 10px;
-    text-align   : right;
+    padding: 18px 10px;
+    text-align: right;
 }
-.p4{
-    padding      : 4px !important;
+
+.p4 {
+    padding: 4px !important;
 }
-.p5{
-    padding      : 5px !important;
+
+.p5 {
+    padding: 5px !important;
 }
-.p10{
-    padding      : 10px !important;
+
+.p10 {
+    padding: 10px !important;
 }
-.fwb{
-    font-weight  : bold !important;
+
+.fwb {
+    font-weight: bold !important;
 }
-.cpointer{
+
+.cpointer {
     cursor: pointer !important;
 }
 
-.float{
-	position:fixed;
-	width:220px;
-	height:75px;
-	top:280px;
-	right: 25px;
-        z-index: 999;    
-	text-align:center;
+.float {
+    position: fixed;
+    width: 220px;
+    height: 75px;
+    top: 280px;
+    right: 25px;
+    z-index: 999;
+    text-align: center;
 }
 
-.my-float{
-	margin-top:22px;
+.my-float {
+    margin-top: 22px;
 }
-.mt-4{
+
+.mt-4 {
     margin-top: 4px;
 }
 
-.carousel-item > .text-center{
-  text-align: left !important;  
+.carousel-item>.text-center {
+    text-align: left !important;
 }
 
- .carousel-control-next-icon,carousel-control-prev-icon {
+.carousel-control-next-icon,
+carousel-control-prev-icon {
     height: 0px !important;
     width: 0px !important;
     display: none !important;
 }
 
+.carousel-inner .sr-only {
+    display: none;
+}
 
-.force-scroll{
+.force-scroll {
     height: 500px;
     overflow-y: scroll;
     overflow-x: hidden;
-        
+
 }
 
-.paddingX{
+.paddingX {
     padding: 0px 130px 0px 130px !important;
 }
 
-.titleRegister{
+.titleRegister {
     font-size: 40px;
     font-weight: bold;
 }
 
-.subTitleRegister{
+.subTitleRegister {
     font-size: 20px;
 }
 
-.containerButtonFiltro{
+.containerButtonFiltro {
     position: relative;
 }
 
-.containerButtonFiltro > input{
+.containerButtonFiltro>input {
     border-radius: 20px;
     height: 40px;
     width: 100%;
@@ -265,11 +280,12 @@ body {
     color: #b2b2b2;
     outline: none;
 }
-.containerButtonFiltro > input::placeholder {
+
+.containerButtonFiltro>input::placeholder {
     color: #b2b2b2;
 }
 
-.containerButtonFiltro > button{
+.containerButtonFiltro>button {
     border-radius: 20px;
     border: 1px solid #dc3545;
     height: 40px;
@@ -280,14 +296,18 @@ body {
     right: 0;
 }
 
-.formCasos label{
+.formCasos label {
     font-size: 15px;
     font-weight: bold;
 }
-.formCasos strong{
-    color:#dc3545;
+
+.formCasos strong {
+    color: #dc3545;
 }
-.formCasos input[type=text], input[type=number], select{
+
+.formCasos input[type=text],
+input[type=number],
+select {
     width: 100%;
     height: 35px;
     border-radius: 5px;
@@ -296,7 +316,7 @@ body {
     outline: none;
 }
 
-.formCasos button{
+.formCasos button {
     border: none;
     padding: 15px;
     width: 130px;
@@ -304,17 +324,17 @@ body {
     font-size: 15px;
 }
 
-.formCasos .buttonCrear{
+.formCasos .buttonCrear {
     background-color: #dc3545;
     color: white;
 }
 
-.formCasos .buttonCerrar{
+.formCasos .buttonCerrar {
     background-color: #d9d9d9;
     color: black;
 }
 
-#checkFC + label:before {
+#checkFC+label:before {
     content: "";
     display: block;
     position: absolute;
@@ -330,7 +350,7 @@ body {
     -o-box-shadow: inset 0px 0px 0px 2px white;
 }
 
-#checkFC:checked + label:before {
+#checkFC:checked+label:before {
     text-shadow: 1px 1px 1px rgb(0 0 0 / 20%);
     font-size: 10px;
     text-align: center;
@@ -339,46 +359,48 @@ body {
     border: 2px solid #dc3545;
 }
 
-.cardListaCasos{
+.cardListaCasos {
     border-radius: 10px;
 }
-.cardListaCasos, .modalInfo p{
+
+.cardListaCasos,
+.modalInfo p {
     font-size: 15px;
 }
 
-.grayColor{
+.grayColor {
     color: #eaebeb;
 }
 
-.blueColor{
+.blueColor {
     color: #35bfdc;
 }
 
-.pinkColor{
+.pinkColor {
     color: #dc3545;
 }
 
-.modalInfo .modal-content{
+.modalInfo .modal-content {
     border-radius: 15px;
 }
 
-.iconSearch{
+.iconSearch {
     position: absolute;
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-.inputEmpty{
+.inputEmpty {
     border-top: 0 !important;
     border-left: 0 !important;
     border-radius: 0 !important;
     border-right: 0 !important;
 }
 
-.formCasos select{
+.formCasos select {
     border-radius: 5px;
-    background: url(../../img/iconSelect.png) no-repeat right #ffffff;
+    background: url(./img/iconSelect.png) no-repeat right #ffffff;
     -webkit-appearance: none;
     background-size: 15px 15px;
     background-position: right 10px center;
@@ -399,4 +421,3 @@ body {
         padding: 0px 20px 0px 20px !important;
     }
 }
-
