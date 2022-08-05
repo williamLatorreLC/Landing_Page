@@ -37,7 +37,7 @@ public class ClickjackFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse res = (HttpServletResponse) response;
-        res.addHeader("X-FRAME-OPTIONS", mode);
+        res.addHeader("X-FRAME-OPTIONS", "SAMEORIGIN");
         chain.doFilter(request, response);
     }
 
