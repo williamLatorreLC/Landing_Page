@@ -384,6 +384,14 @@ select {
     border-radius: 15px;
 }
 
+.siteloader {
+    height: 500px !important;
+}
+
+.embed-responsive {
+    position: static !important;
+}
+
 .iconSearch {
     position: absolute;
     right: 15px;
