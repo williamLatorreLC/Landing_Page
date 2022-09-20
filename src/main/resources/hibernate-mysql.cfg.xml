@@ -42,7 +42,7 @@ Contributor(s):
 <hibernate-configuration>
 
     <session-factory>
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.archive.autodetection">class</property>
