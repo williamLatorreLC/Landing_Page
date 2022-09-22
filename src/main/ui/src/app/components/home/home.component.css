@@ -1,0 +1,21 @@
+::ng-deep ngb-modal-backdrop {
+  z-index: 999 !important;
+
+}
+
+::ng-deep ngb-modal-window {
+  z-index: 999 !important;
+
+}
+
+.no-indicators .carousel-indicators {
+  display: none;
+}
+
+.siteloader {
+  height: 500px !important;
+}
+
+.embed-responsive {
+  position: static !important;
+}

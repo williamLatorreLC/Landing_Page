@@ -160,6 +160,22 @@
         <finalName>myit</finalName>
         <plugins>
             <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.6.1</version>
+                <configuration>
+                    <failOnError>false</failOnError>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>auto-clean</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
@@ -178,7 +194,7 @@
                         <id>exec-npm-install</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <workingDirectory>${project.basedir}/src/main/ui/Landing%20Page%20-%20Angular</workingDirectory>
+                            <workingDirectory>${project.basedir}/src/main/ui</workingDirectory>
                             <executable>npm.cmd</executable>
                             <arguments>
                                 <argument>install</argument>
@@ -192,7 +208,7 @@
                         <id>exec-npm-ng-build</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <workingDirectory>${project.basedir}/src/main/ui/Landing%20Page%20-%20Angular</workingDirectory>
+                            <workingDirectory>${project.basedir}/src/main/ui</workingDirectory>
                             <executable>npm.cmd</executable>
                             <arguments>
                               <argument>run</argument>
@@ -237,7 +253,7 @@
                             <overwrite>true</overwrite>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/src/main/ui/Landing%20Page%20-%20Angular/dist/my-it</directory>
+                                    <directory>${basedir}/src/main/ui/dist/my-it</directory>
                                     <includes>
                                         <include>*</include>
                                         <include>**/assets/**</include>
