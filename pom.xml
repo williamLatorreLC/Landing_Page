@@ -240,6 +240,7 @@
                                     <directory>${basedir}/src/main/ui/Landing%20Page%20-%20Angular/dist/my-it</directory>
                                     <includes>
                                         <include>*</include>
+                                        <include>**/assets/**</include>
                                     </includes>
                                 </resource>
                             </resources>
