@@ -1,2 +1,5 @@
 /target/
 .node
+/src/main/ui/node_modules
+/src/main/ui/node
+/src/main/ui/dist
