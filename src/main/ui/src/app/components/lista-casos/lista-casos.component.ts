@@ -357,14 +357,44 @@ export class ListaCasosComponent implements OnInit {
 
   };
   downloadFile(filename: any, data: any) {
-    /* if (!filename || !data) {
+    if (!filename || !data) {
       return;
     }
-    var arrayBufferHelper = arrayBufeerHelperBase();
+    var arrayBufferHelper = this.arrayBufeerHelperBase();
     var arrayData = arrayBufferHelper.base64ToArrayBuffer(data);
     var objData = arrayData;
     var filename = filename;
-    var contentType = "application/octet-stream"; */
+    var contentType = "application/octet-stream";
+
+    var dataTypeName = objData.constructor.name;
+    switch (dataTypeName) {
+        case 'Promise':
+            objData.then(function (response:any) {
+                //debugger;
+                if (response.data) {
+                    var data = response.data;
+                } else
+                {
+                    var data = response;
+                }
+                switch (data.constructor.name) {
+                    case 'Blob':
+                    case 'ArrayBuffer':
+                        console.log('Downloading...');
+                        //this.createDownloadFile(data, filename, contentType);
+                        break;
+                }
+            }, function () {
+                console.log('Error when download the file, data get issues');
+            });
+            break;
+        case 'ArrayBuffer':
+            console.log('Downloading...');
+            this.createDownloadFile(objData, filename, contentType);
+            break;
+        default:
+            console.log('Data type ' + dataTypeName + ' of objData is unknown');
+    }
   }
 
   gestionarCaso() {
@@ -489,4 +519,54 @@ export class ListaCasosComponent implements OnInit {
     this.dataGestion.documentos.splice(i, 1);
   }
   
+  arrayBufeerHelperBase() {
+    var factory:any = {};
+    factory.arrayBufferToBase64 = function (buffer:any) {
+        var binary = '';
+        var bytes = new Uint8Array(buffer);
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[ i ]);
+        }
+        return window.btoa(binary);
+    }
+
+    factory.base64ToArrayBuffer = function (base64:any) {
+        var binary_string = window.atob(base64);
+        var len = binary_string.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0; i < len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+    return factory;
+  }
+
+  createDownloadFile(fileData:any, filename:any, dataContentType:any) {
+
+    var blob = new Blob([fileData], {'type': dataContentType});
+    var _navigator:any = window.navigator;
+    var _userAgent = _navigator.userAgent;
+    console.log(_userAgent);
+    //debugger;
+    if (_navigator.msSaveOrOpenBlob) {
+        //IE 11+
+        _navigator.msSaveOrOpenBlob(blob, filename);
+    } else if (_userAgent.match("CriOS")) {
+        //Chrome iOS
+        var reader:any = new FileReader();
+        reader.onloadend = function () {
+            window.open(reader.result);
+        };
+        reader.readAsDataURL(blob);
+    } else {
+
+        var address = window.URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.download = filename;
+        anchor.href = address;
+        anchor.click();
+    }
+  }
 }

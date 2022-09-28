@@ -133,7 +133,8 @@ export class RegistroFinalComponent implements OnInit {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        if (this.infoTicket.documentos) {
+        console.log("infoTicket", this.infoTicket);
+        if (!this.infoTicket.documentos) {
           this.infoTicket.documentos = [];
         }
         if (this.infoTicket.telefono) {
