@@ -121,8 +121,8 @@ public class Login {
                         res.addProperty("req", AES.encrypt(ObjDataTok.toString()));
 
                         JsonArray grupos = new JsonArray();
-                        //boolean status = getContingencia();
-                        boolean status=false;
+                        boolean status = getContingencia();
+                        //boolean status=false;
                         res.addProperty("esContingencia", status);
                         res.addProperty("esResolutor", (User_profile != 4) ? true : false);
 
