@@ -116,6 +116,15 @@ export class RegistroResolutorComponent implements OnInit {
               confirmButtonText: "aceptar"
             });
           }
+        }).catch((err) => {
+          this.spinner.hide();
+          swal.fire({
+            title: 'Error',
+            text: "Por el momento no está disponible esta información.",
+            confirmButtonColor: "#dc3545",
+            confirmButtonText: "aceptar"
+          });
+          console.log(err)
         })
       })
     }
@@ -146,6 +155,15 @@ export class RegistroResolutorComponent implements OnInit {
         this.router.navigateByUrl('/');
 
       }
+    }).catch((err) => {
+      this.spinner.hide();
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     });
   }
   getParametrizations() {
@@ -177,6 +195,15 @@ export class RegistroResolutorComponent implements OnInit {
           confirmButtonText: "aceptar"
         });
       }
+    }).catch((err) => {
+      this.spinner.hide();
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     });
   }
   getDataCasoSessionStorage() {

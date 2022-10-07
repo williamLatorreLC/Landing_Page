@@ -179,6 +179,15 @@ export class RegistroFinalComponent implements OnInit {
             });
           }
 
+        }).catch((err) => {
+          this.spinner.hide();
+          swal.fire({
+            title: 'Error',
+            text: "Por el momento no está disponible esta información.",
+            confirmButtonColor: "#dc3545",
+            confirmButtonText: "aceptar"
+          });
+          console.log(err)
         })
       }
     })
@@ -206,6 +215,15 @@ export class RegistroFinalComponent implements OnInit {
             confirmButtonText: "aceptar"
           });
         }
+      }).catch((err) => {
+        this.spinner.hide();
+        swal.fire({
+          title: 'Error',
+          text: "Por el momento no está disponible esta información.",
+          confirmButtonColor: "#dc3545",
+          confirmButtonText: "aceptar"
+        });
+        console.log(err)
       })
     }
   }
@@ -230,6 +248,15 @@ export class RegistroFinalComponent implements OnInit {
           });
         }
 
+      }).catch((err) => {
+        this.spinner.hide();
+        swal.fire({
+          title: 'Error',
+          text: "Por el momento no está disponible esta información.",
+          confirmButtonColor: "#dc3545",
+          confirmButtonText: "aceptar"
+        });
+        console.log(err)
       })
     }
   }
@@ -253,6 +280,15 @@ export class RegistroFinalComponent implements OnInit {
           confirmButtonText: "aceptar"
         });
       }
+    }).catch((err) => {
+      this.spinner.hide();
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     })
   }
   preloadData() {
@@ -273,6 +309,15 @@ export class RegistroFinalComponent implements OnInit {
           this.router.navigateByUrl('/')
         }
 
+      }).catch((err) => {
+        this.spinner.hide();
+        swal.fire({
+          title: 'Error',
+          text: "Por el momento no está disponible esta información.",
+          confirmButtonColor: "#dc3545",
+          confirmButtonText: "aceptar"
+        });
+        console.log(err)
       })
   }
   setRequisites(aplicacion: any, servicio: any, lineaServicio: any) {
@@ -300,8 +345,15 @@ export class RegistroFinalComponent implements OnInit {
             confirmButtonText: "aceptar"
           })
         }
-
-
+      }).catch((err) => {
+        this.spinner.hide();
+        swal.fire({
+          title: 'Error',
+          text: "Por el momento no está disponible esta información.",
+          confirmButtonColor: "#dc3545",
+          confirmButtonText: "aceptar"
+        });
+        console.log(err)
       })
     }
   }
@@ -340,13 +392,14 @@ export class RegistroFinalComponent implements OnInit {
           });
         }
       }).catch((err) => {
-        this.spinner.hide()
-
+        this.spinner.hide();
         swal.fire({
           title: 'Error',
+          text: "Por el momento no está disponible esta información.",
           confirmButtonColor: "#dc3545",
           confirmButtonText: "aceptar"
         });
+        console.log(err)
       })
     }
   }

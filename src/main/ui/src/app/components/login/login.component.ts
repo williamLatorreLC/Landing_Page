@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
     if (!this.users.invalid) {
       this.spinner.show()
       this.factoryService.post('loginMyIT', this.users.value).then((res) => {
+        this.spinner.hide()
         if (res.isError === false) {
           this.userData = res.response;
           this.router.navigateByUrl('/home')
@@ -53,11 +54,18 @@ export class LoginComponent implements OnInit {
             confirmButtonColor: "#dc3545",
             confirmButtonText: "aceptar"
           });
-          this.spinner.hide()
+          
 
         }
 
       }).catch((err) => {
+        this.spinner.hide();
+        swal.fire({
+          title: 'Error',
+          text: "Por el momento no está disponible esta información.",
+          confirmButtonColor: "#dc3545",
+          confirmButtonText: "aceptar"
+        });
         console.log(err)
       })
     } else {

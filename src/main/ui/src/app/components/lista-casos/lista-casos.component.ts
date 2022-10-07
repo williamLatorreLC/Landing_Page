@@ -161,7 +161,7 @@ export class ListaCasosComponent implements OnInit {
     this.details = caso
     this.spinner.show()
     this.factoryService.post("casos/documentos", { "idCaso": caso.ID }).then((res) => {
-      this.spinner.hide()
+      this.spinner.hide();
       if (res.isError === false) {
         this.documentos = res.response
         this.details.DOCUMENTOS = this.documentos
@@ -175,6 +175,15 @@ export class ListaCasosComponent implements OnInit {
           confirmButtonText: "aceptar"
         });
       }
+    }).catch((err) => {
+      this.spinner.hide();
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     })
   }
   searchCase() {
@@ -217,6 +226,15 @@ export class ListaCasosComponent implements OnInit {
             confirmButtonText: "aceptar"
           });
         }
+      }).catch((err) => {
+        this.spinner.hide();
+        swal.fire({
+          title: 'Error',
+          text: "Por el momento no está disponible esta información.",
+          confirmButtonColor: "#dc3545",
+          confirmButtonText: "aceptar"
+        });
+        console.log(err)
       });
     }
   }
@@ -268,6 +286,7 @@ export class ListaCasosComponent implements OnInit {
 
       } else {
         console.log(res);
+        this.spinner.hide();
         swal.fire({
           title: 'Error',
           text: res.response,
@@ -277,6 +296,14 @@ export class ListaCasosComponent implements OnInit {
 
       }
 
+    }).catch((err) => {
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     })
 
 
@@ -328,6 +355,15 @@ export class ListaCasosComponent implements OnInit {
           confirmButtonText: "aceptar"
         });
       }
+    }).catch((err) => {
+      this.spinner.hide();
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     });
 
   };
@@ -349,6 +385,15 @@ export class ListaCasosComponent implements OnInit {
 
         }
 
+      }).catch((err) => {
+        this.spinner.hide();
+        swal.fire({
+          title: 'Error',
+          text: "Por el momento no está disponible esta información.",
+          confirmButtonColor: "#dc3545",
+          confirmButtonText: "aceptar"
+        });
+        console.log(err)
       })
   }
   openComentarios(comentarios: any) {
@@ -426,6 +471,15 @@ export class ListaCasosComponent implements OnInit {
           confirmButtonText: "aceptar"
         });
       }
+    }).catch((err) => {
+      this.spinner.hide();
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     });
   };
   getGroups(organizacion: string) {
@@ -450,6 +504,15 @@ export class ListaCasosComponent implements OnInit {
           confirmButtonText: "aceptar"
         });
       }
+    }).catch((err) => {
+      this.spinner.hide();
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     });
   }
   escalarCaso(details: any) {
@@ -489,6 +552,15 @@ export class ListaCasosComponent implements OnInit {
           confirmButtonText: "aceptar"
         });
       }
+    }).catch((err) => {
+      this.spinner.hide();
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     })
   }
   getMembers(id: any) {
@@ -513,6 +585,15 @@ export class ListaCasosComponent implements OnInit {
           confirmButtonText: "aceptar"
         });
       }
+    }).catch((err) => {
+      this.spinner.hide();
+      swal.fire({
+        title: 'Error',
+        text: "Por el momento no está disponible esta información.",
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "aceptar"
+      });
+      console.log(err)
     });
   }
   deleteDocument(i: number) {
