@@ -6,6 +6,7 @@
 package co.com.claro.myit.api;
 
 import com.google.gson.annotations.SerializedName;
+import com.sun.istack.Nullable;
 
 /**
  *
@@ -17,6 +18,10 @@ public class LoginRequest {
     
     @SerializedName("pass")
     private String pass;
+    
+    @Nullable
+    @SerializedName("closeSessions")
+    private boolean closeSessions=false;
 
     public String getUser() {
         return user;
@@ -32,6 +37,14 @@ public class LoginRequest {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    public boolean isCloseSessions() {
+        return closeSessions;
+    }
+
+    public void setCloseSessions(boolean closeSessions) {
+        this.closeSessions = closeSessions;
     }
     
 }

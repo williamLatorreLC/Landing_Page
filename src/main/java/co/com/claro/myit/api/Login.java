@@ -9,8 +9,10 @@ package co.com.claro.myit.api;
  *
  * @author kompl
  */
+import co.com.claro.myit.db.BannerEntity;
 import co.com.claro.myit.db.SupportGroupMembersEntity;
 import co.com.claro.myit.db.SupportGroupsEntity;
+import co.com.claro.myit.db.UserSessionEntity;
 import co.com.claro.myit.util.AES;
 import co.com.claro.myit.util.MySqlUtils;
 import co.com.claro.myit.util.OracleUtils;
@@ -26,6 +28,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -55,6 +58,7 @@ public class Login {
     public String ingresar(String data) {
         String responseString = "";
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
+        dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
         JsonObject respuesta = new JsonObject();
         try {
 
@@ -68,6 +72,10 @@ public class Login {
             boolean loginSSO = false;
             String AuthnRequestID = "";
             String AssertionID = "";
+
+            if (haveActiveSession(datos.getUser(), datos.isCloseSessions())) {
+                return fn.respError(null, "Detectamos que tienes una sesion activa en otro dispositivo,\n recuerda que solo puedes ingresar a un solo dispositivo a la vez. Deseas cerrar todas las sesiones anteriores.", true);
+            }
 
             JSONObject resSSO = new JSONObject(this.ssoLogin(datos.getUser(), datos.getPass()));
             if (!resSSO.getBoolean("isError")) {
@@ -124,7 +132,7 @@ public class Login {
                         boolean status = getContingencia();
                         //boolean status=false;
                         res.addProperty("esContingencia", status);
-                        res.addProperty("esResolutor", (User_profile != 4) ? true : false);
+                        res.addProperty("esResolutor", (User_profile != 4));
 
                         res.addProperty("User", datos.getUser());
                         if (status && (User_profile != 4)) {
@@ -132,9 +140,11 @@ public class Login {
                         }
 
                         res.add("grupos", grupos);
-                        res.addProperty("version", "1.2");
+                        res.addProperty("version", "2.0");
                         res.addProperty("tokenForm", AES.encrypt(res.toString()));
-                        
+                        Date date = new Date();
+                        UserSessionEntity userSessionEntity = new UserSessionEntity(datos.getUser(), String.valueOf(date.getTime()));
+                        dbUtils.insert(userSessionEntity);
 
                         return fn.respOk(res.getAsJsonObject());
                     } else {
@@ -152,10 +162,41 @@ public class Login {
         }
     }
 
+    public boolean haveActiveSession(String user, boolean closeSessions) {
+        fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
+        Date now = new Date();
+        try {
+            if (closeSessions) {
+                dbUtils.deleteBy("UserSessionEntity", "userID='" + user + "'");
+                return false;
+            }
+            List res = dbUtils.readBy("UserSessionEntity", "userID='" + user + "'");
+            JSONObject item;
+            for (int i = 0; i < res.size(); i++) {
+                item = new JSONObject(res.get(i));
+
+                if (item.has("active") && item.getBoolean("active")) {
+                    long diference = now.getTime() - Long.parseLong(item.getString("sessionTime"));
+                    diference = (diference
+                            / (1000 * 60))
+                            % 60;
+                    if (diference > 45) {
+                        dbUtils.delete(res.get(i));
+                        return false;
+                    }
+                    return true;
+                }
+
+            }
+            return false;
+        } catch (JSONException e) {
+            return false;
+        }
+    }
+
     public boolean getContingencia() {
         boolean estado = false;
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
-        dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
         try {
             List res = dbUtils.read("ContingenciaEntity");
 

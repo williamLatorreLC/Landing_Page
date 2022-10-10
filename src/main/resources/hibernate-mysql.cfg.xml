@@ -49,6 +49,6 @@ Contributor(s):
         <mapping class="co.com.claro.myit.db.BannerEntity" />
         <mapping class="co.com.claro.myit.db.AvatarEntity"/>
         <mapping class="co.com.claro.myit.db.ContingenciaEntity"/>
-        
+         <mapping class="co.com.claro.myit.db.UserSessionEntity"/>
     </session-factory>
 </hibernate-configuration>
