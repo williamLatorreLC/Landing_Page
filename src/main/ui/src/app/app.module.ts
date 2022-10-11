@@ -19,6 +19,7 @@ import { RegistroResolutorComponent } from './components/registro-resolutor/regi
 import { HeaderComponent } from './components/header/header.component';
 import { PipeSearchPipe } from './pipes/pipe-search.pipe';
 import { GtagModule } from './services/gtmServices/gtag.module';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { GtagModule } from './services/gtmServices/gtag.module';
     NgbModule,
     GtagModule.init({
       targetId: 'UA-175402192-1'
-    })
+    }),
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

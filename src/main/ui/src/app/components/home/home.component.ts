@@ -10,6 +10,7 @@ import {
 import * as $ from 'jquery';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { GtagService } from '../../services/gtmServices/gtag.service';
+import { SessionServiceService } from "../../services/sessionService/session-service.service";
 
 @Component({
   selector: 'app-home',
@@ -83,7 +84,8 @@ export class HomeComponent implements OnInit {
     private factoryService: FactoryService,
     private router: Router,
     private modalService: NgbModal,
-    private GtmServicesService: GtagService
+    private GtmServicesService: GtagService,
+    private SessionService : SessionServiceService
   ) {
     _config.interval = 5000;
     _config.pauseOnHover = true;
@@ -264,6 +266,7 @@ export class HomeComponent implements OnInit {
       .post('logout', { token: sessionStorage.getItem('X_MYIT_INFO') })
       .then((res) => {
         if (res.isError === false) {
+          this.SessionService.setUserLoggedIn(false);
           sessionStorage.clear();
           this.router.navigateByUrl('/');
         } else {
