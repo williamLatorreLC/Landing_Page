@@ -19,38 +19,38 @@ export class AppComponent {
   lastPing?: Date;
 
   constructor(private idle: Idle, private keepalive: Keepalive, private SessionService : SessionServiceService, private factoryService: FactoryService, private router: Router) {
-    // sets an idle timeout of 5 seconds, for testing purposes.
-    idle.setIdle(300);
-    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
+
+    //segundos para detectar la inactividad
+    idle.setIdle(1);
+    //timed out en segundos.
     idle.setTimeout(300);
-    // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
+
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleEnd.subscribe(() => { 
       this.idleState = 'No longer idle.'
-      console.log(this.idleState);
+      //console.log(this.idleState);
       this.reset();
     });
     
     idle.onTimeout.subscribe(() => {
       this.idleState = 'Timed out!';
       this.timedOut = true;
-      console.log(this.idleState);
+      //console.log(this.idleState);
       //this.router.navigate(['/']);
       this.cerrarsesion();
     });
     
     idle.onIdleStart.subscribe(() => {
         this.idleState = 'You\'ve gone idle!'
-        console.log(this.idleState);
+        //console.log(this.idleState);
     });
     
     idle.onTimeoutWarning.subscribe((countdown) => {
       this.idleState = 'You will time out in ' + countdown + ' seconds!'
-      console.log(this.idleState);
+      //console.log(this.idleState);
     });
 
-    // sets the ping interval to 15 seconds
     keepalive.interval(15);
 
     keepalive.onPing.subscribe(() => this.lastPing = new Date());

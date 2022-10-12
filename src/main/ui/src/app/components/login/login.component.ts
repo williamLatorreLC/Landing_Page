@@ -56,15 +56,17 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/home');   
         } else {
           let dataAuth = res.data ? res.data : ""; 
-          if(dataAuth){
-            this.isCloseSession = true;
+          if(dataAuth){         
             swal.fire({
-              title: 'Error',
               text: res.response,
               confirmButtonColor: "#dc3545",
-              confirmButtonText: "aceptar"
+              confirmButtonText: "Aceptar",
+              showCancelButton: true,
+              cancelButtonColor: "#d9d9d9",
+              cancelButtonText: "Cancelar",
             }).then((result) => {
               if (result.isConfirmed) {
+                this.isCloseSession = true;
                 this.login();
               }
             })
