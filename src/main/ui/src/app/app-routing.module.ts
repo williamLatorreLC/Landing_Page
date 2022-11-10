@@ -10,30 +10,30 @@ import { HeaderComponent } from './components/header/header.component';
 const routes: Routes = [
   {
     path: '',
-    component: LoginComponent
+    component: LoginComponent,
   },
 
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'listaCasos',
-    component: ListaCasosComponent
+    component: ListaCasosComponent,
   },
   {
     path: 'registroFinal',
-    component: RegistroFinalComponent
+    component: RegistroFinalComponent,
   },
   {
     path: 'registroResolutor',
-    component: RegistroResolutorComponent
+    component: RegistroResolutorComponent,
   },
-
-]
+  { path: '**', redirectTo: '' },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

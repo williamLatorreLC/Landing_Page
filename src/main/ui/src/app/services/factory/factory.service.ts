@@ -7,7 +7,7 @@ import axios from 'axios';
   providedIn: 'root'
 })
 export class FactoryService {
-  host =  'http://localhost:8443/myit/api/'
+  host =  './api/'
   /*'./api/'*/;
   constructor(private http: HttpClient,) { }
 

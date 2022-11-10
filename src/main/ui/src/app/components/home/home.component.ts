@@ -10,7 +10,7 @@ import {
 import * as $ from 'jquery';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { GtagService } from '../../services/gtmServices/gtag.service';
-import { SessionServiceService } from "../../services/sessionService/session-service.service";
+import { SessionServiceService } from '../../services/sessionService/session-service.service';
 
 @Component({
   selector: 'app-home',
@@ -85,12 +85,12 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private GtmServicesService: GtagService,
-    private SessionService : SessionServiceService
+    private SessionService: SessionServiceService
   ) {
-    _config.interval = 5000;
+    _config.interval = 30000;
     _config.pauseOnHover = true;
     _config.showNavigationArrows = false;
-    _config.showNavigationIndicators = false;
+    _config.showNavigationIndicators = true;
 
     this.modalOptions = {
       backdrop: 'static',
