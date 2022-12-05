@@ -1,0 +1,14 @@
+::ng-deep ngb-modal-backdrop {
+    z-index: 999 !important;
+  
+  }
+  ::ng-deep ngb-modal-window{
+    z-index: 999 !important;
+  
+  }
+  .no-indicators .carousel-indicators {
+    display: none;
+  }
+  .modal-content {
+    border: none;
+  }
