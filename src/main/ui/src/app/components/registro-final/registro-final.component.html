@@ -1,0 +1,250 @@
+
+<app-header></app-header>
+
+<div class="container-fluid paddingX mt-5" block-ui="screenBlockUI">
+    <div class="row">
+        <div class="col-xl-8 col-lg-6 col-md-12">
+            <h3 class="titleRegister">
+                Creación de casos
+            </h3>
+            <p class="subTitleRegister">
+                Realiza el registro de tus casos rapidamente
+            </p>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form class="formCasos" (ngSubmit)="modalValidateSubmitCase(2)" name="form">
+                <ngx-spinner type="ball-scale-multiple">
+                    <p style="color: white;">Loading...</p>
+                </ngx-spinner>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Nombre<strong>*</strong></label>
+                        <input type="text" [(ngModel)]="infoTicket.nombre" name="nombre" required="true">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Usuario de red<strong>*</strong></label>
+                        <input type="text" [(ngModel)]="infoTicket.usuario" name="usuario"
+                            [disabled]="!infoUser.esResolutor" required="true">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Teléfono<strong>*</strong></label>
+                        <input type="number" [(ngModel)]="infoTicket.telefono" name="telefono" required="true">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Correo Cliente<strong>*</strong></label>
+                        <input type="text" [(ngModel)]="infoTicket.correo" name="correo" required="true">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Sede<strong>*</strong></label>
+                        <select name="sedes" id="sedes" [(ngModel)]="infoTicket.sede" required="true">
+                            <option hidden selected>Selecciona una opción</option>
+                            <option value="{{sede.sede}}" *ngFor="let sede of sedes">{{sede.sede}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Línea de servicio<strong>*</strong></label>
+                        <select name="lineaServicio" id="servicios" [(ngModel)]="infoTicket.lineaServicio"
+                            (change)="changeServiceLine(infoTicket.lineaServicio)" required="true">
+                            <option hidden selected>Selecciona una opción</option>
+                            <option value="{{linea.lineaServicio}}" *ngFor="let linea of lineasServicios">
+                                {{linea.lineaServicio}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Servicio<strong
+                                [hidden]="servicios.length > 0">*</strong></label>
+                        <select name="servicios" id="servicios" [(ngModel)]="infoTicket.servicio"
+                            (change)="changeServicio(infoTicket.servicio, infoTicket.lineaServicio)"
+                            required="{{servicios.length > 0}}">
+                            <option hidden selected>Selecciona una opción</option>
+                            <option value="{{servicio.servicio}}" *ngFor="let servicio of servicios">
+                                {{servicio.servicio}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Aplicación<strong>*</strong></label>
+                        <select name="aplicacion" id="aplicacion" [(ngModel)]="infoTicket.aplicacion" required="true"
+                            (change)="setRequisites(infoTicket.aplicacion, infoTicket.servicio, infoTicket.lineaServicio)">
+                            <option hidden selected>Selecciona una opción</option>
+
+                            <option value="{{aplicacion.aplicacion}}" *ngFor="let aplicacion of aplicaciones">
+
+                                {{aplicacion.aplicacion}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Tipo operación<strong>*</strong></label>
+                        <select name="aplicacion" id="aplicacion" [(ngModel)]="infoTicket.tipoOperacion"
+                            required="true">
+                            <option hidden selected>Selecciona una opción</option>
+
+                            <option value="{{operacion.tipo}}" *ngFor="let operacion of tipos.operaciones">
+                                {{operacion.tipo}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Tipo de
+                            falla/Solicitud<strong>*</strong></label>
+                        <select name="aplicacion" id="aplicacion" [(ngModel)]="infoTicket.tipoFalla" required="true"
+                            (change)="getUrgencias(infoTicket)">
+                            <option hidden selected>Selecciona una opción</option>
+
+                            <option value="{{falla.tipoFalla}}" *ngFor="let falla of tipos.fallas">{{falla.tipoFalla}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Tipo de Cliente<strong>*</strong></label>
+                        <select name="aplicacion" id="aplicacion" [(ngModel)]="infoTicket.tipoCliente" required="true">
+                            <option hidden selected>Selecciona una opción</option>
+                            <option value="{{cliente.tipo}}" *ngFor="let cliente of tipos.usuarios">{{cliente.tipo}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12" *ngIf="infoTicket.servicio == 'Soporte'">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Fecha y hora de la
+                            falla<strong>*</strong></label>
+                        <input type="datetime-local" id="start" name="trip-start" [(ngModel)]="infoTicket.date"
+                            class="form-control" [required]="infoTicket.servicio == 'Soporte'">
+                    </div>
+
+                </div>
+
+                <div class="form-group row" ng-if="infoTicket.servicio == 'Soporte'">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Impacto<strong>*</strong></label>
+                        <select name="aplicacion" id="aplicacion" [(ngModel)]="infoTicket.impacto"
+                            [required]="infoTicket.servicio == 'Soporte'">
+                            <option hidden selected>Selecciona una opción</option>
+
+                            <option value="{{impacto.id}}" *ngFor="let impacto of tipos.impactos">{{impacto.detalle}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Urgencia<strong>*</strong></label>
+                        <select name="aplicacion" id="aplicacion" [(ngModel)]="infoTicket.urgencia"
+                            *ngIf="infoTicket.servicio == 'Soporte'">
+                            <option hidden selected>Selecciona una opción</option>
+
+                            <option value="{{urgencia.id}}" *ngFor="let urgencia of urgencias">{{urgencia.detalle}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-12 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Pre requisitos</label>
+                        <textarea class="form-control" rows="5" [(ngModel)]="infoTicket.requisitos" name="requisitos"
+                            disabled=""></textarea>
+                    </div>
+
+                    <div class="col-lg-12 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Descripción
+                            detallada<strong>*</strong></label>
+                        <textarea class="form-control" rows="4" [(ngModel)]="infoTicket.descripcion" name="descripcion"
+                            required="true"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Documentos Adjuntos</label>
+                        <input type="file" class="form-control-file" (change)="capturarFile($event)"
+                            accept=".eml,.msg,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf,image/*">
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="infoTicket.documentos.length >= 1">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="box-my d-flex w-100 px-5 py-4"
+                            style="border-bottom-right-radius: 0;border-bottom-left-radius: 0;">
+                            <div class="w-75">
+                                <p class="font-weight-bold m-0">Documentos actuales</p>
+                            </div>
+                            <div class="w-25">
+                                <p class="font-weight-light m-0 text-center">Eliminar</p>
+                            </div>
+                        </div>
+                        <div class="box-my w-100 px-5 py-0"
+                            style=" border-top-left-radius: 0;border-top-right-radius: 0;">
+                            <div class="w-100 d-flex py-3"
+                                *ngFor="let documento of infoTicket.documentos; let i = index">
+                                <div class="w-75">
+                                    <p class="font-weight-light m-0">{{documento.nombre}}</p>
+                                </div>
+                                <div class="w-25 d-flex align-items-center justify-content-center">
+                                    <img src="./assets/img/deleteIcon.png" (click)="deleteDocument(i)"
+                                        class="deleteIcon" style="cursor: pointer;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-12 pl-5">
+                        <input type="checkbox" id="checkFC" style="display: none;" [(ngModel)]="checkFinalFC"
+                            name="checkFinalFC">
+                        <label for="checkFC"></label>
+                        <span [ngStyle]="{ 'color' : checkFinalFC ? '#dc3545' : 'black' }"
+                            style="font-size: 15px;">Soluciones transversales</span>
+                    </div>
+                </div>
+
+                <div class="form-group row" [hidden]="!checkFinalFC">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Nombre del Cliente</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Documento de identidad Cliente</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Gerencia Regional del Requerimiento</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Canal de Atención</label>
+                        <input type="text">
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Solicitud</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">IMEI</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12" *ngFor="let info of InfoAdicional">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Información Adicional {{info == 1 ? "" :
+                            info}}</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-12 d-flex align-items-end" ng-show="InfoAdicional.length < 12">
+                        <button class="buttonCrear w-100 p-2 mt-3" (click)="addInfoAdicional()" type="button">Agregar
+                            informacion adicional</button>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <button type="submit" class="buttonCrear mr-3">Crear</button>
+                        <button class="buttonCerar" routerLink="/listaCasos">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

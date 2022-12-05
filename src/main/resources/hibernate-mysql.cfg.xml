@@ -42,13 +42,13 @@ Contributor(s):
 <hibernate-configuration>
 
     <session-factory>
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.archive.autodetection">class</property>
         <mapping class="co.com.claro.myit.db.BannerEntity" />
         <mapping class="co.com.claro.myit.db.AvatarEntity"/>
         <mapping class="co.com.claro.myit.db.ContingenciaEntity"/>
-        
+         <!--<mapping class="co.com.claro.myit.db.UserSessionEntity"/>-->
     </session-factory>
 </hibernate-configuration>

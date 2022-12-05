@@ -30,7 +30,7 @@ public class Const {
             + "<Header>"
             + " <AuthenticationInfo xmlns=\"urn:CTM_People_WS\">"
             + "     <userName>--genericUser--</userName>"
-            + "     <password>--genericPass--</password>"
+            + "     <password><![CDATA[--genericPass--]]></password>"
             + " </AuthenticationInfo>"
             + "</Header>"
             + "<Body>"
