@@ -6,6 +6,7 @@
 package co.com.claro.myit.api;
 
 import co.com.claro.myit.util.AES;
+import co.com.claro.myit.util.MySqlUtils;
 import co.com.claro.myit.util.functions;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -39,6 +40,7 @@ public class Logout {
     @Produces("application/json")
     public String salir(String data) {
         fn=new functions(context.getRealPath("/WEB-INF/config.properties"));
+        MySqlUtils dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
         String responseString = "";
         JSONObject respuesta = new JSONObject();
         try {
@@ -46,6 +48,7 @@ public class Logout {
             String info = AES.decrypt(datos.getToken());
             if (!info.isEmpty()) {
                 respuesta = new JSONObject(info);
+               // dbUtils.deleteBy("UserSessionEntity", "userID='"+respuesta.getString("User_ID")+"'");
                 if (respuesta.getBoolean("loginSSO")) {
                     String body = Const.LogOutRequest;
                     SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

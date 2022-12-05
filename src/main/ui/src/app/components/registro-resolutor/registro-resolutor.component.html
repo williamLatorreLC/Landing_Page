@@ -1,0 +1,238 @@
+
+<app-header></app-header>
+<div class="container-fluid paddingX mt-5" block-ui="screenBlockUI">
+    <div class="row">
+        <div class="col-xl-8 col-lg-6 col-md-12">
+            <h3 class="titleRegister">
+                Resolución de casos
+            </h3>
+            <p class="subTitleRegister">
+                Realiza el registro de tus casos rapidamente
+            </p>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <form class="formCasos" (submit)="modalValidateSubmitCase(1)">
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Nombre</label>
+                        <input type="text" ngClass="{inputEmpty: name.length}" name="NOMBRE"
+                            [(ngModel)]="infoTicket.NOMBRE" disabled="true">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Usuario de red</label>
+                        <input type="text" [(ngModel)]="infoTicket.USUARIO" name="USUARIO" disabled="true">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Teléfono</label>
+                        <input type="text" [(ngModel)]="infoTicket.TELEFONO" name="TELEFONO" disabled="true">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Correo Cliente</label>
+                        <input type="text" [(ngModel)]="infoTicket.CORREO" name="CORREO" disabled="true">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Usuario analista mesa</label>
+                        <input type="text" [(ngModel)]="infoTicket.USUARIOANALISTA" name="USUARIOANALISTA">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Nombre analista mesa</label>
+                        <input type="text" [(ngModel)]="infoTicket.NOMBREANALISTA" name="NOMBREANALISTA">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Sede</label>
+                        <input type="text" [(ngModel)]="infoTicket.SEDE" disabled="true" name="SEDE">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Tipo de operación</label>
+                        <input type="text" [(ngModel)]="infoTicket.TIPOOPERACION" name="TIPOOPERACION" disabled="true">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Linea de servicio</label>
+                        <input type="text" name="LINEASERVICIO" [(ngModel)]="infoTicket.LINEASERVICIO" disabled="true">
+
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Servicio</label>
+                        <input type="text" name="SERVICIO" [(ngModel)]="infoTicket.SERVICIO" disabled="true">
+
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Aplicación</label>
+                        <input type="text" name="APLICACION" [(ngModel)]="infoTicket.APLICACION" disabled="true">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Tipo de falla</label>
+                        <input type="text" name="TIPODEFALLA" [(ngModel)]="infoTicket.TIPODEFALLA"
+                            disabled="infoTicket.TIPODEFALLA">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-6 col-12"
+                        [hidden]="infoTicket.IMPACTODESC && infoTicket.IMPACTODESC != ''">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Impacto</label>
+                        <input type="text" [(ngModel)]="infoTicket.IMPACTODESC" name="IMPACTODESC"
+                            disabled="infoTicket.IMPACTODESC">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Fecha y hora de la falla</label>
+                        <input type="text" class="form-control" [(ngModel)]="infoTicket.FECHACREACION"
+                            name="FECHACREACION" disabled="infoTicket.FECHACREACION">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Tipo de Cliente</label>
+                        <input type="text" [(ngModel)]="infoTicket.TIPOCLIENTE" name="TIPOCLIENTE" disabled="true">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Grupo Asignado</label>
+                        <input type="text" [(ngModel)]="infoTicket.GRUPOASIGNADO" name="GRUPOASIGNADO" disabled="true">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Usuario Asignado</label>
+                        <input type="text" [(ngModel)]="infoTicket.NOMBREUSUARIOASIGNADO" name="NOMBREUSUARIOASIGNADO"
+                            disabled="infoTicket.NOMBREUSUARIOASIGNADO">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Estado</label>
+                        <select name="aplicacion" id="aplicacion" [(ngModel)]="infoTicket.ESTADO">
+                            <option value="{{estado.id}}" *ngFor="let estado of estados">{{estado.estado}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Codigo de cierre<strong
+                                [hidden]="infoTicket.ESTADO=='3000'">*</strong></label>
+                        <select name="aplicacion" id="aplicacion" [(ngModel)]="infoTicket.CODIGODECIERRE"
+                            required="{{infoTicket.ESTADO=='3000'}}">
+                            <option value="{{codigo.id}}" *ngFor="let codigo of codigos">{{codigo.codigo}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Nro. Req MyIT</label>
+                        <input type="text" [(ngModel)]="infoTicket.NROMYIT" name="NROMYIT">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-12 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Pre requisitos</label>
+                        <textarea class="form-control" rows="4" [(ngModel)]="infoTicket.requisitos" name="requisitos"
+                            disabled="true"></textarea>
+                    </div>
+                    <div class="col-lg-12 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Descripción detallada</label>
+                        <textarea class="form-control" rows="4" [(ngModel)]="infoTicket.DESCRIPCIONDETALLADA"
+                            name="DESCRIPCIONDETALLADA" disabled="true"></textarea>
+                    </div>
+                    <div class="col-lg-12 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Nota de trabajo<strong>*</strong></label>
+                        <textarea class="form-control" rows="4" [(ngModel)]="infoTicket.NOTA" name="NOTA"
+                            required="true"></textarea>
+                    </div>
+                    <div class="col-lg-12 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Resolución<strong
+                                [hidden]="infoTicket.ESTADO=='3000'">*</strong></label>
+                        <textarea class="form-control" rows="4" [(ngModel)]="infoTicket.RESOLUCION" name="RESOLUCION"
+                            required="{{infoTicket.ESTADO=='3000'}}"></textarea>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Documentos Adjuntos</label>
+                        <input type="file" id="documentos" name="file" (change)="capturarFile($event)"
+                            accept=".eml,.msg,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf,image/*">
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="infoTicket.DOCUMENTOS.length >= 1">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="box-my d-flex w-100 px-5 py-4"
+                            style="border-bottom-right-radius: 0;border-bottom-left-radius: 0;">
+                            <div class="w-75">
+                                <p class="font-weight-bold m-0">Documentos actuales</p>
+                            </div>
+                            <div class="w-25">
+                                <p class="font-weight-light m-0 text-center">Eliminar</p>
+                            </div>
+                        </div>
+                        <div class="box-my w-100 px-5 py-0"
+                            style=" border-top-left-radius: 0;border-top-right-radius: 0;">
+                            <div class="w-100 d-flex py-3"
+                                *ngFor="let documento of infoTicket.DOCUMENTOS; let i = index">
+                                <div class="w-75">
+                                    <p class="font-weight-light m-0">{{documento.nombre}}</p>
+                                </div>
+                                <div class="w-25 d-flex align-items-center justify-content-center">
+                                    <img src="./assets/img/deleteIcon.png" (click)="deleteDocument(i)"
+                                        class="deleteIcon" style="cursor: pointer;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-12 pl-5">
+                        <input type="checkbox" id="checkFC" style="display: none;" [(ngModel)]="checkResolutorFC"
+                            name="checkResolutorFC">
+                        <label for="checkFC"></label>
+                        <span [ngStyle]="{ 'color' : checkResolutorFC ? '#dc3545' : 'black' }"
+                            style="font-size: 15px;">Soluciones Transversales</span>
+                    </div>
+                </div>
+
+                <div class="form-group row" [hidden]="!checkResolutorFC">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Nombre del Cliente</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Documento de identidad Cliente</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Gerencia Regional del Requerimiento</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Canal de Atención</label>
+                        <input type="text">
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Solicitud</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <label for="" class="col-sm-12 col-form-label pl-0">IMEI</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12" *ngFor="let info of InfoAdicional">
+                        <label for="" class="col-sm-12 col-form-label pl-0">Información Adicional {{info == 1 ? "" :
+                            info}}</label>
+                        <input type="text">
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-12 d-flex align-items-end" ng-show="InfoAdicional.length < 12">
+                        <button class="buttonCrear w-100 p-2 mt-3" (click)="addInfoAdicional()" type="button">Agregar
+                            informacion adicional</button>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <button class="buttonCrear mr-3" type="submit">GUARDAR</button>
+                        <button class="buttonCerar" routerLink="/listaCasos">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

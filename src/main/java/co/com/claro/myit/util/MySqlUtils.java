@@ -172,6 +172,25 @@ public class MySqlUtils {
             sess.close();
         }
     }
+    
+    
+    public void deleteBy(String tablaClass, String where) {
+        Transaction tran = null;
+        Session sess = getSession();
+        try {
+            tran = sess.beginTransaction();
+            String sql = "DELETE "+tablaClass+" WHERE "+where;
+            Query query = sess.createQuery(sql);
+            query.executeUpdate();
+            tran.commit();
+        } catch (Exception e) {
+            if (tran != null) {
+                throw e;
+            }
+        } finally {
+            sess.close();
+        }
+    }
 
     public List readQuery(String name, Map<String, Object> params) {
 

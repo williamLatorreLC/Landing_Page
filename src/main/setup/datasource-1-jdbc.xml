@@ -3,7 +3,7 @@
   <name>myit_db</name>
   <jdbc-driver-params>
     <url>jdbc:mysql://172.24.43.53:3306/bdprlndpg?autoReconnect=true</url>
-    <driver-name>com.mysql.jdbc.Driver</driver-name>
+    <driver-name>com.mysql.cj.jdbc.Driver</driver-name>
     <properties>
       <property>
         <name>user</name>
