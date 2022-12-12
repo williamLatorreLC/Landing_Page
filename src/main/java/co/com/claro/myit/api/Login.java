@@ -73,9 +73,9 @@ public class Login {
             String AuthnRequestID = "";
             String AssertionID = "";
 
-            /*if (haveActiveSession(datos.getUser(), datos.isCloseSessions())) {
+            if (haveActiveSession(datos.getUser(), datos.isCloseSessions())) {
                 return fn.respError(null, "Detectamos que tienes una sesion activa en otro dispositivo,\n recuerda que solo puedes ingresar a un solo dispositivo a la vez. Deseas cerrar todas las sesiones anteriores.", true);
-            }*/
+            }
 
             JSONObject resSSO = new JSONObject(this.ssoLogin(datos.getUser(), datos.getPass()));
             if (!resSSO.getBoolean("isError")) {
@@ -143,8 +143,8 @@ public class Login {
                         res.addProperty("version", "2.0");
                         res.addProperty("tokenForm", AES.encrypt(res.toString()));
                         Date date = new Date();
-                        //UserSessionEntity userSessionEntity = new UserSessionEntity(datos.getUser(), String.valueOf(date.getTime()));
-                       // dbUtils.insert(userSessionEntity);
+                        UserSessionEntity userSessionEntity = new UserSessionEntity(datos.getUser(), String.valueOf(date.getTime()));
+                        dbUtils.insert(userSessionEntity);
 
                         return fn.respOk(res.getAsJsonObject());
                     } else {

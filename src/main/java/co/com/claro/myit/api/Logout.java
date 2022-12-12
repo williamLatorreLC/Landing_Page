@@ -48,7 +48,7 @@ public class Logout {
             String info = AES.decrypt(datos.getToken());
             if (!info.isEmpty()) {
                 respuesta = new JSONObject(info);
-               // dbUtils.deleteBy("UserSessionEntity", "userID='"+respuesta.getString("User_ID")+"'");
+                dbUtils.deleteBy("UserSessionEntity", "userID='"+respuesta.getString("User_ID")+"'");
                 if (respuesta.getBoolean("loginSSO")) {
                     String body = Const.LogOutRequest;
                     SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
