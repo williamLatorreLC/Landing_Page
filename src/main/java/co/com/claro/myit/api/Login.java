@@ -119,9 +119,7 @@ public class Login {
                         res.addProperty("User_ID", datos.getUser());
 
                         res.addProperty("loginSSO", loginSSO);
-                        Date date = new Date();
-                        String sessionTime=String.valueOf(date.getTime());
-                        res.addProperty("sessionID", sessionTime);
+                        
                         if (loginSSO) {
                             res.addProperty("AuthnRequestID", AuthnRequestID);
                             res.addProperty("AssertionID", AssertionID);
@@ -140,7 +138,9 @@ public class Login {
                         if (status && (User_profile != 4)) {
                             grupos = getSupportsGroups(datos.getUser());
                         }
-
+                        Date date = new Date();
+                        String sessionTime=String.valueOf(date.getTime());
+                        res.addProperty("sessionID", sessionTime);
                         res.add("grupos", grupos);
                         res.addProperty("version", "2.0");
                         res.addProperty("tokenForm", AES.encrypt(res.toString()));
