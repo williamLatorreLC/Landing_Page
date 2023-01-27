@@ -119,7 +119,9 @@ public class Login {
                         res.addProperty("User_ID", datos.getUser());
 
                         res.addProperty("loginSSO", loginSSO);
-
+                        Date date = new Date();
+                        String sessionTime=String.valueOf(date.getTime());
+                        res.addProperty("sessionID", sessionTime);
                         if (loginSSO) {
                             res.addProperty("AuthnRequestID", AuthnRequestID);
                             res.addProperty("AssertionID", AssertionID);
@@ -142,8 +144,8 @@ public class Login {
                         res.add("grupos", grupos);
                         res.addProperty("version", "2.0");
                         res.addProperty("tokenForm", AES.encrypt(res.toString()));
-                        Date date = new Date();
-                        UserSessionEntity userSessionEntity = new UserSessionEntity(datos.getUser(), String.valueOf(date.getTime()));
+                        
+                        UserSessionEntity userSessionEntity = new UserSessionEntity(datos.getUser(), sessionTime);
                         dbUtils.insert(userSessionEntity);
 
                         return fn.respOk(res.getAsJsonObject());
