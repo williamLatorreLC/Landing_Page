@@ -5,6 +5,7 @@ import { SessionServiceService } from '../app/services/sessionService/session-se
 import { FactoryService } from 'src/app/services/factory/factory.service';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent {
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date;
+  closeSession: Subscription;
 
   constructor(
     private idle: Idle,
@@ -26,32 +28,31 @@ export class AppComponent {
     private router: Router
   ) {
     //segundos para detectar la inactividad
-    //idle.setIdle(1);
+    idle.setIdle(1);
     //timed out en segundos.
-    //idle.setTimeout(300);
-    //idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
-    /*idle.onIdleEnd.subscribe(() => { 
+    idle.setTimeout(600);
+    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+    idle.onIdleEnd.subscribe(() => { 
       this.idleState = 'No longer idle.'
-      //console.log(this.idleState);
+      console.log(this.idleState);
       this.reset();
     });
     
     idle.onTimeout.subscribe(() => {
       this.idleState = 'Timed out!';
       this.timedOut = true;
-      //console.log(this.idleState);
-      //this.router.navigate(['/']);
+      console.log(this.idleState);
       this.cerrarsesion();
     });
     
     idle.onIdleStart.subscribe(() => {
         this.idleState = 'You\'ve gone idle!'
-        //console.log(this.idleState);
+        console.log(this.idleState);
     });
     
     idle.onTimeoutWarning.subscribe((countdown) => {
       this.idleState = 'You will time out in ' + countdown + ' seconds!'
-      //console.log(this.idleState);
+      console.log(this.idleState);
     });
 
     keepalive.interval(15);
@@ -62,11 +63,14 @@ export class AppComponent {
       if (userLoggedIn) {
         idle.watch()
         this.timedOut = false;
+        this.closeSession= interval(2000).subscribe((x =>{
+          this.getInfo();
+        }));
       } else {
+        this.closeSession.unsubscribe();
         idle.stop();
       }
-    })*/
-    //this.reset();
+    })
   }
 
   reset() {
@@ -80,6 +84,7 @@ export class AppComponent {
       .post('logout', { token: sessionStorage.getItem('X_MYIT_INFO') })
       .then((res) => {
         if (res.isError === false) {
+          this.SessionService.setUserLoggedIn(false);
           sessionStorage.clear();
           this.router.navigateByUrl('/');
         } else {
@@ -89,6 +94,16 @@ export class AppComponent {
             confirmButtonColor: '#dc3545',
             confirmButtonText: 'aceptar',
           });
+        }
+      });
+  }
+
+  getInfo() {
+    this.factoryService
+      .post('utils/dec', { token: sessionStorage.getItem('X_MYIT_LAND') })
+      .then((res) => {
+        if (res.isError == true) {
+          this.cerrarsesion();
         }
       });
   }

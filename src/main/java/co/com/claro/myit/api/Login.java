@@ -74,7 +74,7 @@ public class Login {
             String AssertionID = "";
 
             if (haveActiveSession(datos.getUser(), datos.isCloseSessions())) {
-                return fn.respError(null, "Detectamos que tienes una sesion activa en otro dispositivo,\n recuerda que solo puedes ingresar a un solo dispositivo a la vez. Deseas cerrar todas las sesiones anteriores.", true);
+                return fn.respError(null, "Detectamos que tienes otra sesión activa.\n Recuerda que sólo puedes tener una sesión activa a la vez ¿Deseas cerrar todas las sesiones anteriores?", true);
             }
 
             JSONObject resSSO = new JSONObject(this.ssoLogin(datos.getUser(), datos.getPass()));

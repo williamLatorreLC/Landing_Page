@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/home');   
         } else {
           let dataAuth = res.data ? res.data : ""; 
-          if(dataAuth){         
+          if(dataAuth == "true"){         
             swal.fire({
               text: res.response,
               confirmButtonColor: "#dc3545",
