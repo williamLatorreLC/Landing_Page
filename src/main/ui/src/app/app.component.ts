@@ -63,9 +63,12 @@ export class AppComponent {
       if (userLoggedIn) {
         idle.watch()
         this.timedOut = false;
-        this.closeSession= interval(2000).subscribe((x =>{
-          this.getInfo();
-        }));
+        setTimeout(() =>{
+          this.closeSession= interval(2000).subscribe((x =>{
+            this.getInfo();
+          })); 
+        }, 3000);
+        
       } else {
         this.closeSession.unsubscribe();
         idle.stop();
