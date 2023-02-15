@@ -63,12 +63,9 @@ export class AppComponent {
       if (userLoggedIn) {
         idle.watch()
         this.timedOut = false;
-        setTimeout(() =>{
-          this.closeSession= interval(2000).subscribe((x =>{
-            this.getInfo();
-          })); 
-        }, 3000);
-        
+        this.closeSession= interval(4000).subscribe((x =>{
+          this.getInfo();
+        })); 
       } else {
         this.closeSession.unsubscribe();
         idle.stop();
@@ -84,7 +81,7 @@ export class AppComponent {
 
   cerrarsesion() {
     this.factoryService
-      .post('logout', { token: sessionStorage.getItem('X_MYIT_INFO') })
+      .post('logout', { token: sessionStorage.getItem('X_MYIT_LAND') })
       .then((res) => {
         if (res.isError === false) {
           this.SessionService.setUserLoggedIn(false);
