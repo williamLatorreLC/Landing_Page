@@ -263,7 +263,7 @@ export class HomeComponent implements OnInit {
   cerrarsesion() {
     this.GtmServicesService.Tagging('Home', 'bt_home_cerrarsesion');
     this.factoryService
-      .post('logout', { token: sessionStorage.getItem('X_MYIT_INFO') })
+      .post('logout', { token: sessionStorage.getItem('X_MYIT_LAND') })
       .then((res) => {
         if (res.isError === false) {
           this.SessionService.setUserLoggedIn(false);
