@@ -12,6 +12,7 @@ package co.com.claro.myit.util;
 public class variable {
     
     String LoginMyItDir;
+    String LoginMyItDirAES;
     String LoginSSODir;
     String SurveyDir;
     String SurveyIncDir;
@@ -82,5 +83,14 @@ public class variable {
 
     public void setSurveyDetailWODir(String SurveyDetailWODir) {
         this.SurveyDetailWODir = SurveyDetailWODir;
-    }    
+    }   
+
+    public String getLoginMyItDirAES() {
+        return LoginMyItDirAES;
+    }
+
+    public void setLoginMyItDirAES(String LoginMyItDirAES) {
+        this.LoginMyItDirAES = LoginMyItDirAES;
+    }
+    
 }

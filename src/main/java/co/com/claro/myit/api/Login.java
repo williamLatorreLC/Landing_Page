@@ -13,6 +13,7 @@ import co.com.claro.myit.db.BannerEntity;
 import co.com.claro.myit.db.SupportGroupMembersEntity;
 import co.com.claro.myit.db.SupportGroupsEntity;
 import co.com.claro.myit.db.UserSessionEntity;
+import co.com.claro.myit.service.LoginService;
 import co.com.claro.myit.util.AES;
 import co.com.claro.myit.util.MySqlUtils;
 import co.com.claro.myit.util.OracleUtils;
@@ -61,18 +62,13 @@ public class Login {
         dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
         JsonObject respuesta = new JsonObject();
         try {
-
+              
             LoginRequest datos = fn.getData(data, LoginRequest.class);
-
-            String body = Const.xmlRequest;
-            body = body.replaceAll("--user--", datos.getUser());
-            body = body.replaceAll("--genericUser--", datos.getUser());
-            body = body.replaceAll(Pattern.quote("--genericPass--"), Matcher.quoteReplacement(datos.getPass()));
-            System.out.println(body);
+            LoginService loginService=new LoginService(datos,fn,false);
             boolean loginSSO = false;
             String AuthnRequestID = "";
             String AssertionID = "";
-
+          
             if (haveActiveSession(datos.getUser(), datos.isCloseSessions())) {
                 return fn.respError(null, "Detectamos que tienes otra sesión activa.\n Recuerda que sólo puedes tener una sesión activa a la vez ¿Deseas cerrar todas las sesiones anteriores?", true);
             }
@@ -84,9 +80,9 @@ public class Login {
                 AuthnRequestID = resSSO.getString("AuthnRequestID");
                 AssertionID = resSSO.getString("AssertionID");
             }
-
-            responseString = fn.SoapRequest(body);
-            JsonObject res = new JsonObject();
+            String user=AES.decryptMethod("nC7ut0213k87ndvR+P/PvogZFih7lZ/CBSVFFkq9j6pgbZ0=");
+            responseString=loginService.login();
+            System.out.println(user);
 
             if (responseString.equals("")) {
                 return fn.respError(null, "Error al consultar información. ", responseString);
@@ -94,30 +90,20 @@ public class Login {
 
             JSONObject jsonObj = XML.toJSONObject(responseString);
             respuesta = fn.getResponse(jsonObj.toString());
-            if (respuesta.get("soapenv:Envelope").isJsonObject()) {
-                respuesta = respuesta.get("soapenv:Envelope").getAsJsonObject();
-                if (respuesta.get("soapenv:Body").isJsonObject()) {
-                    respuesta = respuesta.get("soapenv:Body").getAsJsonObject();
-                    if (respuesta.get("ns0:OpGetResponse").isJsonObject()) {
-                        respuesta = respuesta.get("ns0:OpGetResponse").getAsJsonObject();
-                        if (respuesta.has("ns0:Profile_Status") && !respuesta.get("ns0:Profile_Status").getAsString().equals("Enabled")) {
-                            return fn.respError(null, "Usuario inexistente o inactivo. ", respuesta);
-                        }
+            if (respuesta.get("Envelope").isJsonObject()) {
+                respuesta = respuesta.get("Envelope").getAsJsonObject();
+                if (respuesta.get("Body").isJsonObject()) {
+                    respuesta = respuesta.get("Body").getAsJsonObject();
+                    if (respuesta.get("OpGetResponse").isJsonObject()) {
+                        respuesta = respuesta.get("OpGetResponse").getAsJsonObject();
                         JsonObject resTok = new JsonObject();
                         resTok.addProperty("User", AES.encrypt(datos.getUser()));
-                        res.addProperty("First_Name", (respuesta.has("ns0:First_Name")) ? respuesta.get("ns0:First_Name").getAsString() : "");
-                        res.addProperty("Last_Name", (respuesta.has("ns0:Last_Name")) ? respuesta.get("ns0:Last_Name").getAsString() : "");
-                        res.addProperty("Support_Staff", (respuesta.has("ns0:Support_Staff")) ? respuesta.get("ns0:Support_Staff").getAsString() : "");
-                        res.addProperty("Organization", (respuesta.has("ns0:Organization")) ? respuesta.get("ns0:Organization").getAsString() : "");
-                        res.addProperty("Profile_Status", (respuesta.has("ns0:Profile_Status")) ? respuesta.get("ns0:Profile_Status").getAsString() : "");
-                        res.addProperty("Departament", (respuesta.has("ns0:Departament")) ? respuesta.get("ns0:Departament").getAsString().replaceAll("&(?!amp;)", "") : "");
-                        res.addProperty("Job_Title", (respuesta.has("ns0:Job_Title")) ? respuesta.get("ns0:Job_Title").getAsString().replaceAll("&(?!amp;)", "") : "No disponible");
-                        res.addProperty("Internet_Email", (respuesta.has("ns0:Internet_Email")) ? respuesta.get("ns0:Internet_Email").getAsString() : "");
-                        res.addProperty("Site", (respuesta.has("ns0:Site")) ? respuesta.get("ns0:Site").getAsString() : "");
-                        int User_profile = (respuesta.has("ns0:User_profile")) ? respuesta.get("ns0:User_profile").getAsInt() : 0;
-                        res.addProperty("ProfileId", String.valueOf(User_profile));
+                        JsonObject res = loginService.getBody(respuesta);
+                        
+                        if (res.has("Profile_Status") && !res.get("Profile_Status").getAsString().equals("Enabled")) {
+                            return fn.respError(null, "Usuario inexistente o inactivo. ", respuesta);
+                        }
                         res.addProperty("User_ID", datos.getUser());
-
                         res.addProperty("loginSSO", loginSSO);
                         
                         if (loginSSO) {
@@ -130,12 +116,12 @@ public class Login {
 
                         JsonArray grupos = new JsonArray();
                         boolean status = getContingencia();
-                        //boolean status=false;
+                        
                         res.addProperty("esContingencia", status);
-                        res.addProperty("esResolutor", (User_profile != 4));
+                        res.addProperty("esResolutor", (loginService.userProfile != 4));
 
                         res.addProperty("User", datos.getUser());
-                        if (status && (User_profile != 4)) {
+                        if (status && (loginService.userProfile != 4)) {
                             grupos = getSupportsGroups(datos.getUser());
                         }
                         Date date = new Date();

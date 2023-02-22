@@ -69,6 +69,7 @@ public class functions {
             Constanst.setGenericPass(prop.getProperty("GenericPass"));
             Constanst.setGenericUser(prop.getProperty("GenericUser"));
             Constanst.setLoginMyItDir(prop.getProperty("LoginMyItDir"));
+            Constanst.setLoginMyItDirAES(prop.getProperty("LoginMyItDirAES"));
             Constanst.setLoginSSODir(prop.getProperty("LoginSSODir"));
             Constanst.setSurveyDir(prop.getProperty("SurveyDir"));
             Constanst.setSurveyIncDir(prop.getProperty("SurveyIncDir"));
@@ -130,21 +131,35 @@ public class functions {
 
         return jsonElement.toString(3);
     }
+    
+    private static String clearResponse(String res){
+        res=res.replaceAll("soapenv:", "");
+        res=res.replaceAll("Soapenv:", "");
+        res=res.replaceAll("S:Envelope", "Envelope");
+        res=res.replaceAll("s:Envelope", "Envelope");
+        res=res.replaceAll("S:Body", "Body");
+        res=res.replaceAll("s:Body", "Body");
+        res=res.replaceAll("ns0:", "");
+        res=res.replaceAll("ns1:", "");
+        res=res.replaceAll("getOpResponse", "OpGetResponse");
+        return res;
+    }
 
-    public static String SoapRequest(String body) {
+    public static String SoapRequest(String body,boolean aes) {
         String responseString = "";
         try {
 
             StringEntity xmlBody = new StringEntity(body, "UTF-8");
 
             CloseableHttpClient client = HttpClientBuilder.create().build();
-            HttpPost request = new HttpPost(Constanst.getLoginMyItDir());
+            HttpPost request = new HttpPost((!aes)?Constanst.getLoginMyItDir():Constanst.LoginMyItDirAES);
             request.setHeader("Content-Type", "text/xml");
             request.setHeader("SOAPAction", Const.SoapAction);
 
             request.setEntity(xmlBody);
             CloseableHttpResponse response = client.execute(request);
             responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString=clearResponse(responseString);
             response.close();
             client.close();
         } catch (IOException e) {

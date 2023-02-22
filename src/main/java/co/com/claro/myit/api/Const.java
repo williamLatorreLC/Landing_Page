@@ -10,7 +10,7 @@ package co.com.claro.myit.api;
  * @author kompl
  */
 public class Const {
-    
+
     public Const() {
     }
 
@@ -19,11 +19,11 @@ public class Const {
     public static final String SoapActionSurvey = "urn:SRM_Survey/GetList";
 
     public static final String SoapActionSurveySet = "urn:SRM_Survey/Set";
-    
+
     public static final String SoapActionSurveyIncGet = "urn:SRM_Request/Get";
-    
+
     public static final String SoapActionSurveyDetailGet = "urn:HPD_HelpDesk_WS/Get";
-    
+
     public static final String SoapActionSurveyDetailWOGet = "urn:WOI_WorkOrder_WS/Get";
 
     public static final String xmlRequest = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">"
@@ -38,6 +38,22 @@ public class Const {
             + "     <Remedy_Login_ID>--user--</Remedy_Login_ID>"
             + " </OpGet>"
             + "</Body>"
+            + "</Envelope>";
+
+    public static final String xmlRequestAes = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"
+            + "    <Header>\n"
+            + "        <HeaderRequest xmlns=\"http://soap.cusprob.claro.com.co/\">\n"
+            + "            <user xmlns=\"\">--user--</user>\n"
+            + "            <password xmlns=\"\">--pass--</password>\n"
+            + "        </HeaderRequest>\n"
+            + "    </Header>\n"
+            + "    <Body>\n"
+            + "        <getOp xmlns=\"http://soap.cusprob.claro.com.co/\">\n"
+            + "            <GetOpRequest xmlns=\"\">\n"
+            + "                <remedyLoginId>--user--</remedyLoginId>\n"
+            + "            </GetOpRequest>\n"
+            + "        </getOp>\n"
+            + "    </Body>\n"
             + "</Envelope>";
 
     public static final String SAMLRequest = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -72,5 +88,4 @@ public class Const {
             + "    Format=\"urn:oasis:names:tc:SAML:2.0:nameid-format:transient\">--AssertionID--</samlp:NameID>\n"
             + "</samlp:LogoutRequest>";
 
-    
 }
