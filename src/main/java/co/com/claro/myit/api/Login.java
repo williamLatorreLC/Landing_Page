@@ -64,6 +64,7 @@ public class Login {
         try {
               
             LoginRequest datos = fn.getData(data, LoginRequest.class);
+             //boolean isAes = getContingenciaLogin();
             LoginService loginService=new LoginService(datos,fn,false);
             boolean loginSSO = false;
             String AuthnRequestID = "";
@@ -186,7 +187,26 @@ public class Login {
         boolean estado = false;
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         try {
-            List res = dbUtils.read("ContingenciaEntity");
+            List res = dbUtils.readBy("ContingenciaEntity","tipo='Casos'");
+
+            if (!res.isEmpty()) {
+                JSONObject item = new JSONObject(res.get(0));
+                if (item.has("estado")) {
+                    estado = (item.getInt("estado") == 1);
+                }
+            }
+            return estado;
+        } catch (JSONException e) {
+            return false;
+        }
+
+    }
+    
+    public boolean getContingenciaLogin() {
+        boolean estado = false;
+        fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
+        try {
+            List res = dbUtils.readBy("ContingenciaEntity","tipo='Login'");
 
             if (!res.isEmpty()) {
                 JSONObject item = new JSONObject(res.get(0));

@@ -96,7 +96,7 @@ public class Survey {
                                     JSONObject item = new JSONObject(resList.get(i).getAsJsonObject().toString());
                                     reqSurvery = item.getString("SurveyFor").split("\\(");
                                     item.put("showDetails", false);
-                                     item.put("SurveyFor", item.getString("Case_Description") + " " + item.getString("Originating_Request_ID"));
+                                    item.put("SurveyFor", item.getString("Case_Description") + " " + item.getString("Originating_Request_ID"));
                                     if (reqSurvery.length > 1) {
                                         item.put("SurveyReq", reqSurvery[1].replaceAll("\\)", "").trim());
                                     } else {
