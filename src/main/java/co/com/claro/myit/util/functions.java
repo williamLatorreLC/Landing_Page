@@ -75,6 +75,11 @@ public class functions {
             Constanst.setSurveyIncDir(prop.getProperty("SurveyIncDir"));
             Constanst.setSurveyDetailDir(prop.getProperty("SurveyDetailDir"));
             Constanst.setSurveyDetailWODir(prop.getProperty("SurveyDetailWODir"));
+            Constanst.setMyItStore(prop.getProperty("MyItStore"));
+            Constanst.setMyItUser(prop.getProperty("MyItUser"));
+            Constanst.setMyItResolutor(prop.getProperty("MyItResolutor"));
+            Constanst.setBannerTime(Integer.parseInt(prop.getProperty("BannerTime")));
+            Constanst.setAvatarTime(Integer.parseInt(prop.getProperty("AvatarTime")));
 
         } catch (Exception e) {
             System.out.println("Exception: " + e);

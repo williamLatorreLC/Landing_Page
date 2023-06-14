@@ -81,9 +81,7 @@ public class Login {
                 AuthnRequestID = resSSO.getString("AuthnRequestID");
                 AssertionID = resSSO.getString("AssertionID");
             }
-            String user=AES.decryptMethod("nC7ut0213k87ndvR+P/PvogZFih7lZ/CBSVFFkq9j6pgbZ0=");
             responseString=loginService.login();
-            System.out.println(user);
 
             if (responseString.equals("")) {
                 return fn.respError(null, "Error al consultar información. ", responseString);
@@ -128,6 +126,11 @@ public class Login {
                         Date date = new Date();
                         String sessionTime=String.valueOf(date.getTime());
                         res.addProperty("sessionID", sessionTime);
+                        res.addProperty("AvatarTime", fn.Constanst.getAvatarTime());
+                        res.addProperty("BannerTime", fn.Constanst.getBannerTime());
+                        res.addProperty("MyItStore", fn.Constanst.getMyItStore());
+                        res.addProperty("MyItUser", fn.Constanst.getMyItUser());
+                        res.addProperty("MyItResolutor", fn.Constanst.getMyItResolutor());
                         res.add("grupos", grupos);
                         res.addProperty("version", "2.0");
                         res.addProperty("tokenForm", AES.encrypt(res.toString()));

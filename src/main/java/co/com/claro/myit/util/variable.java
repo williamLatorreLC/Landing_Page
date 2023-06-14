@@ -20,6 +20,11 @@ public class variable {
     String SurveyDetailWODir;
     String GenericUser;
     String GenericPass;
+    String MyItStore;
+    String MyItUser;
+    String MyItResolutor;
+    int BannerTime;
+    int AvatarTime;
 
     public String getLoginMyItDir() {
         return LoginMyItDir;
@@ -92,5 +97,44 @@ public class variable {
     public void setLoginMyItDirAES(String LoginMyItDirAES) {
         this.LoginMyItDirAES = LoginMyItDirAES;
     }
-    
+
+    public int getBannerTime() {
+        return BannerTime;
+    }
+
+    public void setBannerTime(int BannerTime) {
+        this.BannerTime = BannerTime;
+    }
+
+    public int getAvatarTime() {
+        return AvatarTime;
+    }
+
+    public void setAvatarTime(int AvatarTime) {
+        this.AvatarTime = AvatarTime;
+    }
+
+    public String getMyItStore() {
+        return MyItStore;
+    }
+
+    public void setMyItStore(String MyItStore) {
+        this.MyItStore = MyItStore;
+    }
+
+    public String getMyItUser() {
+        return MyItUser;
+    }
+
+    public void setMyItUser(String MyItUser) {
+        this.MyItUser = MyItUser;
+    }
+
+    public String getMyItResolutor() {
+        return MyItResolutor;
+    }
+
+    public void setMyItResolutor(String MyItResolutor) {
+        this.MyItResolutor = MyItResolutor;
+    }
 }
