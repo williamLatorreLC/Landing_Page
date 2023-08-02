@@ -64,8 +64,8 @@ public class Login {
         try {
               
             LoginRequest datos = fn.getData(data, LoginRequest.class);
-             //boolean isAes = getContingenciaLogin();
-            LoginService loginService=new LoginService(datos,fn,false);
+            boolean isContingencia = getContingenciaLogin();
+            LoginService loginService=new LoginService(datos,fn,isContingencia);
             boolean loginSSO = false;
             String AuthnRequestID = "";
             String AssertionID = "";

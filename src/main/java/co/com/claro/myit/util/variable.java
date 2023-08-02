@@ -15,6 +15,7 @@ public class variable {
     String LoginMyItDirAES;
     String LoginSSODir;
     String SurveyDir;
+    String SurveyDirAES;
     String SurveyIncDir;
     String SurveyDetailDir;
     String SurveyDetailWODir;
@@ -136,5 +137,13 @@ public class variable {
 
     public void setMyItResolutor(String MyItResolutor) {
         this.MyItResolutor = MyItResolutor;
+    }
+
+    public String getSurveyDirAES() {
+        return SurveyDirAES;
+    }
+
+    public void setSurveyDirAES(String SurveyDirAES) {
+        this.SurveyDirAES = SurveyDirAES;
     }
 }

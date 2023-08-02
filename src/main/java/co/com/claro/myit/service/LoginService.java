@@ -26,19 +26,19 @@ public class LoginService {
 
     private functions fn;
 
-    private boolean isAes;
+    private boolean isContingencia;
     
     public int userProfile=0;
 
-    public LoginService(LoginRequest data, functions fn, boolean isAes) {
+    public LoginService(LoginRequest data, functions fn, boolean isContingencia) {
         this.data = data;
         this.fn = fn;
-        this.isAes = isAes;
+        this.isContingencia = isContingencia;
     }
 
     public String login() {
         String body = "";
-        if (this.isAes) {
+        if (!this.isContingencia) {
             body = Const.xmlRequestAes;
            
             try {
@@ -66,12 +66,12 @@ public class LoginService {
             System.out.println(body);
         }
 
-        return this.fn.SoapRequest(body, this.isAes);
+        return this.fn.SoapRequest(body, !this.isContingencia);
     }
 
     public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
-        if (this.isAes) {
+        if (!this.isContingencia) {
             try {
                 respuesta=respuesta.get("return").getAsJsonObject();
                 res.addProperty("First_Name", (respuesta.has("firstName")) ? AES.decryptMethod(respuesta.get("firstName").getAsString()) : "");

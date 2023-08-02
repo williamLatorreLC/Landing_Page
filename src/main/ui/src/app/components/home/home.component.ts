@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
       SelectedValue: 0,
       SurveyFor: '',
       Originating_Request_ID: '',
+      Last_Surveyed_Date: '',
       Fecha: '',
       Hora: '',
       showDetails: '',
@@ -374,6 +375,7 @@ export class HomeComponent implements OnInit {
         id: item.Survey_ID,
         comentario: item.Comentario,
         calificacion: item.SelectedValue.toString(),
+        fecha: item.Last_Surveyed_Date,
         token: sessionStorage.getItem('X_MYIT_REQ'),
       })
       .then((res) => {
