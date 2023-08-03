@@ -6,6 +6,7 @@
 package co.com.claro.myit.api;
 
 import com.google.gson.annotations.SerializedName;
+import com.sun.istack.Nullable;
 
 /**
  *
@@ -26,6 +27,10 @@ public class SurveyRequest {
     
     @SerializedName("calificacion")
     private String calificacion;
+    
+    @Nullable
+    @SerializedName("fecha")
+    private String fecha;
 
     public String getId() {
         return id;
@@ -58,5 +63,15 @@ public class SurveyRequest {
     public void setCalificacion(String calificacion) {
         this.calificacion = calificacion;
     }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+    
+    
         
 }

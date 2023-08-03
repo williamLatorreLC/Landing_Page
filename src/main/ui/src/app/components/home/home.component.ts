@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
       SelectedValue: 0,
       SurveyFor: '',
       Originating_Request_ID: '',
+      Last_Surveyed_Date: '',
       Fecha: '',
       Hora: '',
       showDetails: '',
@@ -75,6 +76,11 @@ export class HomeComponent implements OnInit {
     tokenForm: '',
     version: '',
     surveys: {},
+    AvatarTime:0,
+    BannerTime:0,
+    MyItStore:'',
+    MyItUser:'',
+    MyItResolutor:''
   };
   modalInstance = null;
   verify = null;
@@ -147,7 +153,9 @@ export class HomeComponent implements OnInit {
       .post('utils/dec', { token: sessionStorage.getItem('X_MYIT_LAND') })
       .then((res) => {
         if (res.isError === false) {
+          
           this.infoUser = res.response.map;
+            console.log(this.infoUser);
           setTimeout(function () {
             //$scope.$apply(); TO DO => No se coomo funciona esto.
           }, 200);
@@ -182,7 +190,7 @@ export class HomeComponent implements OnInit {
   }
   goToContinue(modal: any) {
     window.open(
-      'http://wpltsccm03/CMApplicationCatalog/#/SoftwareLibrary/AppListPageView.xaml'
+      this.infoUser.MyItStore
     );
     this.modalService.dismissAll();
   }
@@ -205,12 +213,12 @@ export class HomeComponent implements OnInit {
   }
   goToUsuRes() {
     window.open(
-      'https://myitfull.claro.com.co:8443/arsys/shared/login.jsp?/arsys/'
+      this.infoUser.MyItResolutor
     );
     this.modalService.dismissAll();
   }
   goToUsuMyIt() {
-    window.open('https://myit.claro.com.co:8443/dwp/app/');
+    window.open(this.infoUser.MyItUser);
     this.modalService.dismissAll();
   }
   getSurveys() {
@@ -263,7 +271,7 @@ export class HomeComponent implements OnInit {
   cerrarsesion() {
     this.GtmServicesService.Tagging('Home', 'bt_home_cerrarsesion');
     this.factoryService
-      .post('logout', { token: sessionStorage.getItem('X_MYIT_INFO') })
+      .post('logout', { token: sessionStorage.getItem('X_MYIT_LAND') })
       .then((res) => {
         if (res.isError === false) {
           this.SessionService.setUserLoggedIn(false);
@@ -367,6 +375,7 @@ export class HomeComponent implements OnInit {
         id: item.Survey_ID,
         comentario: item.Comentario,
         calificacion: item.SelectedValue.toString(),
+        fecha: item.Last_Surveyed_Date,
         token: sessionStorage.getItem('X_MYIT_REQ'),
       })
       .then((res) => {

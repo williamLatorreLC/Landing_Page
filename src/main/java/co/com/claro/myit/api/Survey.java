@@ -5,12 +5,15 @@
  */
 package co.com.claro.myit.api;
 
+import co.com.claro.myit.service.SurveyService;
 import co.com.claro.myit.util.AES;
+import co.com.claro.myit.util.MySqlUtils;
 import co.com.claro.myit.util.functions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -30,12 +33,12 @@ import org.json.XML;
 @Path("/surveys")
 @Produces(MediaType.APPLICATION_JSON)
 public class Survey {
-
+    
     @Context
     private ServletContext context;
-
+    
     private functions fn;
-
+    
     @POST
     @Path("/GetList")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -48,85 +51,44 @@ public class Survey {
         try {
             LogoutRequest datos = fn.getData(data, LogoutRequest.class);
             String info = AES.decrypt(datos.getToken());
+            boolean isContingencia = this.getContingenciaSurvey();
+            SurveyService surveyService = new SurveyService(datos, fn, isContingencia);
             if (!info.isEmpty()) {
                 infoTok = new JSONObject(info);
-                String body = "<soapenv:Envelope "
-                        + "xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                        + "xmlns:urn=\"urn:SRM_Survey\">\n"
-                        + "   <soapenv:Header>\n"
-                        + "      <urn:AuthenticationInfo>\n"
-                        + "         <urn:userName>" + fn.Constanst.getGenericUser() + "</urn:userName>\n"
-                        + "         <urn:password>" + fn.Constanst.getGenericPass() + "</urn:password>\n"
-                        + "      </urn:AuthenticationInfo>\n"
-                        + "   </soapenv:Header>\n"
-                        + "   <soapenv:Body>\n"
-                        + "      <urn:GetList>\n"
-                        + "         <urn:Qualification>--user--</urn:Qualification>\n"
-                        + "      </urn:GetList>\n"
-                        + "   </soapenv:Body>\n"
-                        + "</soapenv:Envelope>";
-                body = body.replaceAll("--user--", AES.decrypt(infoTok.getString("User")));
-
-                responseString = fn.SoapRequestSurvey(body, "Get");
+                
+                responseString = surveyService.getSurvey(AES.decrypt(infoTok.getString("User")));
                 JsonObject res = new JsonObject();
-                JsonArray resList = new JsonArray();
-                JSONArray finalList = new JSONArray();
-
+                
                 if (responseString.equals("")) {
                     return fn.respError(null, "Error al consultar información. ", responseString);
                 }
-                responseString = responseString.replaceAll("ns0:", "");
+                responseString = this.removeSoapTags(responseString);
+                if(responseString.contains("headerError")){
+                    return fn.respError(null, "No Tienes encuantas pendientes por responder.", respuesta);
+                }
                 JSONObject jsonObj = XML.toJSONObject(responseString);
                 respuesta = fn.getResponse(jsonObj.toString());
-                if (respuesta.has("soapenv:Envelope") && respuesta.get("soapenv:Envelope").isJsonObject()) {
-                    respuesta = respuesta.get("soapenv:Envelope").getAsJsonObject();
-                    if (respuesta.get("soapenv:Body").isJsonObject()) {
-                        respuesta = respuesta.get("soapenv:Body").getAsJsonObject();
-                        if (respuesta.has("GetListResponse") && respuesta.get("GetListResponse").isJsonObject()) {
-                            respuesta = respuesta.get("GetListResponse").getAsJsonObject();
-                            if (respuesta.get("getListValues").isJsonArray()) {
-                                resList = respuesta.getAsJsonArray("getListValues");
-                            } else if (respuesta.get("getListValues").isJsonObject()) {
-                                resList.add(respuesta.getAsJsonObject("getListValues"));
-                            }
-
-                            if (resList.size() > 0) {
-                                String[] reqSurvery;
-                                for (int i = 0; i < resList.size(); i++) {
-                                    JSONObject item = new JSONObject(resList.get(i).getAsJsonObject().toString());
-                                    reqSurvery = item.getString("SurveyFor").split("\\(");
-                                    item.put("showDetails", false);
-                                     item.put("SurveyFor", item.getString("Case_Description") + " " + item.getString("Originating_Request_ID"));
-                                    if (reqSurvery.length > 1) {
-                                        item.put("SurveyReq", reqSurvery[1].replaceAll("\\)", "").trim());
-                                    } else {
-                                        item.put("SurveyReq", "");
-                                    }
-                                    finalList.put(item);
-                                }
-                                JsonElement elem = JsonParser.parseString(finalList.toString());
-                                return fn.respOk(elem.getAsJsonArray());
-                            }
-                            return fn.respOk(resList);
-                        } else {
-                            return fn.respError(null, "No tienes encuestas pendientes por responder. ", respuesta);
-                        }
+                if (respuesta.has("Envelope") && respuesta.get("Envelope").isJsonObject()) {
+                    respuesta = respuesta.get("Envelope").getAsJsonObject();
+                    if (respuesta.get("Body").isJsonObject()) {
+                        respuesta = respuesta.get("Body").getAsJsonObject();
+                        return surveyService.listSurveysResponse(respuesta);
                     } else {
                         return fn.respError(null, "No tienes encuestas pendientes por responder. ", respuesta);
                     }
                 } else {
                     return fn.respError(null, "Error de credenciales combinación de usuario y contraseña incorrectos. ", respuesta);
-
+                    
                 }
             } else {
                 return fn.respError(null, "Error al obtener información. ", respuesta);
             }
-
+            
         } catch (JSONException e) {
             return fn.respError(e, "Error de credenciales combinación de usuario y contraseña incorrectos. ", respuesta);
         }
     }
-
+    
     @POST
     @Path("/GetDetails")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -137,7 +99,7 @@ public class Survey {
         JsonObject respuesta = new JsonObject();
         JSONObject datos = new JSONObject(data);
         try {
-
+            
             String body = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"
                     + "    <Header>\n"
                     + "        <AuthenticationInfo xmlns=\"urn:SRM_Request\">\n"
@@ -152,9 +114,9 @@ public class Survey {
                     + "    </Body>\n"
                     + "</Envelope>";
             body = body.replaceAll("--req--", datos.getJSONObject("data").getString("reqNumber"));
-
+            
             responseString = fn.SoapRequestForDetails(body, "GetInc");
-
+            
             if (responseString.equals("")) {
                 return fn.respError(null, "Error al consultar información. ", responseString);
             }
@@ -203,7 +165,7 @@ public class Survey {
                             responseString = fn.SoapRequestForDetails(body, "GetDetWO");
                             isWO = true;
                         }
-
+                        
                         if (responseString.equals("")) {
                             return fn.respError(null, "Error al consultar el detalle del incidente. ", responseString);
                         }
@@ -229,7 +191,7 @@ public class Survey {
                             }
                         } else {
                             return fn.respError(null, "Error de credenciales combinación de usuario y contraseña incorrectos. ", respuesta);
-
+                            
                         }
                     } else {
                         return fn.respError(null, "Error al consultar el detalle del incidente. ", respuesta);
@@ -239,14 +201,14 @@ public class Survey {
                 }
             } else {
                 return fn.respError(null, "Error de credenciales combinación de usuario y contraseña incorrectos. ", respuesta);
-
+                
             }
-
+            
         } catch (JSONException e) {
             return fn.respError(e, "Error de credenciales combinación de usuario y contraseña incorrectos. ", respuesta);
         }
     }
-
+    
     @POST
     @Path("/Set")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -256,67 +218,73 @@ public class Survey {
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         JsonObject respuesta = new JsonObject();
         JSONObject infoTok = new JSONObject();
+        
         try {
             SurveyRequest datos = fn.getData(data, SurveyRequest.class);
-            String info = AES.decrypt(datos.getToken());
-            if (!info.isEmpty()) {
-                infoTok = new JSONObject(info);
-                String body = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:SRM_Survey\">\n"
-                        + "   <soapenv:Header>\n"
-                        + "      <urn:AuthenticationInfo>\n"
-                        + "         <urn:userName>" + fn.Constanst.getGenericUser() + "</urn:userName>\n"
-                        + "         <urn:password>" + fn.Constanst.getGenericPass() + "</urn:password>\n"
-                        + "      </urn:AuthenticationInfo>\n"
-                        + "   </soapenv:Header>\n"
-                        + "   <soapenv:Body>\n"
-                        + "      <urn:Set>\n"
-                        + "         <urn:Survey_ID>--id--</urn:Survey_ID>\n"
-                        + "         <urn:Status_>Responded</urn:Status_>\n"
-                        + "         <urn:Q1-1-10>--valor--</urn:Q1-1-10>\n"
-                        + "         <urn:Comment_1>--comment--</urn:Comment_1>\n"
-                        + "      </urn:Set>\n"
-                        + "   </soapenv:Body>\n"
-                        + "</soapenv:Envelope>";
-                body = body.replaceAll("--user--", AES.decrypt(infoTok.getString("User")));
-                body = body.replaceAll("--id--", datos.getId());
-                body = body.replaceAll("--valor--", datos.getCalificacion());
-                body = body.replaceAll("--comment--", datos.getComentario());
-
-                responseString = fn.SoapRequestSurvey(body, "Set");
-
-                if (responseString.equals("")) {
-                    return fn.respError(null, "Error al consultar información. ", responseString);
-                }
-                responseString = responseString.replaceAll("ns0:", "");
-                JSONObject jsonObj = XML.toJSONObject(responseString);
-                respuesta = fn.getResponse(jsonObj.toString());
-                if (respuesta.get("soapenv:Envelope").isJsonObject()) {
-                    respuesta = respuesta.get("soapenv:Envelope").getAsJsonObject();
-                    if (respuesta.get("soapenv:Body").isJsonObject()) {
-                        respuesta = respuesta.get("soapenv:Body").getAsJsonObject();
-                        if (respuesta.has("SetResponse") && respuesta.get("SetResponse").isJsonObject()) {
-                            respuesta = respuesta.get("SetResponse").getAsJsonObject();
-                            if (respuesta.has("Survey_ID")) {
-                                return fn.respOk("OK");
-                            } else {
-                                return fn.respError(null, "Error al registrar tu respuesta inténtalo nuevamente.", respuesta);
-                            }
-                        } else {
-                            return fn.respError(null, "Error al registrar tu respuesta inténtalo nuevamente.", respuesta);
-                        }
-                    } else {
-                        return fn.respError(null, "Error al registrar tu respuesta inténtalo nuevamente. ", respuesta);
-                    }
+             boolean isAes = this.getContingenciaSurvey();
+            SurveyService surveyService = new SurveyService(datos, fn, isAes);
+            
+            responseString = surveyService.setSurvey(datos);
+            
+            if (responseString.equals("")) {
+                return fn.respError(null, "Error al consultar información. ", responseString);
+            }
+            responseString = this.removeSoapTags(responseString);
+            if(responseString.contains("headerError")){
+                return fn.respError(null, "Error al registrar tu respuesta inténtalo nuevamente.. ", respuesta);
+            }
+            JSONObject jsonObj = XML.toJSONObject(responseString);
+            respuesta = fn.getResponse(jsonObj.toString());
+            if (respuesta.get("Envelope").isJsonObject()) {
+                respuesta = respuesta.get("Envelope").getAsJsonObject();
+                if (respuesta.get("Body").isJsonObject()) {
+                    respuesta = respuesta.get("Body").getAsJsonObject();
+                    return surveyService.answerResponse(respuesta);
                 } else {
                     return fn.respError(null, "Error al registrar tu respuesta inténtalo nuevamente. ", respuesta);
-
                 }
             } else {
-                return fn.respError(null, "Error al obtener información. ", respuesta);
+                return fn.respError(null, "Error al registrar tu respuesta inténtalo nuevamente. ", respuesta);
+                
             }
+            
         } catch (JSONException e) {
+            return fn.respError(e, "Error al registrar tu respuesta inténtalo nuevamente.", respuesta);
+        } catch (Exception e) {
             return fn.respError(e, "Error al registrar tu respuesta inténtalo nuevamente.", respuesta);
         }
     }
-
+    
+    private boolean getContingenciaSurvey() {
+        boolean estado = false;
+        MySqlUtils dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
+        fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
+        try {
+            List res = dbUtils.readBy("ContingenciaEntity", "tipo='Surveys'");
+            
+            if (!res.isEmpty()) {
+                JSONObject item = new JSONObject(res.get(0));
+                if (item.has("estado")) {
+                    estado = (item.getInt("estado") == 1);
+                }
+            }
+            return estado;
+        } catch (JSONException e) {
+            return false;
+        }
+        
+    }
+    
+    private String removeSoapTags(String responseString){
+        responseString = responseString.replaceAll("ns0:", "");
+        responseString = responseString.replaceAll("ns1:", "");
+        responseString = responseString.replaceAll("ns2:", "");
+        responseString = responseString.replaceAll("S:", "");
+        responseString = responseString.replaceAll("s:", "");
+        responseString = responseString.replaceAll("soapenv:", "");
+        responseString = responseString.replaceAll("Soapenv:", "");
+        return responseString;
+    }
+    
+    
 }
