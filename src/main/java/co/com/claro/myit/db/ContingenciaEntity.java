@@ -31,6 +31,9 @@ public class ContingenciaEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     
+    @Column(name = "tipo")
+    private String tipo;
+    
     @Column(name = "estado")
     private int estado;
 
@@ -49,6 +52,16 @@ public class ContingenciaEntity implements Serializable {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    
+    
     
     
 

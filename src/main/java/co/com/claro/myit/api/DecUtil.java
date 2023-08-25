@@ -6,9 +6,10 @@
 package co.com.claro.myit.api;
 
 import co.com.claro.myit.util.AES;
+import co.com.claro.myit.util.MySqlUtils;
 import co.com.claro.myit.util.functions;
 import static co.com.claro.myit.util.functions.getData;
-import com.google.gson.JsonObject;
+import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -23,6 +24,8 @@ import org.json.JSONObject;
 @Path("/utils")
 public class DecUtil{
     
+    MySqlUtils dbUtils;
+    
     @Context
     private ServletContext context;
     
@@ -32,15 +35,22 @@ public class DecUtil{
     @Path("/dec")
     @Produces("application/json")
     public String enc(String data) {
-        JSONObject respuesta = new JSONObject();
+      JSONObject respuesta = new JSONObject();
+        dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
         fn=new functions(context.getRealPath("/WEB-INF/config.properties"));
         try {
             LogoutRequest datos = getData(data, LogoutRequest.class);
             String info = AES.decrypt(datos.getToken());
             if (!info.isEmpty()) {
                 respuesta = new JSONObject(info);
-                return fn.respOk(respuesta);
-
+                if(respuesta.getString("sessionID")!=null){
+                    String sessionID=respuesta.getString("sessionID");
+                     List res = dbUtils.readBy("UserSessionEntity", "sessionTime='" + sessionID + "'");
+                     if(!res.isEmpty()){
+                        return fn.respOk(respuesta);
+                     }
+                }
+                return fn.respError(null, "Sesion invalida.", respuesta);
             } else {
                 return fn.respError(null, "Error al obtener información. ", respuesta);
             }

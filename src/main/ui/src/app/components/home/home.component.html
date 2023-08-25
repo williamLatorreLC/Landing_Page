@@ -181,7 +181,7 @@
       <div class="container-fluid conVista" ngSwitch="banner">
         <header class="header">
           <div style="height: auto" *ngIf="banners.length != 0">
-            <ngb-carousel [interval]="30000">
+            <ngb-carousel [interval]="infoUser.BannerTime">
               <ng-template *ngFor="let item of banners" ngbSlide>
                 <div class="picsum-img-wrapper">
                   <img src="{{ item.ruta }}" class="img-fluid img-banner no-indicators" />
@@ -274,7 +274,7 @@
         <div class="row">
           <div class="col-md-5 col-12 d-none d-md-block pl-0">
             <div style="height: auto" *ngIf="avatars.length != 0">
-              <ngb-carousel [interval]="30000">
+              <ngb-carousel [interval]="infoUser.AvatarTime">
                 <ng-template *ngFor="let item of avatars" ngbSlide>
                   <div class="picsum-img-wrapper">
                     <img src="{{ item.imagen }}" class="img-fluid" style="width: 470px !important; object-fit: cover" />
