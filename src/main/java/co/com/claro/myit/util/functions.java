@@ -166,6 +166,8 @@ public class functions {
             CloseableHttpResponse response = client.execute(request);
             responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
             responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
             response.close();
             client.close();
         } catch (IOException e) {
@@ -230,6 +232,8 @@ public class functions {
             request.setEntity(xmlBody);
             CloseableHttpResponse response = client.execute(request);
             responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            System.out.println("Response:");
+            System.out.println(responseString);
             response.close();
             client.close();
         } catch (IOException e) {
