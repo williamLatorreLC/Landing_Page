@@ -44,7 +44,7 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
     NgImageSliderModule,
     NgbModule,
     GtagModule.init({
-      targetId: 'UA-175402192-1'
+      targetId: 'G-Q9GM25VSK3'
     }),
     NgIdleKeepaliveModule.forRoot()
   ],
