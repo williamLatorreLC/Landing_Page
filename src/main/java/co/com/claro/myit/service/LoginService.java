@@ -28,7 +28,7 @@ public class LoginService {
 
     private boolean isContingencia;
     
-    public int userProfile=0;
+    public int userProfile=4;
 
     public LoginService(LoginRequest data, functions fn, boolean isContingencia) {
         this.data = data;
@@ -84,17 +84,7 @@ public class LoginService {
                 res.addProperty("Internet_Email", (respuesta.has("internetEmail")) ?  AES.decryptMethod(respuesta.get("internetEmail").getAsString()) : "");
                 res.addProperty("Site", (respuesta.has("site")) ?  AES.decryptMethod(respuesta.get("site").getAsString()) : "");
                 userProfile = (respuesta.has("userProfile")) ?  Integer.parseInt(AES.decryptMethod(respuesta.get("userProfile").getAsString())): 0;
-            } catch (BadPaddingException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalBlockSizeException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NoSuchPaddingException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvalidAlgorithmParameterException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvalidKeyException ex) {
+            }   catch (NumberFormatException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException ex) {
                 Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {

@@ -32,7 +32,7 @@ public class AES {
     private static final String cipherTransformation = "AES/ECB/PKCS5Padding";
     private static final String aesEncryptionAlgorithem = "AES";
 
-    private static final String encryptionServiceKey = "Inc0mPru3ba1UZWa";
+    private static final String encryptionServiceKey = "Inc0mProd1UZRr";
     private static final String encryptionServiceSha = "SHA-1";
     private static final int GCM_IV_LENGTH = 12;
     private static final int GCM_TAG_LENGTH = 16;
