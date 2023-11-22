@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
     | TemplateRef<any>
     | undefined;
 
+  mostrarChat: boolean = false;
   menu = true;
   banner = true;
   botones = true;
@@ -84,6 +85,7 @@ export class HomeComponent implements OnInit {
   };
   modalInstance = null;
   verify = null;
+  consultaCaso: boolean = false;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -437,4 +439,18 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
+  abrirChatInHouse() {
+    this.mostrarChat = true;
+  }
+
+  cerrarChatInHouse() {
+    this.mostrarChat = false;
+  }
+
+  consultarCaso() {
+    this.consultaCaso = !this.consultaCaso;
+}
+
+
 }
