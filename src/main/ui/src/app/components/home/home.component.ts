@@ -11,6 +11,8 @@ import * as $ from 'jquery';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { GtagService } from '../../services/gtmServices/gtag.service';
 import { SessionServiceService } from '../../services/sessionService/session-service.service';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-home',
@@ -77,15 +79,18 @@ export class HomeComponent implements OnInit {
     tokenForm: '',
     version: '',
     surveys: {},
-    AvatarTime:0,
-    BannerTime:0,
-    MyItStore:'',
-    MyItUser:'',
-    MyItResolutor:''
+    AvatarTime: 0,
+    BannerTime: 0,
+    MyItStore: '',
+    MyItUser: '',
+    MyItResolutor: ''
   };
   modalInstance = null;
   verify = null;
+
+  numeroRequerimiento: string = '';
   consultaCaso: boolean = false;
+  selectReq: boolean = false;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -93,7 +98,8 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private GtmServicesService: GtagService,
-    private SessionService: SessionServiceService
+    private SessionService: SessionServiceService,
+    private http: HttpClient
   ) {
     _config.interval = 30000;
     _config.pauseOnHover = true;
@@ -155,9 +161,9 @@ export class HomeComponent implements OnInit {
       .post('utils/dec', { token: sessionStorage.getItem('X_MYIT_LAND') })
       .then((res) => {
         if (res.isError === false) {
-          
+
           this.infoUser = res.response.map;
-            console.log(this.infoUser);
+          console.log(this.infoUser);
           setTimeout(function () {
             //$scope.$apply(); TO DO => No se coomo funciona esto.
           }, 200);
@@ -294,8 +300,8 @@ export class HomeComponent implements OnInit {
     const chatURL = encodeURI('./chatbot');
     $('#siteloader').html(
       '<object class="chatObj" data="' +
-        chatURL +
-        '"  style="z-index:999 !important"/>'
+      chatURL +
+      '"  style="z-index:999 !important"/>'
     );
     this.chatOpen = true;
     this.modalInstance = null;
@@ -450,7 +456,36 @@ export class HomeComponent implements OnInit {
 
   consultarCaso() {
     this.consultaCaso = !this.consultaCaso;
-}
+  }
 
+  SearchReq() {
+    this.selectReq = !this.selectReq;
+  }
+
+  consultarRequerimiento() {
+    if (this.numeroRequerimiento.trim() !== '') {
+      const soapRequest = `
+        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:SRM_Request">
+          <soapenv:Header>
+            <urn:AuthenticationInfo>
+              <urn:userName>matilda.claro</urn:userName>
+              <urn:password>Claro2018*</urn:password>
+            </urn:AuthenticationInfo>
+          </soapenv:Header>
+          <soapenv:Body>
+            <urn:Get>
+              <urn:Service_Request_Number>${this.numeroRequerimiento}</urn:Service_Request_Number>
+            </urn:Get>
+          </soapenv:Body>
+        </soapenv:Envelope>`;
+
+        this.http.post('https://myitfull.claro.com.co:8443/arsys/services/ARService?server=remedy&webService=SRM_Request', soapRequest, {
+        headers: { 'Content-Type': 'application/json' },
+        responseType: 'text'
+      }).subscribe((response) => {
+        console.log(response);
+      });
+    }
+  }
 
 }

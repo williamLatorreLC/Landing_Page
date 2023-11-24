@@ -259,87 +259,132 @@
       <img src="./assets/img/home/anita.png" class="ml-2 cpointer float" alt="" *ngIf="!chatOpen" (click)="abrirChat()"
         accesskey="a" />
 
-<div class="ml-auto cpointer float ng-star-inserted"
-    style="left: 60px; top: 10%; position: fixed; background-color: white; border: 2px solid #ccc; padding: 10px; width: 45%; height: 70%;"
-    *ngIf="mostrarChat">
+      <!-- Inicio ChatBOT -->
+      <div class="ml-auto cpointer float ng-star-inserted"
+        style="left: 60px; top: 13%; position: fixed; background-color: #ffffff; border: 1px solid #ccc; padding: 10px; width: 33%; height: 65%;"
+        *ngIf="mostrarChat">
 
-    <!-- Header -->
-    <div class="header"
-        style="margin-bottom: 10px; background-color: #da1024; color: white; padding: 5px; display: flex; justify-content: space-between; align-items: center;">
-        <!-- Título "AnITa" a la izquierda -->
-        <h2 style="margin-right: 10px; text-align: left; margin: 0;">AnITa</h2>
-        <!-- Botón de Cerrar con icono "x" a la derecha -->
-        <button (click)="cerrarChatInHouse()"
+        <!-- Header -->
+        <div class="header"
+          style="margin-bottom: 10px; background-color: #da1024; color: white; padding: 7px; display: flex; justify-content: space-between; align-items: center; position: relative; left: -5.8%; top: -10px; width: 108.5%;">
+          <!-- Título "AnITa" a la izquierda -->
+          <h2 style="margin-right: 10px; text-align: left; margin: 0;"> &nbsp; AnITa</h2>
+          <!-- Botón de Cerrar con icono "x" a la derecha -->
+          <button (click)="cerrarChatInHouse()"
             style="background-color: transparent; border: none; color: white; font-size: 16px; cursor: pointer;">
             <span style="font-weight: bold; font-size: 20px; text-align: right;">X</span>
-        </button>
-    </div>
+          </button>
+        </div>
 
-    <!-- Content y Footer en un contenedor conjunto -->
-    <div style="display: flex; flex-direction: column; height: 100%;">
+        <!-- Content y Footer en un contenedor conjunto -->
+        <div style="display: flex; flex-direction: column; height: 100%;">
 
-        <!-- Content -->
-        <div style="overflow-y: auto; flex-grow: 1; max-height: 400px;">
+          <!-- Content -->
+          <div style="overflow: auto; max-height: none;">
             <!-- Primera conversacion -->
             <div *ngIf="!consultaCaso">
-                <!-- Contenido del chat 1 -->
-                <div class="contenido"
-                    style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
-                    <p style="margin: 0;"><strong> &nbsp; AnITa:</strong> Hola {{ infoUser.First_Name }}, soy AnITa. Cuentamé, ¿En qué te puedo ayudar?</p>
-                </div>
-                <br />
-                <!-- Contenido del chat 2 -->
-                <div class="contenido"
-                    style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
-                    <p style="margin: 0;"><strong>AnITa:</strong> Selecciona una opción:
-                        <br />
-                        <span style="color: blue;">&bull;</span> <a (click)="consultarCaso()"
-                            style="text-decoration: underline; color: blue;">Consultar caso de MyIT</a>
-                    </p>
-                </div>
-                <!-- Agrega más contenido aquí -->
+              <!-- Contenido del chat 1 -->
+              <div class="contenido"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;" >
+                <p style="margin: 0;"><strong>AnITa:</strong> Hola {{ infoUser.First_Name }}, soy AnITa. Cuentamé, ¿En
+                  qué te puedo ayudar?</p>
+              </div>
+              <br />
+              <!-- Contenido del chat 2 -->
+              <div class="contenido"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Selecciona una opción:
+                  <br />
+                  <span style="color: blue;">&bull; &nbsp;</span> <a (click)="consultarCaso()"
+                    style="text-decoration: underline; color: blue;">Consultar caso de MyIT</a>
+                </p>
+              </div>
+              <!-- Agrega más contenido aquí -->
             </div>
 
             <!-- Segunda conversación consulta casos -->
-            <div *ngIf="consultaCaso">
-                <!-- Contenido consulta caso 1 -->
-                <div class="contenido"
-                    style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
-                    <p style="margin: 0;"><strong>AnITa:</strong> Selecciona el tipo de caso que quieres consultar:
-                        <br />
-                        <span style="color: blue;">&bull;</span> <a style="text-decoration: underline; color: blue;">REQ - Requerimiento</a>
-                        <br />
-                        <span style="color: blue;">&bull;</span> <a style="text-decoration: underline; color: blue;">INC - Incidente</a>
-                        <br />
-                        <span style="color: blue;">&bull;</span> <a style="text-decoration: underline; color: blue;">WO - Orden de trabajo</a>
-                        <br />
-                        <span style="color: blue;">&bull;</span> <a style="text-decoration: underline; color: blue;">Histórico de mis casos</a>
-                    </p>
-                </div>
-                <br />
-                <div class="contenido"
-                    style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
-                    <p style="margin: 0;"><strong>AnITa:</strong> Nota: Si aún no sabes cómo consultar un caso, descarga la cartilla haciendo click <a href="https://static-or01.inbenta.com/e3d52cc744f1828a9937b9b1ab54d2ef4b76f18b247b14dab3a61c4a2c031dff/Cartilla%20Consulta%20de%20Casos%20en%20AnITa-comprimido.pdf"
-                            style="text-decoration: underline; color: blue;">aquí</a> y sigue los pasos.
-                        <br />
-                    </p>
-                </div>
-                <br />
-                <button (click)="consultarCaso()"> Volver </button>
+            <div *ngIf="consultaCaso && !selectReq">
+
+              <!-- Contenido consulta caso 1 -->
+              <div class="contenido"
+              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Selecciona el tipo de caso que quieres consultar:
+                  <br />
+                  <span (click)="SearchReq()" style="color: blue;">&bull; &nbsp;</span> <a (click)="SearchReq()"
+                    style="text-decoration: underline; color: blue;">REQ -
+                    Requerimiento</a>
+                  <br />
+                  <span style="color: blue;">&bull; &nbsp;</span> <a style="text-decoration: underline; color: blue;">INC -
+                    Incidente</a>
+                  <br />
+                  <span style="color: blue;">&bull; &nbsp;</span> <a style="text-decoration: underline; color: blue;">WO -
+                    Orden de trabajo</a>
+                  <br />
+                  <span style="color: blue;">&bull; &nbsp;</span> <a style="text-decoration: underline; color: blue;">Histórico
+                    de mis casos</a>
+                </p>
+              </div>
+              <br />
+              <div class="contenido"
+              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Nota: Si aún no sabes cómo consultar un caso, descarga la
+                  cartilla haciendo click <a
+                    href="https://static-or01.inbenta.com/e3d52cc744f1828a9937b9b1ab54d2ef4b76f18b247b14dab3a61c4a2c031dff/Cartilla%20Consulta%20de%20Casos%20en%20AnITa-comprimido.pdf"
+                    style="text-decoration: underline; color: blue; " target="_blank">aquí</a> y sigue los pasos.
+                  <br />
+                </p>
+              </div>
+              <br />
+              <button (click)="consultarCaso()"> Volver </button>
             </div>
-        </div>
 
-        <!-- Footer (Input al final) -->
+            <!-- Conversación si se selecciona REQ requerimiento-->
+            <div *ngIf="selectReq">
+
+              <!-- Contenido si selecciona REQ requerimiento -->
+              <div class="contenido"
+              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Escribe el número de REQ - Requerimiento a consultar</p>
+              </div>
+              <br />
+              <button (click)="SearchReq()"> Volver </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- AnITa inicial -->
+      <div
+        style="left: 50.5%; top: 13%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 0px; width: 15%; height: 65% "
+        *ngIf="mostrarChat">
+        <img src="./assets/img/home/Saludando.png" class="ml-2" alt=""
+          style="width: 90%; position: relative; left: -10px; top: -9px; max-height: 100%; width: auto; height: auto;" />
+      </div>
+
+      <!-- input inicial -->
+      <div class="ml-auto cpointer float ng-star-inserted"
+      style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%;"
+        *ngIf="mostrarChat">
         <div>
-            <input type="text" placeholder="Pregunta aquí..." style="width: 100%; height: 50px; border: 2px solid #ccc;">
+          <input type="text" placeholder="Pregunta aquí..."
+            style="width: 100%; height: 50px; border: 2px solid #ffffff;">
         </div>
+      </div>
+
+      <!-- input si selecciona REQ requerimiento -->
+      <div *ngIf="selectReq && mostrarChat" class="ml-auto cpointer float ng-star-inserted"
+        style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+        <div>
+          <input type="text" [(ngModel)]="numeroRequerimiento" placeholder="Escribe el número de REQ - Requerimiento..."
+            style="width: 100%; height: 50px; border: 2px solid #ffffff;">
+          <button (click)="consultarRequerimiento()">Consultar Requerimiento</button>
+        </div>
+      </div>
 
     </div>
+    <!-- Fin Chatbot -->
 
-</div>
-
-
-    </div>
     <div class="col-md-8 col-12 align-self-center text-right pr-4 d-none d-md-block">
       <div class="btnencuestas d-inline-block ml-2" accesskey="y" (click)="abrirChatInHouse()">
         Consulta de casos
