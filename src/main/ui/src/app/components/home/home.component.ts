@@ -479,7 +479,7 @@ export class HomeComponent implements OnInit {
           </soapenv:Body>
         </soapenv:Envelope>`;
 
-        this.http.post('https://myitfull.claro.com.co:8443/arsys/services/ARService?server=remedy&webService=SRM_Request', soapRequest, {
+        this.http.post('http://172.24.160.149:8080/WSCusProbRequirement/WSCusProbRequirementSoapService?WSDL', soapRequest, {
         headers: { 'Content-Type': 'application/json' },
         responseType: 'text'
       }).subscribe((response) => {

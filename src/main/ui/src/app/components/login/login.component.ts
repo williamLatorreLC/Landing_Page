@@ -28,15 +28,18 @@ export class LoginComponent implements OnInit {
 
     this.users = this.fb.group({
       user: ['', Validators.required],
-      pass: ['', Validators.required]
+      pass: ['', Validators.required],
+      closeSessions: [this.isCloseSession]
     })
   }
 
   ngOnInit(): void {
     this.GtmServicesService.Tagging("Login","pt_login");
     this.spinner.hide()
+    
+
   }
-  async login() {
+  login() {
     this.GtmServicesService.Tagging("Login","bt_login_iniciarsesion");
     if (!this.users.invalid) {
       this.spinner.show();
@@ -47,7 +50,8 @@ export class LoginComponent implements OnInit {
       const encryptedPassword = btoa(this.users.value.pass);
       this.factoryService.post('loginMyIT', {
         user: encryptedUser,
-        pass: encryptedPassword
+        pass: encryptedPassword,
+        closeSessions: this.users.value.closeSessions
       }).then((res) => {
         this.spinner.hide()
         if (res.isError === false) {
