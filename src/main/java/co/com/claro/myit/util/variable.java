@@ -26,6 +26,15 @@ public class variable {
     String MyItResolutor;
     int BannerTime;
     int AvatarTime;
+    String ConsultaReq;
+
+    public String getConsultaReq() {
+        return ConsultaReq;
+    }
+
+    public void setConsultaReq(String ConsultaReq) {
+        this.ConsultaReq = ConsultaReq;
+    }
 
     public String getLoginMyItDir() {
         return LoginMyItDir;

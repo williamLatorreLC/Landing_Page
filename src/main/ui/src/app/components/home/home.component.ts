@@ -12,6 +12,7 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { GtagService } from '../../services/gtmServices/gtag.service';
 import { SessionServiceService } from '../../services/sessionService/session-service.service';
 import { HttpClient } from '@angular/common/http';
+import { CasosService } from 'src/app/services/casosServices/casos.service';
 
 
 @Component({
@@ -99,7 +100,8 @@ export class HomeComponent implements OnInit {
     private modalService: NgbModal,
     private GtmServicesService: GtagService,
     private SessionService: SessionServiceService,
-    private http: HttpClient
+    private http: HttpClient,
+    private casosService: CasosService
   ) {
     _config.interval = 30000;
     _config.pauseOnHover = true;
@@ -484,6 +486,22 @@ export class HomeComponent implements OnInit {
         responseType: 'text'
       }).subscribe((response) => {
         console.log(response);
+      });
+    }
+  }
+
+  async consultarReq() {
+    try {
+      const res = await this.casosService.post('casos', 'REQ000004205555');
+      console.log(res)
+    } catch (err) {
+      console.error(err);
+  
+      swal.fire({
+        title: 'Error',
+        text: 'Por el momento no está disponible esta información.',
+        confirmButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar'
       });
     }
   }

@@ -56,7 +56,7 @@ public class Login {
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
         JsonObject respuesta = new JsonObject();
-        try {
+        try { 
 
             LoginRequest datos = fn.getData(data, LoginRequest.class);
             
