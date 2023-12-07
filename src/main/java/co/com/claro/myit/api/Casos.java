@@ -4,17 +4,9 @@
  */
 package co.com.claro.myit.api;
 
-import co.com.claro.myit.db.UserSessionEntity;
 import co.com.claro.myit.service.ConsultaCasosService;
-import co.com.claro.myit.service.LoginService;
-import co.com.claro.myit.util.AES;
-import co.com.claro.myit.util.MySqlUtils;
 import co.com.claro.myit.util.functions;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Date;
 import javax.servlet.ServletContext;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -27,7 +19,7 @@ import org.json.XML;
  *
  * @author dussan.palma
  */
-@Path("/casos")
+@Path("/ConsultarReq")
 public class Casos {
     
     @Context
@@ -47,10 +39,13 @@ public class Casos {
        
         ConsultaCasosService consultaCasosService= new ConsultaCasosService(datos, fn);
         
+        responseString = consultaCasosService.consultarReq();
+        
         JSONObject jsonObj = XML.toJSONObject(responseString);
-        respuesta = fn.getResponse(jsonObj.toString());
-                
-        return "OK";
+        respuesta = fn.getResponse(jsonObj.toString());         
+        
+       JsonObject res = consultaCasosService.getBody(respuesta);
+       return fn.respOk(res.getAsJsonObject()); 
     }
     
 }

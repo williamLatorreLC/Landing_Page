@@ -11,31 +11,9 @@ import com.google.gson.annotations.SerializedName;
  * @author dussan.palma
  */
 public class ConsultaRequerimientoRequest {
-    
-    @SerializedName("user")
-    private String user;
-    
-    @SerializedName("pass")
-    private String pass;
-    
+   
     @SerializedName("reqNumber")
     private String reqNumber;
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
 
     public String getReqNumber() {
         return reqNumber;

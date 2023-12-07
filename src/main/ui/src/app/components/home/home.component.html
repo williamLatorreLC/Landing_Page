@@ -347,6 +347,11 @@
                 <p style="margin: 0;"><strong>AnITa:</strong> Escribe el número de REQ - Requerimiento a consultar</p>
               </div>
               <br />
+              <div *ngIf="response" class="contenido"
+              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+                <p style="margin: 0;"><strong>AnITa:</strong>{{ response.value }}</p>
+              </div>
+              <br />
               <button (click)="SearchReq()"> Volver </button>
             </div>
           </div>
@@ -373,23 +378,24 @@
       </div>
 
       <!-- input si selecciona REQ requerimiento -->
+      <form [formGroup]="numberRequerimiento" (ngSubmit)="consultarReq()">
       <div *ngIf="selectReq && mostrarChat" class="ml-auto cpointer float ng-star-inserted"
         style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
         <div>
           <input type="text" [(ngModel)]="numeroRequerimiento" placeholder="Escribe el número de REQ - Requerimiento..."
-            style="width: 100%; height: 50px; border: 2px solid #ffffff;">
+            style="width: 100%; height: 50px; border: 2px solid #ffffff;"  formControlName="reqNumber">
           <button (click)="consultarReq()">Consultar Requerimiento</button>
         </div>
       </div>
+    </form>
 
     </div>
     <!-- Fin Chatbot -->
-
     <div class="col-md-8 col-12 align-self-center text-right pr-4 d-none d-md-block">
-      <!-- <div class="btnencuestas d-inline-block ml-2" accesskey="y" (click)="abrirChatInHouse()">
+      <div class="btnencuestas d-inline-block ml-2" accesskey="y" (click)="abrirChatInHouse()">
         Consulta de casos
         <img src="./assets/img/home/icn-encuentas.png" class="ml-2" alt="" />
-      </div> -->
+      </div>  
       <div class="btnencuestas d-inline-block ml-2" (click)="getSurveys()" accesskey="y"
         *ngIf="!infoUser.esContingencia">
         Encuestas

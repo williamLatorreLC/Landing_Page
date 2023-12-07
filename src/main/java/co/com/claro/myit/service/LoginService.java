@@ -57,12 +57,14 @@ public class LoginService {
             } catch (InvalidKeyException ex) {
                 Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println(body);
+             System.out.println("Body que se envia");
+             System.out.println(body);
         } else {
             body = Const.xmlRequest;
             body = body.replaceAll("--user--", this.data.getUser());
             body = body.replaceAll("--genericUser--", this.data.getUser());
             body = body.replaceAll(Pattern.quote("--genericPass--"), Matcher.quoteReplacement(this.data.getPass()));
+            System.out.println("Body que se envia");
             System.out.println(body);
         }
 

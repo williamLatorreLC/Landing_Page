@@ -13,6 +13,7 @@ import { GtagService } from '../../services/gtmServices/gtag.service';
 import { SessionServiceService } from '../../services/sessionService/session-service.service';
 import { HttpClient } from '@angular/common/http';
 import { CasosService } from 'src/app/services/casosServices/casos.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -92,6 +93,8 @@ export class HomeComponent implements OnInit {
   numeroRequerimiento: string = '';
   consultaCaso: boolean = false;
   selectReq: boolean = false;
+  numberRequerimiento: FormGroup;
+  response: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -101,7 +104,8 @@ export class HomeComponent implements OnInit {
     private GtmServicesService: GtagService,
     private SessionService: SessionServiceService,
     private http: HttpClient,
-    private casosService: CasosService
+    private casosService: CasosService,
+    private fb: FormBuilder,
   ) {
     _config.interval = 30000;
     _config.pauseOnHover = true;
@@ -112,6 +116,10 @@ export class HomeComponent implements OnInit {
       backdrop: 'static',
       backdropClass: 'customBackdrop',
     };
+
+    this.numberRequerimiento = this.fb.group({
+      reqNumber: ['']
+    })
   }
 
   ngOnInit(): void {
@@ -464,45 +472,14 @@ export class HomeComponent implements OnInit {
     this.selectReq = !this.selectReq;
   }
 
-  consultarRequerimiento() {
-    if (this.numeroRequerimiento.trim() !== '') {
-      const soapRequest = `
-        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:SRM_Request">
-          <soapenv:Header>
-            <urn:AuthenticationInfo>
-              <urn:userName>matilda.claro</urn:userName>
-              <urn:password>Claro2018*</urn:password>
-            </urn:AuthenticationInfo>
-          </soapenv:Header>
-          <soapenv:Body>
-            <urn:Get>
-              <urn:Service_Request_Number>${this.numeroRequerimiento}</urn:Service_Request_Number>
-            </urn:Get>
-          </soapenv:Body>
-        </soapenv:Envelope>`;
-
-        this.http.post('http://172.24.160.149:8080/WSCusProbRequirement/WSCusProbRequirementSoapService?WSDL', soapRequest, {
-        headers: { 'Content-Type': 'application/json' },
-        responseType: 'text'
-      }).subscribe((response) => {
-        console.log(response);
-      });
-    }
-  }
-
   async consultarReq() {
     try {
-      const res = await this.casosService.post('casos', 'REQ000004205555');
-      console.log(res)
+      const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
+      console.log(res.response.AppRequestID);
+      console.log(res.response);
+      this.response = res;
     } catch (err) {
       console.error(err);
-  
-      swal.fire({
-        title: 'Error',
-        text: 'Por el momento no está disponible esta información.',
-        confirmButtonColor: '#dc3545',
-        confirmButtonText: 'Aceptar'
-      });
     }
   }
 

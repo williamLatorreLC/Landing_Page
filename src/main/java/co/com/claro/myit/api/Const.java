@@ -88,28 +88,26 @@ public class Const {
             + "    Format=\"urn:oasis:names:tc:SAML:2.0:nameid-format:transient\">--AssertionID--</samlp:NameID>\n"
             + "</samlp:LogoutRequest>";
 
-    /* Consulta de Requerimientos*/
-    public static final String SoapActionConsultaReq = "urn:SRM_Request";
+    /* Consulta de Requerimientos*/ 
+    public static final String SoapActionConsultaReq = "urn:SRM_Request/Get";
 
-    public static String xmlRequestConsultaReq
-            = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:SRM_Request\">\n"
-            + "  <soapenv:Header>\n"
-            + "    <urn:AuthenticationInfo>\n"
-            + "      <urn:userName>matilda.claro</urn:userName>\n"
-            + "      <urn:password>Claro2018*</urn:password>\n"
-            + "      <!--Optional:-->\n"
-            + "      <urn:authentication>?</urn:authentication>\n"
-            + "      <!--Optional:-->\n"
-            + "      <urn:locale>?</urn:locale>\n"
-            + "      <!--Optional:-->\n"
-            + "      <urn:timeZone>?</urn:timeZone>\n"
-            + "    </urn:AuthenticationInfo>\n"
-            + "  </soapenv:Header>\n"
-            + "  <soapenv:Body>\n"
-            + "    <urn:Get>\n"
-            + "      <urn:Service_Request_Number>--req--</urn:Service_Request_Number>\n"
-            + "    </urn:Get>\n"
-            + "  </soapenv:Body>\n"
+    public static String xmlRequestConsultaReq = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:SRM_Request\">"
+            + " <soapenv:Header>"
+            + "    <urn:AuthenticationInfo>"
+            + "        <urn:userName>matilda.claro</urn:userName>"
+            + "        <urn:password>Claro2018*</urn:password>"
+            + "        <!--Optional:-->"
+            + "        <urn:authentication>?</urn:authentication>"
+            + "        <!--Optional:-->"
+            + "        <urn:locale>?</urn:locale>"
+            + "        <!--Optional:-->"
+            + "        <urn:timeZone>?</urn:timeZone>"
+            + "    </urn:AuthenticationInfo>"
+            + "  </soapenv:Header>"
+            + "  <soapenv:Body>"
+            + "    <urn:Get>"
+            + "      <urn:Service_Request_Number>--req--</urn:Service_Request_Number>"
+            + "    </urn:Get>"
+            + "  </soapenv:Body>"
             + "</soapenv:Envelope>";
-
 }
