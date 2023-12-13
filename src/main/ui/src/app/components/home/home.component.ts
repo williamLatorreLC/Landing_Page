@@ -92,7 +92,6 @@ export class HomeComponent implements OnInit {
   verify = null;
 
   numeroRequerimiento: string = '';
-  consultaCaso: boolean = false;
   selectReq: boolean = false;
   numberRequerimiento: FormGroup;
   Request_Number: string;
@@ -101,6 +100,8 @@ export class HomeComponent implements OnInit {
   Summary: string;
   Submit_Date: string;
   Completion_Date: string;
+  consultarOcrearCaso: boolean = false;
+  consultaCaso: boolean = false;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -471,7 +472,10 @@ export class HomeComponent implements OnInit {
   }
 
   consultarCaso() {
-    this.consultaCaso = !this.consultaCaso;
+    this.consultarOcrearCaso = !this.consultarOcrearCaso;
+    setTimeout(() => {
+      this.consultaCaso = !this.consultaCaso;
+    }, 1100); 
   }
 
   SearchReq() {
