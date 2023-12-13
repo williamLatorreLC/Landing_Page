@@ -347,9 +347,23 @@
                 <p style="margin: 0;"><strong>AnITa:</strong> Escribe el número de REQ - Requerimiento a consultar</p>
               </div>
               <br />
-              <div *ngIf="response" class="contenido"
+              <div *ngIf="Request_Number" class="contenido"
               style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
-                <p style="margin: 0;"><strong>AnITa:</strong>{{ response.value }}</p>
+                <p style="margin: 0;">
+                  Descripción del requerimiento:
+                  <br />
+                  <strong>No. de requerimiento:</strong> {{ Request_Number }}
+                  <br />
+                  <strong>No. de incidente / solicitud:</strong> {{ AppRequestID }}
+                  <br />
+                  <strong>Estado:</strong> {{ Status }}
+                  <br />
+                  <strong>Descripción del requerimiento:</strong> {{ Summary }}
+                  <br />
+                  <strong>Fecha de creación:</strong> {{ Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                  <br />
+                  <strong>Fecha de soluón:</strong> {{ Completion_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                </p>
               </div>
               <br />
               <button (click)="SearchReq()"> Volver </button>
@@ -392,10 +406,10 @@
     </div>
     <!-- Fin Chatbot -->
     <div class="col-md-8 col-12 align-self-center text-right pr-4 d-none d-md-block">
-      <div class="btnencuestas d-inline-block ml-2" accesskey="y" (click)="abrirChatInHouse()">
+      <!-- <div class="btnencuestas d-inline-block ml-2" accesskey="y" (click)="abrirChatInHouse()">
         Consulta de casos
         <img src="./assets/img/home/icn-encuentas.png" class="ml-2" alt="" />
-      </div>  
+      </div>   -->
       <div class="btnencuestas d-inline-block ml-2" (click)="getSurveys()" accesskey="y"
         *ngIf="!infoUser.esContingencia">
         Encuestas

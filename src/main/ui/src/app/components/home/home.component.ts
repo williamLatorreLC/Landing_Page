@@ -87,6 +87,7 @@ export class HomeComponent implements OnInit {
     MyItUser: '',
     MyItResolutor: ''
   };
+
   modalInstance = null;
   verify = null;
 
@@ -94,7 +95,12 @@ export class HomeComponent implements OnInit {
   consultaCaso: boolean = false;
   selectReq: boolean = false;
   numberRequerimiento: FormGroup;
-  response: any;
+  Request_Number: string;
+  AppRequestID: string;
+  Status: string;
+  Summary: string;
+  Submit_Date: string;
+  Completion_Date: string;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -475,9 +481,13 @@ export class HomeComponent implements OnInit {
   async consultarReq() {
     try {
       const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
-      console.log(res.response.AppRequestID);
-      console.log(res.response);
-      this.response = res;
+      console.log(res.response.Request_Number);
+      this.Request_Number = res.response.Request_Number;
+      this.AppRequestID = res.response.AppRequestID;
+      this.Status = res.response.Status;
+      this.Summary = res.response.Summary;
+      this.Submit_Date =  res.response.Submit_Date;
+      this.Completion_Date = res.response.Completion_Date;
     } catch (err) {
       console.error(err);
     }
