@@ -305,6 +305,7 @@
                 </p>
               </div>
               <br />
+
               <!-- Mensaje 4 Anita (Consultar o Crear Caso) -->
               <div class="contenido" *ngIf="consultaCaso"
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
@@ -329,6 +330,70 @@
               </div>
 
               <br />
+              <!-- Mensaje 5 Anita (Cartilla) -->
+              <div class="contenido" *ngIf="consultaCaso"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Nota: Si aún no sabes cómo consultar un caso, descarga la
+                  cartilla haciendo click <a
+                    href="https://static-or01.inbenta.com/e3d52cc744f1828a9937b9b1ab54d2ef4b76f18b247b14dab3a61c4a2c031dff/Cartilla%20Consulta%20de%20Casos%20en%20AnITa-comprimido.pdf"
+                    style="text-decoration: underline; color: blue; " target="_blank">aquí</a> y sigue los pasos.
+                  <br />
+                </p>
+              </div>
+
+              <br />
+
+              <!-- Mensaje 2 User (Si se selecciona consultar Requerimiento) -->
+              <div class="contenido" *ngIf="selectReq"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> REQ - Requerimiento
+                </p>
+              </div>
+              <br />
+
+
+              <!-- Mensaje 6 Anita (Si se selecciona consultar Requerimiento)-->
+              <div class="contenido" *ngIf="selectReq"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Para conocer el estado de tu caso digita el código 👇</p>
+              </div>
+              <br />
+
+              <!-- Mensaje 3 User (Numero de requerimiento) -->
+              <div class="contenido" *ngIf="selectReq && numeroRequerimientoIngresado"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> {{ numeroRequerimientoIngresado }}
+                </p>
+              </div>
+
+              <!-- Mensaje 7 Anita (Respuesta del numero de requerimiento)-->
+              <div *ngIf="selectReq">
+                <!-- Contenido si selecciona REQ requerimiento -->
+                <br />
+                <div *ngIf="Request_Number" class="contenido"
+                  style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+                  <p style="margin: 0;"><strong>AnITa:</strong>
+                    Descripción del requerimiento:
+                    <br />
+                    <strong>No. de requerimiento:</strong> {{ Request_Number }}
+                    <br />
+                    <strong>No. de incidente / solicitud:</strong> {{ AppRequestID }}
+                    <br />
+                    <strong>Estado:</strong> {{ Status }}
+                    <br />
+                    <strong>Descripción del requerimiento:</strong> {{ Summary }}
+                    <br />
+                    <strong>Fecha de creación:</strong> {{ Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Fecha de soluón:</strong> {{ Completion_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                  </p>
+                </div>
+                <br />
+              </div>
+
+              <button *ngIf="Request_Number" (click)="resetChat()">Volver</button>
+
+              <br />
               <br />
               <br />
               <br />
@@ -339,7 +404,7 @@
         </div>
 
 
-        <!-- AnITa inicial -->
+        <!-- AnITa Foto inicial -->
         <div
           style="left: 50.5%; top: 13%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 0px; width: 15%; height: 65% "
           *ngIf="mostrarChat">
@@ -369,6 +434,7 @@
             </div>
           </div>
         </form>
+
       </div>
     </div>
     <!-- Fin Chatbot -->

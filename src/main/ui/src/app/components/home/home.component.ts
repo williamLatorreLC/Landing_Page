@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
   numeroRequerimiento: string = '';
   selectReq: boolean = false;
   numberRequerimiento: FormGroup;
-  Request_Number: string;
+  Request_Number: any;
   AppRequestID: string;
   Status: string;
   Summary: string;
@@ -102,6 +102,7 @@ export class HomeComponent implements OnInit {
   Completion_Date: string;
   consultarOcrearCaso: boolean = false;
   consultaCaso: boolean = false;
+  numeroRequerimientoIngresado: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -475,11 +476,21 @@ export class HomeComponent implements OnInit {
     this.consultarOcrearCaso = !this.consultarOcrearCaso;
     setTimeout(() => {
       this.consultaCaso = !this.consultaCaso;
-    }, 1100); 
+    }, 400); 
   }
 
   SearchReq() {
-    this.selectReq = !this.selectReq;
+    setTimeout(() => {
+      this.selectReq = !this.selectReq;
+    }, 400); 
+  }
+
+  resetChat(){
+    this.consultarOcrearCaso = false;
+    this.selectReq = false;
+    this.consultaCaso = false;
+    this.numeroRequerimientoIngresado = '';
+    this.Request_Number = null;
   }
 
   async consultarReq() {
@@ -492,6 +503,8 @@ export class HomeComponent implements OnInit {
       this.Summary = res.response.Summary;
       this.Submit_Date =  res.response.Submit_Date;
       this.Completion_Date = res.response.Completion_Date;
+      this.numeroRequerimientoIngresado = res.response.Request_Number;
+      this.numberRequerimiento.controls['reqNumber'].setValue('');
     } catch (err) {
       console.error(err);
     }
