@@ -11,6 +11,10 @@ import * as $ from 'jquery';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { GtagService } from '../../services/gtmServices/gtag.service';
 import { SessionServiceService } from '../../services/sessionService/session-service.service';
+import { HttpClient } from '@angular/common/http';
+import { CasosService } from 'src/app/services/casosServices/casos.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-home',
@@ -22,6 +26,7 @@ export class HomeComponent implements OnInit {
     | TemplateRef<any>
     | undefined;
 
+  mostrarChat: boolean = false;
   menu = true;
   banner = true;
   botones = true;
@@ -76,14 +81,26 @@ export class HomeComponent implements OnInit {
     tokenForm: '',
     version: '',
     surveys: {},
-    AvatarTime:0,
-    BannerTime:0,
-    MyItStore:'',
-    MyItUser:'',
-    MyItResolutor:''
+    AvatarTime: 0,
+    BannerTime: 0,
+    MyItStore: '',
+    MyItUser: '',
+    MyItResolutor: ''
   };
+
   modalInstance = null;
   verify = null;
+
+  numeroRequerimiento: string = '';
+  consultaCaso: boolean = false;
+  selectReq: boolean = false;
+  numberRequerimiento: FormGroup;
+  Request_Number: string;
+  AppRequestID: string;
+  Status: string;
+  Summary: string;
+  Submit_Date: string;
+  Completion_Date: string;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -91,7 +108,10 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private GtmServicesService: GtagService,
-    private SessionService: SessionServiceService
+    private SessionService: SessionServiceService,
+    private http: HttpClient,
+    private casosService: CasosService,
+    private fb: FormBuilder,
   ) {
     _config.interval = 30000;
     _config.pauseOnHover = true;
@@ -102,6 +122,10 @@ export class HomeComponent implements OnInit {
       backdrop: 'static',
       backdropClass: 'customBackdrop',
     };
+
+    this.numberRequerimiento = this.fb.group({
+      reqNumber: ['']
+    })
   }
 
   ngOnInit(): void {
@@ -153,9 +177,9 @@ export class HomeComponent implements OnInit {
       .post('utils/dec', { token: sessionStorage.getItem('X_MYIT_LAND') })
       .then((res) => {
         if (res.isError === false) {
-          
+
           this.infoUser = res.response.map;
-            console.log(this.infoUser);
+          console.log(this.infoUser);
           setTimeout(function () {
             //$scope.$apply(); TO DO => No se coomo funciona esto.
           }, 200);
@@ -292,8 +316,8 @@ export class HomeComponent implements OnInit {
     const chatURL = encodeURI('./chatbot');
     $('#siteloader').html(
       '<object class="chatObj" data="' +
-        chatURL +
-        '"  style="z-index:999 !important"/>'
+      chatURL +
+      '"  style="z-index:999 !important"/>'
     );
     this.chatOpen = true;
     this.modalInstance = null;
@@ -437,4 +461,36 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
+  abrirChatInHouse() {
+    this.mostrarChat = true;
+  }
+
+  cerrarChatInHouse() {
+    this.mostrarChat = false;
+  }
+
+  consultarCaso() {
+    this.consultaCaso = !this.consultaCaso;
+  }
+
+  SearchReq() {
+    this.selectReq = !this.selectReq;
+  }
+
+  async consultarReq() {
+    try {
+      const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
+      console.log(res.response.Request_Number);
+      this.Request_Number = res.response.Request_Number;
+      this.AppRequestID = res.response.AppRequestID;
+      this.Status = res.response.Status;
+      this.Summary = res.response.Summary;
+      this.Submit_Date =  res.response.Submit_Date;
+      this.Completion_Date = res.response.Completion_Date;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
 }

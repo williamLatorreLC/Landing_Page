@@ -19,3 +19,12 @@
 .embed-responsive {
   position: static !important;
 }
+
+.cuadro-flotante {
+  position: fixed;
+  background-color: white;
+  border: 2px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box; /* Incluye el borde y el relleno en las dimensiones */
+  transition: all 0.3s ease; /* Agrega una transición suave para cambios en tamaño y posición */
+}
