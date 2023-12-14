@@ -94,6 +94,8 @@ export class HomeComponent implements OnInit {
   numeroRequerimiento: string = '';
   selectReq: boolean = false;
   numberRequerimiento: FormGroup;
+  numberWO: FormGroup;
+  numberINC: FormGroup;
   Request_Number: any;
   AppRequestID: string;
   Status: string;
@@ -103,6 +105,11 @@ export class HomeComponent implements OnInit {
   consultarOcrearCaso: boolean = false;
   consultaCaso: boolean = false;
   numeroRequerimientoIngresado: any;
+  descripcionIncidente: any;
+  statusIncidente: any;
+  descripcionIncidenteDetallada: any;
+  fechaCreacionIncidente: any;
+
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -476,16 +483,16 @@ export class HomeComponent implements OnInit {
     this.consultarOcrearCaso = !this.consultarOcrearCaso;
     setTimeout(() => {
       this.consultaCaso = !this.consultaCaso;
-    }, 400); 
+    }, 400);
   }
 
   SearchReq() {
     setTimeout(() => {
       this.selectReq = !this.selectReq;
-    }, 400); 
+    }, 400);
   }
 
-  resetChat(){
+  resetChat() {
     this.consultarOcrearCaso = false;
     this.selectReq = false;
     this.consultaCaso = false;
@@ -496,15 +503,32 @@ export class HomeComponent implements OnInit {
   async consultarReq() {
     try {
       const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
-      console.log(res.response.Request_Number);
       this.Request_Number = res.response.Request_Number;
       this.AppRequestID = res.response.AppRequestID;
       this.Status = res.response.Status;
       this.Summary = res.response.Summary;
-      this.Submit_Date =  res.response.Submit_Date;
+      this.Submit_Date = res.response.Submit_Date;
       this.Completion_Date = res.response.Completion_Date;
       this.numeroRequerimientoIngresado = res.response.Request_Number;
       this.numberRequerimiento.controls['reqNumber'].setValue('');
+
+      if (this.AppRequestID.startsWith("INC")) {
+        const resINC = await this.casosService.post('ConsultarINC', {
+          incNumber: this.AppRequestID,
+        });
+        this.descripcionIncidenteDetallada = resINC.response.Detailed_Description;
+        this.statusIncidente = resINC.response.Status;
+        this.descripcionIncidente = resINC.response.Description;
+        this.fechaCreacionIncidente = resINC.response.Submit_Date;
+      } else if (this.AppRequestID.startsWith("WO")) {
+        const resWO = await this.casosService.post('ConsultarWO', {
+          woNumber: this.AppRequestID,
+        });
+      this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
+      this.statusIncidente = resWO.response.Status;
+      this.descripcionIncidente = resWO.response.Summary;
+      this.fechaCreacionIncidente = resWO.response.Submit_Date;
+      }
     } catch (err) {
       console.error(err);
     }

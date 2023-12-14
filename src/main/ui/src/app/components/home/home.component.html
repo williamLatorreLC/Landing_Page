@@ -386,7 +386,22 @@
                     <strong>Fecha de creación:</strong> {{ Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
                     <br />
                     <strong>Fecha de soluón:</strong> {{ Completion_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <br />
+                    <strong>Descripción del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong>No. de INC / WO:</strong> {{ AppRequestID }}
+                    <br />
+                    <strong>Estado:</strong> {{ statusIncidente }}
+                    <br />
+                    <strong>Descripción:</strong> {{ descripcionIncidente }}
+                    <br />
+                    <strong>Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
                   </p>
+                  <div class="descripcion-detallada">
+                    <strong>Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                  </div>
                 </div>
                 <br />
               </div>
@@ -402,7 +417,6 @@
             </div>
           </div>
         </div>
-
 
         <!-- AnITa Foto inicial -->
         <div

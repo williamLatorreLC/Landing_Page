@@ -27,7 +27,27 @@ public class variable {
     int BannerTime;
     int AvatarTime;
     String ConsultaReq;
+    String ConsultaWO;
+    String ConsultaINC;
 
+    public String getConsultaWO() {
+        return ConsultaWO;
+    }
+
+    public void setConsultaWO(String ConsultaWO) {
+        this.ConsultaWO = ConsultaWO;
+    }
+
+    public String getConsultaINC() {
+        return ConsultaINC;
+    }
+
+    public void setConsultaINC(String ConsultaINC) {
+        this.ConsultaINC = ConsultaINC;
+    }
+
+    
+    
     public String getConsultaReq() {
         return ConsultaReq;
     }

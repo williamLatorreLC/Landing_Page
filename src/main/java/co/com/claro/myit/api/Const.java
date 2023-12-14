@@ -88,7 +88,7 @@ public class Const {
             + "    Format=\"urn:oasis:names:tc:SAML:2.0:nameid-format:transient\">--AssertionID--</samlp:NameID>\n"
             + "</samlp:LogoutRequest>";
 
-    /* Consulta de Requerimientos*/ 
+    /* Consulta de Requerimientos*/
     public static final String SoapActionConsultaReq = "urn:SRM_Request/Get";
 
     public static String xmlRequestConsultaReq = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:SRM_Request\">"
@@ -110,4 +110,51 @@ public class Const {
             + "    </urn:Get>"
             + "  </soapenv:Body>"
             + "</soapenv:Envelope>";
+
+    /* Consulta de Work Order*/
+    public static final String SoapActionConsultaWO = "urn:WOI_WorkOrder_WS/Get";
+
+    public static String xmlRequestConsultaWO = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:WOI_WorkOrder_WS\">"
+            + " <soapenv:Header>"
+            + "    <urn:AuthenticationInfo>"
+            + "        <urn:userName>matilda.claro</urn:userName>"
+            + "        <urn:password>Claro2018*</urn:password>"
+            + "        <!--Optional:-->"
+            + "        <urn:authentication>?</urn:authentication>"
+            + "        <!--Optional:-->"
+            + "        <urn:locale>?</urn:locale>"
+            + "        <!--Optional:-->"
+            + "        <urn:timeZone>?</urn:timeZone>"
+            + "    </urn:AuthenticationInfo>"
+            + "  </soapenv:Header>"
+            + "  <soapenv:Body>"
+            + "    <urn:Get>"
+            + "      <urn:Work_Order_Number>--wo--</urn:Work_Order_Number>"
+            + "    </urn:Get>"
+            + "  </soapenv:Body>"
+            + "</soapenv:Envelope>";
+
+    /* Consulta de INC*/
+    public static final String SoapActionConsultaINC = "urn:HPD_WorkLog/GetList";
+
+    public static String xmlRequestConsultaINC = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:HPD_WorkLog\">"
+            + " <soapenv:Header>"
+            + "    <urn:AuthenticationInfo>"
+            + "        <urn:userName>matilda.claro</urn:userName>"
+            + "        <urn:password>Claro2018*</urn:password>"
+            + "        <!--Optional:-->"
+            + "        <urn:authentication>?</urn:authentication>"
+            + "        <!--Optional:-->"
+            + "        <urn:locale>?</urn:locale>"
+            + "        <!--Optional:-->"
+            + "        <urn:timeZone>?</urn:timeZone>"
+            + "    </urn:AuthenticationInfo>"
+            + "  </soapenv:Header>"
+            + "  <soapenv:Body>"
+            + "    <urn:GetList>"
+            + "      <urn:Incident_Number>--inc--</urn:Incident_Number>"
+            + "    </urn:GetList>"
+            + "  </soapenv:Body>"
+            + "</soapenv:Envelope>";
+
 }
