@@ -516,7 +516,7 @@ export class HomeComponent implements OnInit {
         const resINC = await this.casosService.post('ConsultarINC', {
           incNumber: this.AppRequestID,
         });
-        this.descripcionIncidenteDetallada = resINC.response.Detailed_Description;
+        this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
         this.statusIncidente = resINC.response.Status;
         this.descripcionIncidente = resINC.response.Description;
         this.fechaCreacionIncidente = resINC.response.Submit_Date;

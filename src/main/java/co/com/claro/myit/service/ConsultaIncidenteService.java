@@ -44,11 +44,11 @@ public class ConsultaIncidenteService {
                 .getAsJsonObject("Body")
                 .getAsJsonObject("GetResponse");
 
-        res.addProperty("Incident_Number", getResponse.get("Incident_Number").getAsString());
-        res.addProperty("Status", getResponse.get("Status").getAsString());
-        res.addProperty("Description", getResponse.get("Description").getAsString());
-        res.addProperty("Submit_Date", getResponse.get("Submit_Date").getAsString());
-        res.addProperty("Detailed_Description", getResponse.get("Detailed_Description").getAsString());
+        res.addProperty("Incident_Number", getResponse.has("Incident_Number") ? getResponse.get("Incident_Number").getAsString() : "");
+        res.addProperty("Status", getResponse.has("Status") ? getResponse.get("Status").getAsString() : "");
+        res.addProperty("Description", getResponse.has("Description") ? getResponse.get("Description").getAsString() : "");
+        res.addProperty("Submit_Date", getResponse.has("Submit_Date") ? getResponse.get("Submit_Date").getAsString() : "");
+        res.addProperty("Detailed_Decription", getResponse.has("Detailed_Decription") ? getResponse.get("Detailed_Decription").getAsString() : "");
 
         System.out.println("Respuesta ConsultaOrdenTrabajoSerice.java");
         System.out.println(res);

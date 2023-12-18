@@ -135,9 +135,9 @@ public class Const {
             + "</soapenv:Envelope>";
 
     /* Consulta de INC*/
-    public static final String SoapActionConsultaINC = "urn:HPD_WorkLog/GetList";
+    public static final String SoapActionConsultaINC = "urn:HPD_HelpDesk_WS/Get";
 
-    public static String xmlRequestConsultaINC = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:HPD_WorkLog\">"
+    public static String xmlRequestConsultaINC = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:HPD_HelpDesk_WS\">"
             + " <soapenv:Header>"
             + "    <urn:AuthenticationInfo>"
             + "        <urn:userName>matilda.claro</urn:userName>"
@@ -151,9 +151,9 @@ public class Const {
             + "    </urn:AuthenticationInfo>"
             + "  </soapenv:Header>"
             + "  <soapenv:Body>"
-            + "    <urn:GetList>"
+            + "    <urn:Get>"
             + "      <urn:Incident_Number>--inc--</urn:Incident_Number>"
-            + "    </urn:GetList>"
+            + "    </urn:Get>"
             + "  </soapenv:Body>"
             + "</soapenv:Envelope>";
 

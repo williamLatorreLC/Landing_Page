@@ -43,7 +43,7 @@ public class ConsultaINC {
         responseString = consultaIncidenteService.consultarINC();
         
         JSONObject jsonObj = XML.toJSONObject(responseString);
-        respuesta = fn.getResponse(jsonObj.toString());         
+          respuesta = fn.getResponse(jsonObj.toString());         
 
        JsonObject res = consultaIncidenteService.getBody(respuesta);
        return fn.respOk(res.getAsJsonObject()); 
