@@ -152,7 +152,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.animateDots();
     this.GtmServicesService.Tagging('Home', 'pt_home');
     console.log(this.infoUser.esContingencia);
 
@@ -580,12 +579,4 @@ export class HomeComponent implements OnInit {
       console.error(err);
     }
   }
-
-  animateDots() {
-    const dotsInterval = interval(10);
-    dotsInterval.pipe(take(3)).subscribe(() => {
-      this.dots += '.';
-    });
-  }
-
 }

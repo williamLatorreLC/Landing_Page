@@ -403,8 +403,8 @@
                     <strong>Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
                   </div>
                   <br />
-                  <div *ngIf="!fechaNotaInc1"> <strong>{{ loadingMessage + dots }}</strong> <br />   </div> 
-                          
+                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>     
+                  <br />   
                   <p *ngIf="fechaNotaInc1" style="margin: 0;">
                     <strong>Notas del Incidente / Solicitud:</strong>
                     <br />
