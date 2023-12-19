@@ -49,6 +49,8 @@ public class ConsultaIncidenteService {
         res.addProperty("Description", getResponse.has("Description") ? getResponse.get("Description").getAsString() : "");
         res.addProperty("Submit_Date", getResponse.has("Submit_Date") ? getResponse.get("Submit_Date").getAsString() : "");
         res.addProperty("Detailed_Decription", getResponse.has("Detailed_Decription") ? getResponse.get("Detailed_Decription").getAsString() : "");
+        res.addProperty("Resolution", getResponse.has("Resolution") ? getResponse.get("Resolution").getAsString() : "");
+        res.addProperty("Real_Solution_Date", getResponse.has("Real_Solution_Date") ? getResponse.get("Real_Solution_Date").getAsString() : "");
 
         System.out.println("Respuesta ConsultaOrdenTrabajoSerice.java");
         System.out.println(res);

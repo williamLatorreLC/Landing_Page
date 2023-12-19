@@ -35,6 +35,8 @@ public class ApiConfig extends Application {
         resources.add(Casos.class);
         resources.add(ConsultaINC.class);
         resources.add(ConsultaWO.class);
+        resources.add(ConsultaNotasINC.class);
+        resources.add(ConsultaNotasWO.class);
         return resources;
     }
 

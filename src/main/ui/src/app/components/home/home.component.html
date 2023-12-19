@@ -402,12 +402,43 @@
                   <div class="descripcion-detallada">
                     <strong>Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
                   </div>
+                  <br />
+                  <div *ngIf="!fechaNotaInc1"> <strong>{{ loadingMessage + dots }}</strong> <br />   </div> 
+                          
+                  <p *ngIf="fechaNotaInc1" style="margin: 0;">
+                    <strong>Notas del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc1 }}
+                    <br />
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc2 }}
+                    <br />
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc3 }}
+                    <br />
+                    <br />
+                  </p>
+                  <button>Agregar Nota</button>
+                  <br />
+                  <br />
+                  <p *ngIf="resolution" style="margin: 0;">
+                    <strong>Solución del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong>Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                    <br />
+                  </p>
                 </div>
                 <br />
               </div>
-
               <button *ngIf="Request_Number" (click)="resetChat()">Volver</button>
-
               <br />
               <br />
               <br />

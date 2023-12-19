@@ -157,4 +157,49 @@ public class Const {
             + "  </soapenv:Body>"
             + "</soapenv:Envelope>";
 
+    /* Consulta notas de INC*/
+    public static final String SoapActionConsultaNotasINC = "urn:HPD_WorkLog/GetList";
+
+    public static String xmlRequestConsultaNotasINC = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:HPD_WorkLog\">"
+            + " <soapenv:Header>"
+            + "    <urn:AuthenticationInfo>"
+            + "        <urn:userName>matilda.claro</urn:userName>"
+            + "        <urn:password>Claro2018*</urn:password>"
+            + "        <!--Optional:-->"
+            + "        <urn:authentication>?</urn:authentication>"
+            + "        <!--Optional:-->"
+            + "        <urn:locale>?</urn:locale>"
+            + "        <!--Optional:-->"
+            + "        <urn:timeZone>?</urn:timeZone>"
+            + "    </urn:AuthenticationInfo>"
+            + "  </soapenv:Header>"
+            + "  <soapenv:Body>"
+            + "    <urn:GetList>"
+            + "      <urn:Incident_Number>--inc--</urn:Incident_Number>"
+            + "    </urn:GetList>"
+            + "  </soapenv:Body>"
+            + "</soapenv:Envelope>";
+
+    public static final String SoapActionConsultaNotasWO = "urn:WOI_WorkInfo/GetList";
+
+    public static String xmlRequestNotasConsultaWO = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:WOI_WorkInfo\">"
+            + " <soapenv:Header>"
+            + "    <urn:AuthenticationInfo>"
+            + "        <urn:userName>matilda.claro</urn:userName>"
+            + "        <urn:password>Claro2018*</urn:password>"
+            + "        <!--Optional:-->"
+            + "        <urn:authentication>?</urn:authentication>"
+            + "        <!--Optional:-->"
+            + "        <urn:locale>?</urn:locale>"
+            + "        <!--Optional:-->"
+            + "        <urn:timeZone>?</urn:timeZone>"
+            + "    </urn:AuthenticationInfo>"
+            + "  </soapenv:Header>"
+            + "  <soapenv:Body>"
+            + "    <urn:GetList>"
+            + "      <urn:Work_Order_ID>--wo--</urn:Work_Order_ID>"
+            + "    </urn:GetList>"
+            + "  </soapenv:Body>"
+            + "</soapenv:Envelope>";
+
 }

@@ -4,7 +4,7 @@
  */
 package co.com.claro.myit.api;
 
-import co.com.claro.myit.service.ConsultaIncidenteService;
+import co.com.claro.myit.service.ConsultaNotasOrdenTrabajoService;
 import co.com.claro.myit.util.functions;
 import com.google.gson.JsonObject;
 import javax.servlet.ServletContext;
@@ -19,8 +19,8 @@ import org.json.XML;
  *
  * @author dussan.palma
  */
-@Path("/ConsultarINC")
-public class ConsultaINC {
+@Path("/ConsultarNotasWO")
+public class ConsultaNotasWO {
     
     @Context
     private ServletContext context;
@@ -29,21 +29,21 @@ public class ConsultaINC {
     
     @POST
     @Produces("application/json")
-    public String consultarINC(String data) {
+    public String consultarNotasWO(String data) {
         String responseString = "";
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         JsonObject respuesta = new JsonObject();
         
-        ConsultaIncidenteRequest datos = fn.getData(data, ConsultaIncidenteRequest.class);
+        ConsultaNotasOrdenTrabajoRequest datos = fn.getData(data, ConsultaNotasOrdenTrabajoRequest.class);
         
-        ConsultaIncidenteService consultaIncidenteService = new ConsultaIncidenteService(datos, fn);
+        ConsultaNotasOrdenTrabajoService consultaNotasOrdenTrabajoService = new ConsultaNotasOrdenTrabajoService(datos, fn);
 
-        responseString = consultaIncidenteService.consultarINC();
+        responseString = consultaNotasOrdenTrabajoService.consultarNotasWO();
         
         JSONObject jsonObj = XML.toJSONObject(responseString);
         respuesta = fn.getResponse(jsonObj.toString());         
 
-       JsonObject res = consultaIncidenteService.getBody(respuesta);
+       JsonObject res = consultaNotasOrdenTrabajoService.getBody(respuesta);
        return fn.respOk(res.getAsJsonObject()); 
     }
     

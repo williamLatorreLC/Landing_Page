@@ -4,7 +4,7 @@
  */
 package co.com.claro.myit.api;
 
-import co.com.claro.myit.service.ConsultaIncidenteService;
+import co.com.claro.myit.service.ConsultaNotasIncidenteService;
 import co.com.claro.myit.util.functions;
 import com.google.gson.JsonObject;
 import javax.servlet.ServletContext;
@@ -19,8 +19,8 @@ import org.json.XML;
  *
  * @author dussan.palma
  */
-@Path("/ConsultarINC")
-public class ConsultaINC {
+@Path("/ConsultarNotasINC")
+public class ConsultaNotasINC {
     
     @Context
     private ServletContext context;
@@ -34,16 +34,16 @@ public class ConsultaINC {
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         JsonObject respuesta = new JsonObject();
         
-        ConsultaIncidenteRequest datos = fn.getData(data, ConsultaIncidenteRequest.class);
+        ConsultaNotasIncidenteRequest datos = fn.getData(data, ConsultaNotasIncidenteRequest.class);
         
-        ConsultaIncidenteService consultaIncidenteService = new ConsultaIncidenteService(datos, fn);
+        ConsultaNotasIncidenteService consultaNotasIncidenteService = new ConsultaNotasIncidenteService(datos, fn);
 
-        responseString = consultaIncidenteService.consultarINC();
+        responseString = consultaNotasIncidenteService.consultarNotasINC();
         
         JSONObject jsonObj = XML.toJSONObject(responseString);
         respuesta = fn.getResponse(jsonObj.toString());         
 
-       JsonObject res = consultaIncidenteService.getBody(respuesta);
+       JsonObject res = consultaNotasIncidenteService.getBody(respuesta);
        return fn.respOk(res.getAsJsonObject()); 
     }
     

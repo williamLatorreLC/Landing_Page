@@ -29,7 +29,26 @@ public class variable {
     String ConsultaReq;
     String ConsultaWO;
     String ConsultaINC;
+    String ConsultaNotasINC;
+    String ConsultaNotasWO;
 
+    public String getConsultaNotasINC() {
+        return ConsultaNotasINC;
+    }
+
+    public void setConsultaNotasINC(String ConsultaNotasINC) {
+        this.ConsultaNotasINC = ConsultaNotasINC;
+    }
+
+    public String getConsultaNotasWO() {
+        return ConsultaNotasWO;
+    }
+
+    public void setConsultaNotasWO(String ConsultaNotasWO) {
+        this.ConsultaNotasWO = ConsultaNotasWO;
+    }
+
+    
     public String getConsultaWO() {
         return ConsultaWO;
     }

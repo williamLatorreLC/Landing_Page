@@ -14,6 +14,7 @@ import { SessionServiceService } from '../../services/sessionService/session-ser
 import { HttpClient } from '@angular/common/http';
 import { CasosService } from 'src/app/services/casosServices/casos.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { interval, take } from 'rxjs';
 
 
 @Component({
@@ -109,6 +110,19 @@ export class HomeComponent implements OnInit {
   statusIncidente: any;
   descripcionIncidenteDetallada: any;
   fechaCreacionIncidente: any;
+  fechaNotaInc1: string;
+  fechaNotaInc2: string;
+  fechaNotaInc3: string;
+  fechaNotaWo1: string;
+  fechaNotaWo2: string;
+  fechaNotaWo3: string;
+  descriptionInc1: any;
+  descriptionInc2: any;
+  descriptionInc3: any;
+  resolution: any;
+  fechaResolution: any;
+  loadingMessage: string = 'Cargando notas';
+  dots: string = '';
 
 
   constructor(
@@ -138,6 +152,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.animateDots();
     this.GtmServicesService.Tagging('Home', 'pt_home');
     console.log(this.infoUser.esContingencia);
 
@@ -498,6 +513,12 @@ export class HomeComponent implements OnInit {
     this.consultaCaso = false;
     this.numeroRequerimientoIngresado = '';
     this.Request_Number = null;
+    this.fechaNotaInc1 = '';
+    this.fechaNotaInc2 = '';
+    this.fechaNotaInc3 = '';
+    this.descriptionInc1 = '';
+    this.descriptionInc2 = '';
+    this.descriptionInc3 = '';
   }
 
   async consultarReq() {
@@ -520,18 +541,51 @@ export class HomeComponent implements OnInit {
         this.statusIncidente = resINC.response.Status;
         this.descripcionIncidente = resINC.response.Description;
         this.fechaCreacionIncidente = resINC.response.Submit_Date;
-      } else if (this.AppRequestID.startsWith("WO")) {
+
+        const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', {
+          incNumber: this.AppRequestID,
+        })
+
+        this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0].Submit_Date;
+        this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1].Submit_Date;
+        this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2].Submit_Date;
+        this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0].Detailed_Description;
+        this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1].Detailed_Description;
+        this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
+        this.resolution = resINC.response.Resolution;
+        this.fechaResolution = resINC.response.Real_Solution_Date;
+
+      }
+
+      else if (this.AppRequestID.startsWith("WO")) {
         const resWO = await this.casosService.post('ConsultarWO', {
           woNumber: this.AppRequestID,
         });
-      this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
-      this.statusIncidente = resWO.response.Status;
-      this.descripcionIncidente = resWO.response.Summary;
-      this.fechaCreacionIncidente = resWO.response.Submit_Date;
+        this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
+        this.statusIncidente = resWO.response.Status;
+        this.descripcionIncidente = resWO.response.Summary;
+        this.fechaCreacionIncidente = resWO.response.Submit_Date;
+        const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', {
+          woNumber: this.AppRequestID,
+        })
+        this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
+        this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
+        this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
+        this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
+        this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
+        this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+
       }
     } catch (err) {
       console.error(err);
     }
+  }
+
+  animateDots() {
+    const dotsInterval = interval(10);
+    dotsInterval.pipe(take(3)).subscribe(() => {
+      this.dots += '.';
+    });
   }
 
 }
