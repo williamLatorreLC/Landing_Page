@@ -9,6 +9,10 @@ import co.com.claro.myit.api.ConsultaNotasIncidenteRequest;
 import co.com.claro.myit.util.functions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  *
@@ -33,7 +37,7 @@ public class ConsultaNotasIncidenteService {
         return this.fn.SoapRequestConsutaNotasINC(body, false);
     }
 
-    public JsonObject getBody(JsonObject respuesta) {
+ public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
 
         JsonObject getListResponse = respuesta.getAsJsonObject("Envelope")
@@ -42,12 +46,21 @@ public class ConsultaNotasIncidenteService {
 
         JsonArray listValues = getListResponse.getAsJsonArray("getListValues");
 
-        int totalListValues = listValues.size();
+        // Copiar elementos de JsonArray a una lista de Java
+        List<JsonObject> listValuesList = new ArrayList<>();
+        for (int i = 0; i < listValues.size(); i++) {
+            listValuesList.add(listValues.get(i).getAsJsonObject());
+        }
+
+        // Ordenar la lista por fecha de presentación
+        Collections.sort(listValuesList, new ListComparator());
+
+        int totalListValues = listValuesList.size();
         int startIndex = Math.max(0, totalListValues - 3); // Últimas 3 getListValues o menos si hay menos de 3
 
         JsonArray lastThreeListValues = new JsonArray();
         for (int i = startIndex; i < totalListValues; i++) {
-            lastThreeListValues.add(listValues.get(i));
+            lastThreeListValues.add(listValuesList.get(i));
         }
 
         res.add("lastThreeListValues", lastThreeListValues);
@@ -56,4 +69,12 @@ public class ConsultaNotasIncidenteService {
         return res;
     }
 
+     private static class ListComparator implements Comparator<JsonObject> {
+        @Override
+        public int compare(JsonObject o1, JsonObject o2) {
+            String date1 = o1.getAsJsonPrimitive("Submit_Date").getAsString();
+            String date2 = o2.getAsJsonPrimitive("Submit_Date").getAsString();
+            return date1.compareTo(date2);
+        }
+    }
 }

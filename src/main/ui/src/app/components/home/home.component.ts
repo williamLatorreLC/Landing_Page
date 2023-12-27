@@ -128,6 +128,7 @@ export class HomeComponent implements OnInit {
   workLogType: FormGroup;
   crearNota: boolean = false;
   creadoExitoso: string;
+  peticionEnCurso: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -592,6 +593,15 @@ export class HomeComponent implements OnInit {
 
   async agregarNota(AppRequestID: string) {
     try {
+      // Verificar si la petición está en curso
+      if (this.peticionEnCurso) {
+        console.log('La petición ya está en curso. Espere a que termine.');
+        return;
+      }
+  
+      // Habilitar la bandera de petición en curso
+      this.peticionEnCurso = true;
+  
       if (AppRequestID.startsWith("INC")) {
         const resCrearNotasInc = await this.casosService.post('CrearNotasInc', {
           Incident_Number: AppRequestID,
@@ -599,7 +609,7 @@ export class HomeComponent implements OnInit {
           Detailed_Description: this.detailedDescriptionCrearNotas,
           Work_Log_Type: this.workLogType,
         });
-          this.creadoExitoso = "Nota creada con éxito"
+        this.creadoExitoso = "Nota creada con éxito";
       } else if (AppRequestID.startsWith("WO")) {
         const resCrearNotasWo = await this.casosService.post('CrearNotasWo', {
           Work_Order_ID: AppRequestID,
@@ -607,11 +617,14 @@ export class HomeComponent implements OnInit {
           Detailed_Description: this.detailedDescriptionCrearNotas,
           Work_Log_Type: this.workLogType,
         });
-        this.creadoExitoso = "Nota creada con éxito"
+        this.creadoExitoso = "Nota creada con éxito";
       }
     } catch (error) {
       console.error('Error al agregar nota:', error);
-      this.creadoExitoso = "No es posible crear la nota"
+      this.creadoExitoso = "No es posible crear la nota";
+    } finally {
+      // Deshabilitar la bandera de petición en curso después de que la petición haya terminado
+      this.peticionEnCurso = false;
     }
   }
 
