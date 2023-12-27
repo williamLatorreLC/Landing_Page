@@ -10,7 +10,7 @@ package co.com.claro.myit.util;
  * @author JD
  */
 public class variable {
-    
+
     String LoginMyItDir;
     String LoginMyItDirAES;
     String LoginSSODir;
@@ -31,6 +31,25 @@ public class variable {
     String ConsultaINC;
     String ConsultaNotasINC;
     String ConsultaNotasWO;
+    String CrearNotasINC;
+    String CrearNotasWO;
+
+    public String getCrearNotasINC() {
+        return CrearNotasINC;
+    }
+
+    public void setCrearNotasINC(String CrearNotasINC) {
+        this.CrearNotasINC = CrearNotasINC;
+    }
+
+    public String getCrearNotasWO() {
+        return CrearNotasWO;
+    }
+
+    public void setCrearNotasWO(String CrearNotasWO) {
+        this.CrearNotasWO = CrearNotasWO;
+    }
+    
 
     public String getConsultaNotasINC() {
         return ConsultaNotasINC;
@@ -48,7 +67,6 @@ public class variable {
         this.ConsultaNotasWO = ConsultaNotasWO;
     }
 
-    
     public String getConsultaWO() {
         return ConsultaWO;
     }
@@ -65,8 +83,6 @@ public class variable {
         this.ConsultaINC = ConsultaINC;
     }
 
-    
-    
     public String getConsultaReq() {
         return ConsultaReq;
     }
@@ -137,7 +153,7 @@ public class variable {
 
     public void setSurveyDetailWODir(String SurveyDetailWODir) {
         this.SurveyDetailWODir = SurveyDetailWODir;
-    }   
+    }
 
     public String getLoginMyItDirAES() {
         return LoginMyItDirAES;

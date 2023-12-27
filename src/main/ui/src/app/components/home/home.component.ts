@@ -123,7 +123,11 @@ export class HomeComponent implements OnInit {
   fechaResolution: any;
   loadingMessage: string = 'Cargando notas';
   dots: string = '';
-
+  detailedDescriptionCrearNotas: string = '';
+  CrearNotas: FormGroup;
+  workLogType: FormGroup;
+  crearNota: boolean = false;
+  creadoExitoso: string;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -147,6 +151,10 @@ export class HomeComponent implements OnInit {
     };
 
     this.numberRequerimiento = this.fb.group({
+      reqNumber: ['']
+    })
+
+    this.CrearNotas = this.fb.group({
       reqNumber: ['']
     })
   }
@@ -518,6 +526,8 @@ export class HomeComponent implements OnInit {
     this.descriptionInc1 = '';
     this.descriptionInc2 = '';
     this.descriptionInc3 = '';
+    this.crearNota = false;
+    this.creadoExitoso = '';
   }
 
   async consultarReq() {
@@ -579,4 +589,34 @@ export class HomeComponent implements OnInit {
       console.error(err);
     }
   }
+
+  async agregarNota(AppRequestID: string) {
+    try {
+      if (AppRequestID.startsWith("INC")) {
+        const resCrearNotasInc = await this.casosService.post('CrearNotasInc', {
+          Incident_Number: AppRequestID,
+          Work_Log_Submitter: this.infoUser.User,
+          Detailed_Description: this.detailedDescriptionCrearNotas,
+          Work_Log_Type: this.workLogType,
+        });
+          this.creadoExitoso = "Nota creada con éxito"
+      } else if (AppRequestID.startsWith("WO")) {
+        const resCrearNotasWo = await this.casosService.post('CrearNotasWo', {
+          Work_Order_ID: AppRequestID,
+          Work_Log_Submitter: this.infoUser.User,
+          Detailed_Description: this.detailedDescriptionCrearNotas,
+          Work_Log_Type: this.workLogType,
+        });
+        this.creadoExitoso = "Nota creada con éxito"
+      }
+    } catch (error) {
+      console.error('Error al agregar nota:', error);
+      this.creadoExitoso = "No es posible crear la nota"
+    }
+  }
+
+  dialogoCrearNota(){
+    this.crearNota = true;
+  }
+
 }

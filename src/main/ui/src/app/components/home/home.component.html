@@ -403,8 +403,8 @@
                     <strong>Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
                   </div>
                   <br />
-                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>     
-                  <br />   
+                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>
+                  <br />
                   <p *ngIf="fechaNotaInc1" style="margin: 0;">
                     <strong>Notas del Incidente / Solicitud:</strong>
                     <br />
@@ -424,7 +424,7 @@
                     <br />
                     <br />
                   </p>
-                  <button>Agregar Nota</button>
+                  <button (click)="dialogoCrearNota()">Agregar Nota</button>
                   <br />
                   <br />
                   <p *ngIf="resolution" style="margin: 0;">
@@ -438,13 +438,29 @@
                 </div>
                 <br />
               </div>
+              <!-- Mensaje 8 Anita (Si se selecciona crear Nota)-->
+              <div class="contenido" *ngIf="crearNota"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Ingresa la descripción de la nota que quieres agregar al
+                  caso.
+                  Nota: Si quieres añadir un archivo adjunto, primero selecciona el archivo y luego, ingresa la
+                  descripción de la nota.</p>
+              </div>
+              <br />
+              <!-- Mensaje 9 Anita (Nota creada con exito)-->
+              <div class="contenido" *ngIf="creadoExitoso"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
+                <p style="margin: 0;"><strong>AnITa:</strong>{{ creadoExitoso }}</p>
+              </div>
+              <br />
               <button *ngIf="Request_Number" (click)="resetChat()">Volver</button>
               <br />
               <br />
               <br />
               <br />
               <br />
-
+              <br />
+              <br />
             </div>
           </div>
         </div>
@@ -469,13 +485,26 @@
 
         <!-- input si selecciona REQ requerimiento -->
         <form [formGroup]="numberRequerimiento" (ngSubmit)="consultarReq()">
-          <div *ngIf="selectReq && mostrarChat" class="ml-auto cpointer float ng-star-inserted"
+          <div *ngIf="selectReq && mostrarChat && !crearNota" class="ml-auto cpointer float ng-star-inserted"
             style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
             <div>
               <input type="text" [(ngModel)]="numeroRequerimiento"
                 placeholder="Escribe el número de REQ - Requerimiento..."
                 style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="reqNumber">
               <button (click)="consultarReq()">Consultar Requerimiento</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- input si selecciona Crear Notas  -->
+        <form [formGroup]="CrearNotas" (ngSubmit)="agregarNota(AppRequestID)">
+          <div *ngIf="crearNota" class="ml-auto cpointer float ng-star-inserted"
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            <div>
+              <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
+                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
+                style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="reqNumber">
+              <button (click)="agregarNota(AppRequestID)">Crear Nota</button>
             </div>
           </div>
         </form>
