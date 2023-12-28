@@ -129,6 +129,10 @@ export class HomeComponent implements OnInit {
   crearNota: boolean = false;
   creadoExitoso: string;
   peticionEnCurso: any;
+  doc = [];
+  documentos = [{ nombre: "", file: [] }];
+  nombreArchivo: string;
+  base64ContentString: string;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -529,6 +533,9 @@ export class HomeComponent implements OnInit {
     this.descriptionInc3 = '';
     this.crearNota = false;
     this.creadoExitoso = '';
+    this.nombreArchivo = '';
+    this.creadoExitoso = '';
+    this.detailedDescriptionCrearNotas = '';
   }
 
   async consultarReq() {
@@ -591,45 +598,82 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  async agregarNota(AppRequestID: string) {
+  async agregarNota(AppRequestID?: string) {
     try {
-      // Verificar si la petición está en curso
       if (this.peticionEnCurso) {
         console.log('La petición ya está en curso. Espere a que termine.');
         return;
       }
   
-      // Habilitar la bandera de petición en curso
       this.peticionEnCurso = true;
   
-      if (AppRequestID.startsWith("INC")) {
-        const resCrearNotasInc = await this.casosService.post('CrearNotasInc', {
-          Incident_Number: AppRequestID,
-          Work_Log_Submitter: this.infoUser.User,
-          Detailed_Description: this.detailedDescriptionCrearNotas,
-          Work_Log_Type: this.workLogType,
-        });
-        this.creadoExitoso = "Nota creada con éxito";
-      } else if (AppRequestID.startsWith("WO")) {
-        const resCrearNotasWo = await this.casosService.post('CrearNotasWo', {
-          Work_Order_ID: AppRequestID,
-          Work_Log_Submitter: this.infoUser.User,
-          Detailed_Description: this.detailedDescriptionCrearNotas,
-          Work_Log_Type: this.workLogType,
-        });
-        this.creadoExitoso = "Nota creada con éxito";
+      if (AppRequestID !== undefined) {
+        if (AppRequestID.startsWith("INC")) {
+          const resCrearNotasInc = await this.casosService.post('CrearNotasInc', {
+            Incident_Number: AppRequestID,
+            Work_Log_Submitter: this.infoUser.User,
+            Detailed_Description: this.detailedDescriptionCrearNotas,
+            Work_Log_Type: this.workLogType,
+            WorkInfoAttachment1Name: this.nombreArchivo,
+            WorkInfoAttachment1Data: this.base64ContentString, 
+          });
+          this.creadoExitoso = "Nota creada con éxito";
+        } else if (AppRequestID.startsWith("WO")) {
+          const resCrearNotasWo = await this.casosService.post('CrearNotasWo', {
+            Work_Order_ID: AppRequestID,
+            Work_Log_Submitter: this.infoUser.User,
+            Detailed_Description: this.detailedDescriptionCrearNotas,
+            Work_Log_Type: this.workLogType,
+            WorkInfoAttachment1Name: this.nombreArchivo,
+            WorkInfoAttachment1Data: this.base64ContentString, 
+          });
+          this.creadoExitoso = "Nota creada con éxito";
+        }
+      } else {
+        console.log('AppRequestID no proporcionado. No se puede agregar nota.');
       }
     } catch (error) {
       console.error('Error al agregar nota:', error);
       this.creadoExitoso = "No es posible crear la nota";
     } finally {
-      // Deshabilitar la bandera de petición en curso después de que la petición haya terminado
       this.peticionEnCurso = false;
     }
   }
 
   dialogoCrearNota(){
     this.crearNota = true;
+  }
+
+  onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+
+    if (selectedFile) {
+      this.readFileAsBase64(selectedFile)
+        .then(base64Content => {
+          this.nombreArchivo = `${selectedFile.name}`
+          this.base64ContentString = (base64Content)
+        })
+        .catch(error => {
+          console.error('Error al leer archivo como Base64:', error);
+        });
+    }
+  }
+
+  private readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const base64Content = reader.result as string;
+        resolve(base64Content.split(',')[1]); // Extraer solo el contenido Base64, excluyendo el encabezado
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(file);
+    });
   }
 
 }

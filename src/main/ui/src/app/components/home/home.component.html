@@ -443,8 +443,15 @@
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
                 <p style="margin: 0;"><strong>AnITa:</strong> Ingresa la descripción de la nota que quieres agregar al
                   caso.
+                  <br />
+                  <br />
                   Nota: Si quieres añadir un archivo adjunto, primero selecciona el archivo y luego, ingresa la
                   descripción de la nota.</p>
+                  <br />
+                  <div>
+                    <label for="fileInput">Seleccionar archivo:</label>
+                    <input type="file" id="fileInput" (change)="onFileSelected($event)" accept=".eml,.msg,.xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf,image/*">
+                  </div>
               </div>
               <br />
               <!-- Mensaje 9 Anita (Nota creada con exito)-->

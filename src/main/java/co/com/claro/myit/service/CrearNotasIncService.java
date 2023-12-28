@@ -32,7 +32,8 @@ public class CrearNotasIncService {
         body = body.replaceAll("--submitter--", this.data.getWork_Log_Submitter());
         body = body.replaceAll("--logtype--", "General Information");
         body = body.replaceAll("--detailed--", this.data.getDetailed_Description());
-
+        body = body.replaceAll("--Attachment1Name--", this.data.getWorkInfoAttachment1Name());
+        body = body.replaceAll("--Attachment1Data--", this.data.getWorkInfoAttachment1Data());
         return this.fn.SoapRequestCrearNotasInc(body, false);
 
     }

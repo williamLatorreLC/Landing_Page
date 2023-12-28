@@ -24,6 +24,29 @@ public class CrearNotasWoRequest {
     @SerializedName("Work_Log_Type")
     private String Work_Log_Type;
 
+    @SerializedName("WorkInfoAttachment1Data")
+    private String WorkInfoAttachment1Data;
+
+    @SerializedName("WorkInfoAttachment1Name")
+    private String WorkInfoAttachment1Name;
+
+    public String getWorkInfoAttachment1Data() {
+        return WorkInfoAttachment1Data;
+    }
+
+    public void setWorkInfoAttachment1Data(String WorkInfoAttachment1Data) {
+        this.WorkInfoAttachment1Data = WorkInfoAttachment1Data;
+    }
+
+    public String getWorkInfoAttachment1Name() {
+        return WorkInfoAttachment1Name;
+    }
+
+    public void setWorkInfoAttachment1Name(String WorkInfoAttachment1Name) {
+        this.WorkInfoAttachment1Name = WorkInfoAttachment1Name;
+    }
+
+    
     public String getWork_Order_ID() {
         return Work_Order_ID;
     }
@@ -55,7 +78,5 @@ public class CrearNotasWoRequest {
     public void setWork_Log_Type(String Work_Log_Type) {
         this.Work_Log_Type = Work_Log_Type;
     }
-    
-    
 
 }
