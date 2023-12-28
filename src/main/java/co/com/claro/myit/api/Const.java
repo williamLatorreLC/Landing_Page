@@ -258,7 +258,7 @@ public class Const {
             + "      <!--Optional:-->"
             + "      <urn:Work_Order_ID>--wo--</urn:Work_Order_ID>"
             + "      <!--Optional:-->"
-            + "      <urn:WorkOrder_EntryID></urn:WorkOrder_EntryID>"
+            + "      <urn:WorkOrder_EntryID>--wo--</urn:WorkOrder_EntryID>"
             + "      <urn:Work_Log_Submitter>--submitter--</urn:Work_Log_Submitter>"
             + "      <!--Optional:-->"
             + "      <urn:Detailed_Description>--detailed--</urn:Detailed_Description>"
