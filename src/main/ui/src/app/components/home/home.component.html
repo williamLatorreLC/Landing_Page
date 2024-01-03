@@ -520,7 +520,7 @@
     </div>
     <!-- Fin Chatbot -->
     <div class="col-md-8 col-12 align-self-center text-right pr-4 d-none d-md-block">
-      <div class="btnencuestas d-inline-block ml-2" accesskey="y" (click)="abrirChatInHouse()">
+      <div *ngIf="esContingenciaChatbot" class="btnencuestas d-inline-block ml-2" accesskey="y" (click)="abrirChatInHouse()">
         Consulta de casos
         <img src="./assets/img/home/icn-encuentas.png" class="ml-2" alt="" />
       </div>

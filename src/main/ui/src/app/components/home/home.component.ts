@@ -86,8 +86,8 @@ export class HomeComponent implements OnInit {
     BannerTime: 0,
     MyItStore: '',
     MyItUser: '',
-    MyItResolutor: ''
-  };
+    MyItResolutor: '',
+    };
 
   modalInstance = null;
   verify = null;
@@ -133,6 +133,7 @@ export class HomeComponent implements OnInit {
   documentos = [{ nombre: "", file: [] }];
   nombreArchivo: string;
   base64ContentString: string;
+  esContingenciaChatbot!: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -215,7 +216,7 @@ export class HomeComponent implements OnInit {
         if (res.isError === false) {
 
           this.infoUser = res.response.map;
-          console.log(this.infoUser);
+          this.esContingenciaChatbot = res.response.map.esContingenciaChatBot;
           setTimeout(function () {
             //$scope.$apply(); TO DO => No se coomo funciona esto.
           }, 200);
