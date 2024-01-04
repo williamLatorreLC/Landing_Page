@@ -87,12 +87,14 @@ export class HomeComponent implements OnInit {
     MyItStore: '',
     MyItUser: '',
     MyItResolutor: '',
-    };
+  };
 
   modalInstance = null;
   verify = null;
 
   numeroRequerimiento: string = '';
+  numeroW: string = '';
+  numeroI: string = '';
   selectReq: boolean = false;
   numberRequerimiento: FormGroup;
   numberWO: FormGroup;
@@ -134,6 +136,12 @@ export class HomeComponent implements OnInit {
   nombreArchivo: string;
   base64ContentString: string;
   esContingenciaChatbot!: any;
+  selectInc: boolean;
+  selectWo: boolean;
+  numeroIncIngresado: any;
+  numeroWoIngresado: any;
+  Incident_Number: any;
+  WO_Number: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -162,6 +170,14 @@ export class HomeComponent implements OnInit {
 
     this.CrearNotas = this.fb.group({
       reqNumber: ['']
+    })
+
+    this.numberINC = this.fb.group({
+      incNumber: ['']
+    })
+
+    this.numberWO = this.fb.group({
+      woNumber: ['']
     })
   }
 
@@ -517,6 +533,24 @@ export class HomeComponent implements OnInit {
   SearchReq() {
     setTimeout(() => {
       this.selectReq = !this.selectReq;
+      this.selectInc = false;
+      this.selectWo = false;
+    }, 400);
+  }
+
+  SearchInc() {
+    setTimeout(() => {
+      this.selectInc = !this.selectInc;
+      this.selectReq = false;
+      this.selectWo = false;
+    }, 400);
+  }
+
+  SearchWo() {
+    setTimeout(() => {
+      this.selectWo = !this.selectWo;
+      this.selectInc = false;
+      this.selectReq = false;
     }, 400);
   }
 
@@ -537,6 +571,12 @@ export class HomeComponent implements OnInit {
     this.nombreArchivo = '';
     this.creadoExitoso = '';
     this.detailedDescriptionCrearNotas = '';
+    this.selectInc = false;
+    this.selectWo = false;
+    this.numeroIncIngresado = '';
+    this.numeroWoIngresado = '';
+    this.WO_Number = null;
+    this.Incident_Number = null;
   }
 
   async consultarReq() {
@@ -599,15 +639,55 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  async consultarInc() {
+    const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
+    this.Incident_Number = resINC.response.Incident_Number;
+    this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
+    this.statusIncidente = resINC.response.Status;
+    this.descripcionIncidente = resINC.response.Description;
+    this.fechaCreacionIncidente = resINC.response.Submit_Date;
+    this.numeroIncIngresado = resINC.response.Incident_Number;
+
+    const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', this.numberINC.value)
+
+    this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0].Submit_Date;
+    this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1].Submit_Date;
+    this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2].Submit_Date;
+    this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0].Detailed_Description;
+    this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1].Detailed_Description;
+    this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
+    this.resolution = resINC.response.Resolution;
+    this.fechaResolution = resINC.response.Real_Solution_Date;
+  }
+
+  async consultarWo() {
+    const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
+    this.WO_Number = resWO.response.Work_Order_ID;
+    this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
+    this.statusIncidente = resWO.response.Status;
+    this.descripcionIncidente = resWO.response.Summary;
+    this.fechaCreacionIncidente = resWO.response.Submit_Date;
+    this.numeroWoIngresado = resWO.response.Work_Order_ID;
+
+    const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value)
+
+    this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
+    this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
+    this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
+    this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
+    this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
+    this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+  }
+
   async agregarNota(AppRequestID?: string) {
     try {
       if (this.peticionEnCurso) {
         console.log('La petición ya está en curso. Espere a que termine.');
         return;
       }
-  
+
       this.peticionEnCurso = true;
-  
+
       if (AppRequestID !== undefined) {
         if (AppRequestID.startsWith("INC")) {
           const resCrearNotasInc = await this.casosService.post('CrearNotasInc', {
@@ -616,7 +696,7 @@ export class HomeComponent implements OnInit {
             Detailed_Description: this.detailedDescriptionCrearNotas,
             Work_Log_Type: this.workLogType,
             WorkInfoAttachment1Name: this.nombreArchivo,
-            WorkInfoAttachment1Data: this.base64ContentString, 
+            WorkInfoAttachment1Data: this.base64ContentString,
           });
           this.creadoExitoso = "Nota creada con éxito";
         } else if (AppRequestID.startsWith("WO")) {
@@ -626,7 +706,7 @@ export class HomeComponent implements OnInit {
             Detailed_Description: this.detailedDescriptionCrearNotas,
             Work_Log_Type: this.workLogType,
             WorkInfoAttachment1Name: this.nombreArchivo,
-            WorkInfoAttachment1Data: this.base64ContentString, 
+            WorkInfoAttachment1Data: this.base64ContentString,
           });
           this.creadoExitoso = "Nota creada con éxito";
         }
@@ -641,7 +721,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  dialogoCrearNota(){
+  dialogoCrearNota() {
     this.crearNota = true;
   }
 
