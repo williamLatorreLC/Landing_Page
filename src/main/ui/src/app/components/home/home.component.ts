@@ -696,7 +696,7 @@ export class HomeComponent implements OnInit {
             Detailed_Description: this.detailedDescriptionCrearNotas,
             Work_Log_Type: this.workLogType,
             WorkInfoAttachment1Name: this.nombreArchivo,
-            WorkInfoAttachment1Data: this.base64ContentString,
+            WorkInfoAttachment1Data: this.base64ContentString, 
           });
           this.creadoExitoso = "Nota creada con éxito";
         } else if (AppRequestID.startsWith("WO")) {
