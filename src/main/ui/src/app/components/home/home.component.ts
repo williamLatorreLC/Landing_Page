@@ -638,6 +638,7 @@ export class HomeComponent implements OnInit {
     this.numeroWoIngresado = '';
     this.WO_Number = null;
     this.Incident_Number = null;
+    this.noReq1 = null;
   }
 
   async consultarReq() {
