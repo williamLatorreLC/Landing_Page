@@ -142,6 +142,23 @@ export class HomeComponent implements OnInit {
   numeroWoIngresado: any;
   Incident_Number: any;
   WO_Number: any;
+  selectHc: boolean = false;
+  qualification: any;
+  noReq1: any;
+  noReq2: any;
+  noReq3: any;
+  noInc1: any;
+  noInc2: any;
+  noInc3: any;
+  statusInc1: any;
+  statusInc2: any;
+  statusInc3: any;
+  sumarryInc1: any;
+  sumarryInc2: any;
+  sumarryInc3: any;
+  fechaInc1: any;
+  fechaInc2: any;
+  fechaInc3: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -178,6 +195,10 @@ export class HomeComponent implements OnInit {
 
     this.numberWO = this.fb.group({
       woNumber: ['']
+    })
+
+    this.qualification = this.fb.group({
+      Qualification: ['']
     })
   }
 
@@ -535,6 +556,7 @@ export class HomeComponent implements OnInit {
       this.selectReq = !this.selectReq;
       this.selectInc = false;
       this.selectWo = false;
+      this.selectHc = false;
     }, 400);
   }
 
@@ -543,6 +565,7 @@ export class HomeComponent implements OnInit {
       this.selectInc = !this.selectInc;
       this.selectReq = false;
       this.selectWo = false;
+      this.selectHc = false;
     }, 400);
   }
 
@@ -551,8 +574,45 @@ export class HomeComponent implements OnInit {
       this.selectWo = !this.selectWo;
       this.selectInc = false;
       this.selectReq = false;
+      this.selectHc = false;
     }, 400);
   }
+
+  SearchHC() {
+    setTimeout(() => {
+      this.selectHc = !this.selectHc;
+      this.selectWo = false;
+      this.selectInc = false;
+      this.selectReq = false;
+    }, 500);
+    this.consultarHistoricoCasos();
+  }
+
+  async consultarHistoricoCasos() {
+    setTimeout(async () => {
+      const resHc = await this.casosService.post('consultarHistoricoRequerimiento', {
+        Qualification: this.infoUser.User,
+      });
+
+      this.noReq1 = resHc.response.lastThreeListValues[0].Request_Number;
+      this.noReq2 = resHc.response.lastThreeListValues[1].Request_Number;
+      this.noReq3 = resHc.response.lastThreeListValues[2].Request_Number;
+      this.noInc1 = resHc.response.lastThreeListValues[0].AppRequestID;
+      this.noInc2 = resHc.response.lastThreeListValues[1].AppRequestID;
+      this.noInc3 = resHc.response.lastThreeListValues[2].AppRequestID;
+      this.statusInc1 = resHc.response.lastThreeListValues[0].Status;
+      this.statusInc2 = resHc.response.lastThreeListValues[1].Status;
+      this.statusInc3 = resHc.response.lastThreeListValues[2].Status;
+      this.sumarryInc1 = resHc.response.lastThreeListValues[0].Summary;
+      this.sumarryInc2 = resHc.response.lastThreeListValues[1].Summary;
+      this.sumarryInc3 = resHc.response.lastThreeListValues[2].Summary;
+      this.fechaInc1 = resHc.response.lastThreeListValues[0].Submit_Date;
+      this.fechaInc2 = resHc.response.lastThreeListValues[1].Submit_Date;
+      this.fechaInc3 = resHc.response.lastThreeListValues[2].Submit_Date;
+
+    }, 1000);
+  }
+
 
   resetChat() {
     this.consultarOcrearCaso = false;
@@ -572,6 +632,7 @@ export class HomeComponent implements OnInit {
     this.creadoExitoso = '';
     this.detailedDescriptionCrearNotas = '';
     this.selectInc = false;
+    this.selectHc = false;
     this.selectWo = false;
     this.numeroIncIngresado = '';
     this.numeroWoIngresado = '';
@@ -696,7 +757,7 @@ export class HomeComponent implements OnInit {
             Detailed_Description: this.detailedDescriptionCrearNotas,
             Work_Log_Type: this.workLogType,
             WorkInfoAttachment1Name: this.nombreArchivo,
-            WorkInfoAttachment1Data: this.base64ContentString, 
+            WorkInfoAttachment1Data: this.base64ContentString,
           });
           this.creadoExitoso = "Nota creada con éxito";
         } else if (AppRequestID.startsWith("WO")) {

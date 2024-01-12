@@ -40,6 +40,7 @@ public class ApiConfig extends Application {
         resources.add(CrearNotasInc.class);
         resources.add(CrearNotasWo.class);
         resources.add(ContingenciaChatBot.class);
+        resources.add(ConsultaHistoricoRequerimientos.class);
         return resources;
     }
 

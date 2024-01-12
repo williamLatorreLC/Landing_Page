@@ -33,6 +33,15 @@ public class variable {
     String ConsultaNotasWO;
     String CrearNotasINC;
     String CrearNotasWO;
+    String ConsultarHR;
+
+    public String getConsultarHR() {
+        return ConsultarHR;
+    }
+
+    public void setConsultarHR(String ConsultarHR) {
+        this.ConsultarHR = ConsultarHR;
+    }
 
     public String getCrearNotasINC() {
         return CrearNotasINC;

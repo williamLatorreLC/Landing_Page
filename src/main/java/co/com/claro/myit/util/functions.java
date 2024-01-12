@@ -88,6 +88,7 @@ public class functions {
             Constanst.setConsultaNotasWO(prop.getProperty("ConsultaNotasWO"));
             Constanst.setCrearNotasINC(prop.getProperty("CrearNotasINC"));
             Constanst.setCrearNotasWO(prop.getProperty("CrearNotasWO"));
+            Constanst.setConsultarHR(prop.getProperty("ConsultarHR"));
 
         } catch (Exception e) {
             System.out.println("Exception: " + e);
@@ -489,6 +490,32 @@ public class functions {
             HttpPost request = new HttpPost((!aes) ? Constanst.getCrearNotasWO() : Constanst.getCrearNotasWO());
             request.setHeader("Content-Type", "text/xml");
             request.setHeader("SOAPAction", Const.SoapActionCrearNotasWo);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+    
+        public static String SoapRequestHistoricoRequerimientos(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getConsultarHR(): Constanst.getConsultarHR());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionSRMRequestGetList);
 
             request.setEntity(xmlBody);
             CloseableHttpResponse response = client.execute(request);

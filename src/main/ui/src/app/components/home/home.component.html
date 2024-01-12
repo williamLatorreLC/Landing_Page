@@ -324,13 +324,14 @@
                     -
                     Orden de trabajo</a>
                   <br />
-                  <span style="color: blue;">&bull; &nbsp;</span> <a
+                  <span (click)="SearchHC()" style="color: blue;">&bull; &nbsp;</span> <a (click)="SearchHC()"
                     style="text-decoration: underline; color: blue;">Histórico
                     de mis casos</a>
                 </p>
               </div>
 
               <br />
+
               <!-- Mensaje 5 Anita (Cartilla) -->
               <div class="contenido" *ngIf="consultaCaso"
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
@@ -345,27 +346,41 @@
               <br />
 
               <!-- Mensaje 2 User (Si se selecciona consultar Requerimiento) -->
-              <div class="contenido" *ngIf="selectReq && !selectInc && !selectWo"
+              <div class="contenido" *ngIf="selectReq && !selectInc && !selectWo && !selectHc"
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
                 <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> REQ - Requerimiento
                 </p>
               </div>
               <!-- Mensaje 2 User (Si se selecciona consultar Incidente) -->
-              <div class="contenido" *ngIf="!selectReq && selectInc && !selectWo"
+              <div class="contenido" *ngIf="!selectReq && selectInc && !selectWo && !selectHc"
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
                 <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> INC - Incidente
                 </p>
               </div>
               <!-- Mensaje 2 User (Si se selecciona consultar WO) -->
-              <div class="contenido" *ngIf="!selectReq && !selectInc && selectWo"
+              <div class="contenido" *ngIf="!selectReq && !selectInc && selectWo && !selectHc"
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
                 <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> WO - Orden de trabajo
+                </p>
+              </div>
+              <!-- Mensaje 2 User (Si se selecciona Historico Casos ) -->
+              <div class="contenido" *ngIf="!selectReq && !selectInc && !selectWo && selectHc"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> Histórico de mis casos
                 </p>
               </div>
               <br />
 
 
               <!-- Mensaje 6 Anita (Si se selecciona consultar Requerimiento)-->
+              <div class="contenido" *ngIf="selectHc"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Por favor espera un momento mientras revisamos tus casos.
+                  Si quieres consultar el detalle de un caso específico, copia el número, regresa al menú y sigue las
+                  instrucciones.</p>
+              </div>
+
+              <!-- Mensaje 6 Anita (Si se selecciona Consulta Historico Casos)-->
               <div class="contenido" *ngIf="selectReq || selectInc || selectWo"
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
                 <p style="margin: 0;"><strong>AnITa:</strong> Para conocer el estado de tu caso digita el código 👇</p>
@@ -571,9 +586,56 @@
                     <br />
                   </p>
                 </div>
-
-                <br />
               </div>
+
+              <!-- Mensaje 7 Anita (Si se selecciona hisotico Casos)-->
+              <div *ngIf="noReq1" class="contenido"
+              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+              <p style="margin: 0;"><strong>AnITa:</strong>
+                <br />
+                <strong>No. del requerimiento:</strong> {{ noReq1 }}
+                <br />
+                <strong>No. de incidente / solicitud:</strong> {{ noInc1 }}
+                <br />
+                <strong>Estado:</strong> {{ statusInc1 }}
+                <br />
+                <strong>Resumen del requerimiento:</strong> {{ sumarryInc1 }}
+                <br />
+                <strong>Fecha de creación:</strong> {{ fechaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                <br />
+              </p>
+              <br />
+              <p style="margin: 0;">
+                <br />
+                <strong>No. del requerimiento:</strong> {{ noReq2 }}
+                <br />
+                <strong>No. de incidente / solicitud:</strong> {{ noInc2 }}
+                <br />
+                <strong>Estado:</strong> {{ statusInc2 }}
+                <br />
+                <strong>Resumen del requerimiento:</strong> {{ sumarryInc2 }}
+                <br />
+                <strong>Fecha de creación:</strong> {{ fechaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                <br />
+              </p>
+              <br />
+              <p style="margin: 0;">
+                <br />
+                <strong>No. del requerimiento:</strong> {{ noReq3 }}
+                <br />
+                <strong>No. de incidente / solicitud:</strong> {{ noInc3 }}
+                <br />
+                <strong>Estado:</strong> {{ statusInc3 }}
+                <br />
+                <strong>Resumen del requerimiento:</strong> {{ sumarryInc3 }}
+                <br />
+                <strong>Fecha de creación:</strong> {{ fechaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                <br />
+              </p>
+              <br />
+            </div>
+
+
               <!-- Mensaje 8 Anita (Si se selecciona crear Nota)-->
               <div class="contenido" *ngIf="crearNota"
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
@@ -597,7 +659,7 @@
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
                 <p style="margin: 0;"><strong>AnITa:</strong> {{ creadoExitoso }}</p>
               </div>
-              <br /> 
+              <br />
               <button *ngIf="Request_Number || Incident_Number || WO_Number " (click)="resetChat()">Volver</button>
               <br />
               <br />
@@ -679,7 +741,7 @@
         </form>
 
         <!-- input si selecciona Crear Notas con INC -->
-        <form  *ngIf="Incident_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(Incident_Number)">
+        <form *ngIf="Incident_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(Incident_Number)">
           <div *ngIf="crearNota" class="ml-auto cpointer float ng-star-inserted"
             style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
             <div>

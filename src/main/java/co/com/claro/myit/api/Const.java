@@ -274,4 +274,27 @@ public class Const {
             + "    </urn:Add_WorkInfo>"
             + "  </soapenv:Body>"
             + "</soapenv:Envelope>";
+
+    public static final String SoapActionSRMRequestGetList = "urn:SRM_Request/GetList";
+
+    public static String xmlRequestSRMRequestGetList = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:SRM_Request\">"
+            + " <soapenv:Header>"
+            + "    <urn:AuthenticationInfo>"
+            + "        <urn:userName>matilda.claro</urn:userName>"
+            + "        <urn:password>Claro2018*</urn:password>"
+            + "        <!--Optional:-->"
+            + "        <urn:authentication>?</urn:authentication>"
+            + "        <!--Optional:-->"
+            + "        <urn:locale>?</urn:locale>"
+            + "        <!--Optional:-->"
+            + "        <urn:timeZone>?</urn:timeZone>"
+            + "    </urn:AuthenticationInfo>"
+            + "  </soapenv:Header>"
+            + "  <soapenv:Body>"
+            + "    <urn:GetList>"
+            + "      <urn:Qualification>--qa--</urn:Qualification>"
+            + "      <urn:maxLimit>5</urn:maxLimit>"
+            + "    </urn:GetList>"
+            + "  </soapenv:Body>"
+            + "</soapenv:Envelope>";
 }
