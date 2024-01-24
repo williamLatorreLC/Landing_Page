@@ -34,16 +34,30 @@ public class ConsultaOrdenTrabajoService {
 
     public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
-
+        
         JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
                 .getAsJsonObject("Body")
                 .getAsJsonObject("GetResponse");
 
-        res.addProperty("Work_Order_ID", getResponse.has("Work_Order_ID") ? getResponse.get("Work_Order_ID").getAsString() : "");
-        res.addProperty("Status", getResponse.has("Status") ? getResponse.get("Status").getAsString() : "");
-        res.addProperty("Summary", getResponse.has("Summary") ? getResponse.get("Summary").getAsString() : "");
-        res.addProperty("Submit_Date", getResponse.has("Submit_Date") ? getResponse.get("Submit_Date").getAsString() : "");
-        res.addProperty("Detailed_Description", getResponse.has("Detailed_Description") ? getResponse.get("Detailed_Description").getAsString() : "");
+        if (getResponse.has("Work_Order_ID")) {
+            res.addProperty("Work_Order_ID", getResponse.get("Work_Order_ID").getAsString());
+        }
+
+        if (getResponse.has("Status")) {
+            res.addProperty("Status", getResponse.get("Status").getAsString());
+        } 
+
+        if (getResponse.has("Summary")) {
+            res.addProperty("Summary", getResponse.get("Summary").getAsString());
+        }
+
+        if (getResponse.has("Submit_Date")) {
+            res.addProperty("Submit_Date", getResponse.get("Submit_Date").getAsString());
+        }
+
+        if (getResponse.has("Detailed_Description")) {
+            res.addProperty("Detailed_Description", getResponse.get("Detailed_Description").getAsString());
+        }
 
         System.out.println("Respuesta ConsultaOrdenTrabajoSerice.java");
         System.out.println(res);

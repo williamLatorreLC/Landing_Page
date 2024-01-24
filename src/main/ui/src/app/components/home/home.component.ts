@@ -112,7 +112,7 @@ export class HomeComponent implements OnInit {
   statusIncidente: any;
   descripcionIncidenteDetallada: any;
   fechaCreacionIncidente: any;
-  fechaNotaInc1: string;
+  fechaNotaInc1: any;
   fechaNotaInc2: string;
   fechaNotaInc3: string;
   fechaNotaWo1: string;
@@ -654,50 +654,79 @@ export class HomeComponent implements OnInit {
       this.numberRequerimiento.controls['reqNumber'].setValue('');
 
       if (this.AppRequestID.startsWith("INC")) {
-        const resINC = await this.casosService.post('ConsultarINC', {
-          incNumber: this.AppRequestID,
-        });
-        this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
-        this.statusIncidente = resINC.response.Status;
-        this.descripcionIncidente = resINC.response.Description;
-        this.fechaCreacionIncidente = resINC.response.Submit_Date;
+        try {
+          const resINC = await this.casosService.post('ConsultarINC', {
+            incNumber: this.AppRequestID,
+          });
 
-        const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', {
-          incNumber: this.AppRequestID,
-        })
+          if (!resINC.response.Detailed_Decription) {
+            this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
+            this.statusIncidente = resINC.response.Status;
+            this.descripcionIncidente = resINC.response.Description;
+            this.fechaCreacionIncidente = resINC.response.Submit_Date;
 
-        this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0].Submit_Date;
-        this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1].Submit_Date;
-        this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2].Submit_Date;
-        this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0].Detailed_Description;
-        this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1].Detailed_Description;
-        this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
-        this.resolution = resINC.response.Resolution;
-        this.fechaResolution = resINC.response.Real_Solution_Date;
+            const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', {
+              incNumber: this.AppRequestID,
+            })
 
-      }
+            this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0].Submit_Date;
+            this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1].Submit_Date;
+            this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2].Submit_Date;
+            this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0].Detailed_Description;
+            this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1].Detailed_Description;
+            this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
+            this.resolution = resINC.response.Resolution;
+            this.fechaResolution = resINC.response.Real_Solution_Date;
+          } else {
+            this.Incident_Number = null
+            this.fechaNotaInc1 = null
+          }
 
-      else if (this.AppRequestID.startsWith("WO")) {
-        const resWO = await this.casosService.post('ConsultarWO', {
-          woNumber: this.AppRequestID,
-        });
-        this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
-        this.statusIncidente = resWO.response.Status;
-        this.descripcionIncidente = resWO.response.Summary;
-        this.fechaCreacionIncidente = resWO.response.Submit_Date;
-        const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', {
-          woNumber: this.AppRequestID,
-        })
-        this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
-        this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
-        this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
-        this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
-        this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
-        this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+        } catch (err) {
+          console.error(err);
+          this.Incident_Number = null
+          this.fechaNotaInc1 = null
+        }
+
+
+      } else if (this.AppRequestID.startsWith("WO")) {
+        try {
+          const resWO = await this.casosService.post('ConsultarWO', {
+            woNumber: this.AppRequestID,
+          });
+
+          if (!resWO.response.Detailed_Description){
+            this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
+            this.statusIncidente = resWO.response.Status;
+            this.descripcionIncidente = resWO.response.Summary;
+            this.fechaCreacionIncidente = resWO.response.Submit_Date;
+            const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', {
+              woNumber: this.AppRequestID,
+            })
+            this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
+            this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
+            this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
+            this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
+            this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
+            this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+          } else {
+            this.WO_Number = null
+            this.fechaNotaInc1 = null
+          }
+          
+
+        }
+        catch (err) {
+          console.error(err);
+          this.WO_Number = null
+          this.fechaNotaInc1 = null
+        }
 
       }
     } catch (err) {
       console.error(err);
+      this.WO_Number = null
+      this.fechaNotaInc1 = null
     }
   }
 
@@ -723,22 +752,28 @@ export class HomeComponent implements OnInit {
   }
 
   async consultarWo() {
-    const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
-    this.WO_Number = resWO.response.Work_Order_ID;
-    this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
-    this.statusIncidente = resWO.response.Status;
-    this.descripcionIncidente = resWO.response.Summary;
-    this.fechaCreacionIncidente = resWO.response.Submit_Date;
-    this.numeroWoIngresado = resWO.response.Work_Order_ID;
+    try {
+      const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
+      this.WO_Number = resWO.response.Work_Order_ID;
+      this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
+      this.statusIncidente = resWO.response.Status;
+      this.descripcionIncidente = resWO.response.Summary;
+      this.fechaCreacionIncidente = resWO.response.Submit_Date;
+      this.numeroWoIngresado = resWO.response.Work_Order_ID;
 
-    const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value)
+      const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value)
 
-    this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
-    this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
-    this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
-    this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
-    this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
-    this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+      this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
+      this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
+      this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
+      this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
+      this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
+      this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+    } catch (error) {
+      this.WO_Number = null
+      this.fechaNotaInc1 = null
+    }
+
   }
 
   async agregarNota(AppRequestID?: string) {

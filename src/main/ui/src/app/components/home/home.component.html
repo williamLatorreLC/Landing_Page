@@ -431,23 +431,23 @@
                     <strong>Fecha de soluón:</strong> {{ Completion_Date | date:'yyyy-MM-dd HH:mm:ss' }}
                     <br />
                     <br />
-                    <strong>Descripción del Incidente / Solicitud:</strong>
+                    <strong >Descripción del Incidente / Solicitud:</strong>
                     <br />
-                    <strong>No. de INC / WO:</strong> {{ AppRequestID }}
+                    <strong >No. de INC / WO:</strong> {{ AppRequestID }}
                     <br />
-                    <strong>Estado:</strong> {{ statusIncidente }}
-                    <br />
-                    <strong>Descripción:</strong> {{ descripcionIncidente }}
-                    <br />
-                    <strong>Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
+                    <strong *ngIf="fechaNotaInc1">Estado:</strong> {{ statusIncidente }}
+                    <br *ngIf="fechaNotaInc1"/>
+                    <strong *ngIf="fechaNotaInc1">Descripción:</strong> {{ descripcionIncidente }}
+                    <br *ngIf="fechaNotaInc1" />
+                    <strong *ngIf="fechaNotaInc1">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br *ngIf="fechaNotaInc1" />
                   </p>
                   <div class="descripcion-detallada">
-                    <strong>Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                    <strong *ngIf="fechaNotaInc1">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
                   </div>
                   <br />
-                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>
-                  <br />
+                  <div *ngIf="!fechaNotaInc1 && WO_Number !== null" class="loading-dots">Cargando notas...</div>
+                  <br *ngIf="!fechaNotaInc1 && WO_Number !== null" />
                   <p *ngIf="fechaNotaInc1" style="margin: 0;">
                     <strong>Notas del Incidente / Solicitud:</strong>
                     <br />
@@ -467,7 +467,7 @@
                     <br />
                     <br />
                   </p>
-                  <button (click)="dialogoCrearNota()">Agregar Nota</button>
+                  <button *ngIf="fechaNotaInc1" (click)="dialogoCrearNota()">Agregar Nota</button>
                   <br />
                   <br />
                   <p *ngIf="resolution" style="margin: 0;">
@@ -772,7 +772,7 @@
     <div class="col-md-8 col-12 align-self-center text-right pr-4 d-none d-md-block">
       <div *ngIf="esContingenciaChatbot" class="btnencuestas d-inline-block ml-2" accesskey="y"
         (click)="abrirChatInHouse()">
-        Consulta de casos
+        Mesa Ágil
         <img src="./assets/img/home/icn-encuentas.png" class="ml-2" alt="" />
       </div>
       <div class="btnencuestas d-inline-block ml-2" (click)="getSurveys()" accesskey="y"
@@ -812,7 +812,7 @@
           </div>
           <div class="derechos col-md-7 col-12 text-center p-2 d-none d-md-block"
             style="z-index: -1; background-color: #da1024">
-            Claro Colombia 2023. Todos los derechos reservados
+            Claro Colombia 2024. Todos los derechos reservados
           </div>
           <div class="col-md-7 col-12 mt-5">
             <div class="container-fluid p-0">
