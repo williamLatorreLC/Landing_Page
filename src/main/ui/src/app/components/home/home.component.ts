@@ -653,7 +653,9 @@ export class HomeComponent implements OnInit {
       this.numeroRequerimientoIngresado = res.response.Request_Number;
       this.numberRequerimiento.controls['reqNumber'].setValue('');
 
+      this.resolution = null
       if (this.AppRequestID.startsWith("INC")) {
+        this.resolution 
         try {
           const resINC = await this.casosService.post('ConsultarINC', {
             incNumber: this.AppRequestID,
@@ -695,7 +697,7 @@ export class HomeComponent implements OnInit {
             woNumber: this.AppRequestID,
           });
 
-          if (!resWO.response.Detailed_Description){
+          if (!resWO.response.Detailed_Description) {
             this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
             this.statusIncidente = resWO.response.Status;
             this.descripcionIncidente = resWO.response.Summary;
@@ -713,7 +715,7 @@ export class HomeComponent implements OnInit {
             this.WO_Number = null
             this.fechaNotaInc1 = null
           }
-          
+
 
         }
         catch (err) {
@@ -731,6 +733,7 @@ export class HomeComponent implements OnInit {
   }
 
   async consultarInc() {
+    this.resolution = null
     const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
     this.Incident_Number = resINC.response.Incident_Number;
     this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
