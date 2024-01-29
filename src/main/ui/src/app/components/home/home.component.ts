@@ -591,7 +591,7 @@ export class HomeComponent implements OnInit {
   async consultarHistoricoCasos() {
     setTimeout(async () => {
       const resHc = await this.casosService.post('consultarHistoricoRequerimiento', {
-        Qualification: this.infoUser.User,
+        Qualification: "45111133",
       });
 
       this.noReq1 = resHc.response.lastThreeListValues[0].Request_Number;
