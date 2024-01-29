@@ -10,7 +10,7 @@ package co.com.claro.myit.util;
  * @author JD
  */
 public class variable {
-    
+
     String LoginMyItDir;
     String LoginMyItDirAES;
     String LoginSSODir;
@@ -27,6 +27,70 @@ public class variable {
     int BannerTime;
     int AvatarTime;
     String ConsultaReq;
+    String ConsultaWO;
+    String ConsultaINC;
+    String ConsultaNotasINC;
+    String ConsultaNotasWO;
+    String CrearNotasINC;
+    String CrearNotasWO;
+    String ConsultarHR;
+
+    public String getConsultarHR() {
+        return ConsultarHR;
+    }
+
+    public void setConsultarHR(String ConsultarHR) {
+        this.ConsultarHR = ConsultarHR;
+    }
+
+    public String getCrearNotasINC() {
+        return CrearNotasINC;
+    }
+
+    public void setCrearNotasINC(String CrearNotasINC) {
+        this.CrearNotasINC = CrearNotasINC;
+    }
+
+    public String getCrearNotasWO() {
+        return CrearNotasWO;
+    }
+
+    public void setCrearNotasWO(String CrearNotasWO) {
+        this.CrearNotasWO = CrearNotasWO;
+    }
+    
+
+    public String getConsultaNotasINC() {
+        return ConsultaNotasINC;
+    }
+
+    public void setConsultaNotasINC(String ConsultaNotasINC) {
+        this.ConsultaNotasINC = ConsultaNotasINC;
+    }
+
+    public String getConsultaNotasWO() {
+        return ConsultaNotasWO;
+    }
+
+    public void setConsultaNotasWO(String ConsultaNotasWO) {
+        this.ConsultaNotasWO = ConsultaNotasWO;
+    }
+
+    public String getConsultaWO() {
+        return ConsultaWO;
+    }
+
+    public void setConsultaWO(String ConsultaWO) {
+        this.ConsultaWO = ConsultaWO;
+    }
+
+    public String getConsultaINC() {
+        return ConsultaINC;
+    }
+
+    public void setConsultaINC(String ConsultaINC) {
+        this.ConsultaINC = ConsultaINC;
+    }
 
     public String getConsultaReq() {
         return ConsultaReq;
@@ -98,7 +162,7 @@ public class variable {
 
     public void setSurveyDetailWODir(String SurveyDetailWODir) {
         this.SurveyDetailWODir = SurveyDetailWODir;
-    }   
+    }
 
     public String getLoginMyItDirAES() {
         return LoginMyItDirAES;

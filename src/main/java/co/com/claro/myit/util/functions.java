@@ -82,6 +82,13 @@ public class functions {
             Constanst.setBannerTime(Integer.parseInt(prop.getProperty("BannerTime")));
             Constanst.setAvatarTime(Integer.parseInt(prop.getProperty("AvatarTime")));
             Constanst.setConsultaReq(prop.getProperty("ConsultaReq"));
+            Constanst.setConsultaINC(prop.getProperty("ConsultaINC"));
+            Constanst.setConsultaWO(prop.getProperty("ConsultaWO"));
+            Constanst.setConsultaNotasINC(prop.getProperty("ConsultaNotasINC"));
+            Constanst.setConsultaNotasWO(prop.getProperty("ConsultaNotasWO"));
+            Constanst.setCrearNotasINC(prop.getProperty("CrearNotasINC"));
+            Constanst.setCrearNotasWO(prop.getProperty("CrearNotasWO"));
+            Constanst.setConsultarHR(prop.getProperty("ConsultarHR"));
 
         } catch (Exception e) {
             System.out.println("Exception: " + e);
@@ -316,8 +323,8 @@ public class functions {
         }
         return gson.toJson(res);
     }
-    
-        public static String SoapRequestConsutaReq(String body, boolean aes) {
+
+    public static String SoapRequestConsutaReq(String body, boolean aes) {
         String responseString = "";
         try {
 
@@ -327,6 +334,188 @@ public class functions {
             HttpPost request = new HttpPost((!aes) ? Constanst.getConsultaReq() : Constanst.getConsultaReq());
             request.setHeader("Content-Type", "text/xml");
             request.setHeader("SOAPAction", Const.SoapActionConsultaReq);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+
+    public static String SoapRequestConsutaWO(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getConsultaWO() : Constanst.getConsultaWO());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionConsultaWO);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+
+    public static String SoapRequestConsutaNotasWO(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getConsultaNotasWO() : Constanst.getConsultaNotasWO());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionConsultaNotasWO);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+
+    public static String SoapRequestConsutaINC(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getConsultaINC() : Constanst.getConsultaINC());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionConsultaINC);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+
+    public static String SoapRequestConsutaNotasINC(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getConsultaNotasINC() : Constanst.getConsultaNotasINC());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionConsultaNotasINC);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+
+    public static String SoapRequestCrearNotasInc(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getCrearNotasINC() : Constanst.getCrearNotasINC());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionCrearNotasInc);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+
+    public static String SoapRequestCrearNotasWo(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getCrearNotasWO() : Constanst.getCrearNotasWO());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionCrearNotasWo);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+    
+        public static String SoapRequestHistoricoRequerimientos(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getConsultarHR(): Constanst.getConsultarHR());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionSRMRequestGetList);
 
             request.setEntity(xmlBody);
             CloseableHttpResponse response = client.execute(request);

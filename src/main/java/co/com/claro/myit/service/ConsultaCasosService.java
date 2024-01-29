@@ -9,7 +9,6 @@ import co.com.claro.myit.api.ConsultaRequerimientoRequest;
 import co.com.claro.myit.util.functions;
 import com.google.gson.JsonObject;
 
-
 /**
  *
  * @author dussan.palma
@@ -34,26 +33,55 @@ public class ConsultaCasosService {
 
     }
 
-public JsonObject getBody(JsonObject respuesta) {
-    JsonObject res = new JsonObject();
+    public JsonObject getBody(JsonObject respuesta) {
+        JsonObject res = new JsonObject();
 
-    JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
-                                      .getAsJsonObject("Body")
-                                      .getAsJsonObject("GetResponse");
+        JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
+                .getAsJsonObject("Body")
+                .getAsJsonObject("GetResponse");
 
-    res.addProperty("Request_Number", getResponse.get("Request_Number").getAsString());
-    res.addProperty("AppRequestID", getResponse.get("AppRequestID").getAsString());
-    res.addProperty("Status", getResponse.get("Status").getAsString());
-    res.addProperty("Summary", getResponse.get("Summary").getAsString());
-    res.addProperty("Submit_Date", getResponse.get("Submit_Date").getAsString());
-    res.addProperty("Completion_Date", getResponse.get("Completion_Date").getAsString());
-    res.addProperty("Closed_Date", getResponse.get("Closed_Date").getAsString());
-    res.addProperty("Status_Reason", getResponse.get("Status_Reason").getAsString());
-    res.addProperty("Requestor_ID", getResponse.get("Requestor_ID").getAsString());
-    res.addProperty("Requestor_By_ID", getResponse.get("Requestor_By_ID").getAsString());
+        if (getResponse.has("Request_Number")) {
+            res.addProperty("Request_Number", getResponse.get("Request_Number").getAsString());
+        }
 
-    System.out.println("Respuesta ConsultaCasosService.java linea 55");
-    System.out.println(res);
-    return res;
-}
+        if (getResponse.has("AppRequestID")) {
+            res.addProperty("AppRequestID", getResponse.get("AppRequestID").getAsString());
+        }
+
+        if (getResponse.has("Status")) {
+            res.addProperty("Status", getResponse.get("Status").getAsString());
+        }
+
+        if (getResponse.has("Summary")) {
+            res.addProperty("Summary", getResponse.get("Summary").getAsString());
+        }
+
+        if (getResponse.has("Submit_Date")) {
+            res.addProperty("Submit_Date", getResponse.get("Submit_Date").getAsString());
+        }
+
+        if (getResponse.has("Completion_Date")) {
+            res.addProperty("Completion_Date", getResponse.get("Completion_Date").getAsString());
+        }
+
+        if (getResponse.has("Closed_Date")) {
+            res.addProperty("Closed_Date", getResponse.get("Closed_Date").getAsString());
+        }
+
+       /*if (getResponse.has("Status_Reason")) {
+            res.addProperty("Status_Reason", getResponse.get("Status_Reason").getAsString());
+        } */
+
+        if (getResponse.has("Requestor_ID")) {
+            res.addProperty("Requestor_ID", getResponse.get("Requestor_ID").getAsString());
+        }
+
+        if (getResponse.has("Requestor_By_ID")) {
+            res.addProperty("Requestor_By_ID", getResponse.get("Requestor_By_ID").getAsString());
+        }
+
+        System.out.println("Respuesta ConsultaCasosService.java linea 55");
+        System.out.println(res);
+        return res;
+    }
 }

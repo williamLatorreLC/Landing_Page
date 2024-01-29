@@ -120,7 +120,9 @@ public class Login {
 
                         JsonArray grupos = new JsonArray();
                         boolean status = getContingencia();
+                        boolean statusChatBot = getContingenciaChatBot();
 
+                        res.addProperty("esContingenciaChatBot", statusChatBot);
                         res.addProperty("esContingencia", status);
                         res.addProperty("esResolutor", (loginService.userProfile != 4));
 
@@ -228,7 +230,25 @@ public class Login {
         }
 
     }
+    
+        public boolean getContingenciaChatBot() {
+        boolean estadoChatBot = false;
+        fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
+        try {
+            List res = dbUtils.readBy("ContingenciaChatBotEntity","tipo='Chatbot'");
 
+            if (!res.isEmpty()) {
+                JSONObject item = new JSONObject(res.get(0));
+                if (item.has("estado")) {
+                    estadoChatBot = (item.getInt("estado") == 1);
+                }
+            }
+            return estadoChatBot;
+        } catch (JSONException e) {
+            return false;
+        }
+
+    }
     public JsonArray getSupportsGroups(String user) {
         user = user.toLowerCase();
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));

@@ -28,3 +28,7 @@
   box-sizing: border-box; /* Incluye el borde y el relleno en las dimensiones */
   transition: all 0.3s ease; /* Agrega una transición suave para cambios en tamaño y posición */
 }
+
+.descripcion-detallada {
+  white-space: pre-line;
+}

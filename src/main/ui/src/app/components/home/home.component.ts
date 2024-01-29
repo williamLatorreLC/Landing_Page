@@ -14,6 +14,7 @@ import { SessionServiceService } from '../../services/sessionService/session-ser
 import { HttpClient } from '@angular/common/http';
 import { CasosService } from 'src/app/services/casosServices/casos.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { interval, take } from 'rxjs';
 
 
 @Component({
@@ -85,22 +86,79 @@ export class HomeComponent implements OnInit {
     BannerTime: 0,
     MyItStore: '',
     MyItUser: '',
-    MyItResolutor: ''
+    MyItResolutor: '',
   };
 
   modalInstance = null;
   verify = null;
 
   numeroRequerimiento: string = '';
-  consultaCaso: boolean = false;
+  numeroW: string = '';
+  numeroI: string = '';
   selectReq: boolean = false;
   numberRequerimiento: FormGroup;
-  Request_Number: string;
+  numberWO: FormGroup;
+  numberINC: FormGroup;
+  Request_Number: any;
   AppRequestID: string;
   Status: string;
   Summary: string;
   Submit_Date: string;
   Completion_Date: string;
+  consultarOcrearCaso: boolean = false;
+  consultaCaso: boolean = false;
+  numeroRequerimientoIngresado: any;
+  descripcionIncidente: any;
+  statusIncidente: any;
+  descripcionIncidenteDetallada: any;
+  fechaCreacionIncidente: any;
+  fechaNotaInc1: any;
+  fechaNotaInc2: string;
+  fechaNotaInc3: string;
+  fechaNotaWo1: string;
+  fechaNotaWo2: string;
+  fechaNotaWo3: string;
+  descriptionInc1: any;
+  descriptionInc2: any;
+  descriptionInc3: any;
+  resolution: any;
+  fechaResolution: any;
+  loadingMessage: string = 'Cargando notas';
+  dots: string = '';
+  detailedDescriptionCrearNotas: string = '';
+  CrearNotas: FormGroup;
+  workLogType: FormGroup;
+  crearNota: boolean = false;
+  creadoExitoso: string;
+  peticionEnCurso: any;
+  doc = [];
+  documentos = [{ nombre: "", file: [] }];
+  nombreArchivo: string;
+  base64ContentString: string;
+  esContingenciaChatbot!: any;
+  selectInc: boolean;
+  selectWo: boolean;
+  numeroIncIngresado: any;
+  numeroWoIngresado: any;
+  Incident_Number: any;
+  WO_Number: any;
+  selectHc: boolean = false;
+  qualification: any;
+  noReq1: any;
+  noReq2: any;
+  noReq3: any;
+  noInc1: any;
+  noInc2: any;
+  noInc3: any;
+  statusInc1: any;
+  statusInc2: any;
+  statusInc3: any;
+  sumarryInc1: any;
+  sumarryInc2: any;
+  sumarryInc3: any;
+  fechaInc1: any;
+  fechaInc2: any;
+  fechaInc3: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -125,6 +183,22 @@ export class HomeComponent implements OnInit {
 
     this.numberRequerimiento = this.fb.group({
       reqNumber: ['']
+    })
+
+    this.CrearNotas = this.fb.group({
+      reqNumber: ['']
+    })
+
+    this.numberINC = this.fb.group({
+      incNumber: ['']
+    })
+
+    this.numberWO = this.fb.group({
+      woNumber: ['']
+    })
+
+    this.qualification = this.fb.group({
+      Qualification: ['']
     })
   }
 
@@ -179,7 +253,7 @@ export class HomeComponent implements OnInit {
         if (res.isError === false) {
 
           this.infoUser = res.response.map;
-          console.log(this.infoUser);
+          this.esContingenciaChatbot = res.response.map.esContingenciaChatBot;
           setTimeout(function () {
             //$scope.$apply(); TO DO => No se coomo funciona esto.
           }, 200);
@@ -471,26 +545,316 @@ export class HomeComponent implements OnInit {
   }
 
   consultarCaso() {
-    this.consultaCaso = !this.consultaCaso;
+    this.consultarOcrearCaso = !this.consultarOcrearCaso;
+    setTimeout(() => {
+      this.consultaCaso = !this.consultaCaso;
+    }, 400);
   }
 
   SearchReq() {
-    this.selectReq = !this.selectReq;
+    setTimeout(() => {
+      this.selectReq = !this.selectReq;
+      this.selectInc = false;
+      this.selectWo = false;
+      this.selectHc = false;
+    }, 400);
+  }
+
+  SearchInc() {
+    setTimeout(() => {
+      this.selectInc = !this.selectInc;
+      this.selectReq = false;
+      this.selectWo = false;
+      this.selectHc = false;
+    }, 400);
+  }
+
+  SearchWo() {
+    setTimeout(() => {
+      this.selectWo = !this.selectWo;
+      this.selectInc = false;
+      this.selectReq = false;
+      this.selectHc = false;
+    }, 400);
+  }
+
+  SearchHC() {
+    setTimeout(() => {
+      this.selectHc = !this.selectHc;
+      this.selectWo = false;
+      this.selectInc = false;
+      this.selectReq = false;
+    }, 500);
+    this.consultarHistoricoCasos();
+  }
+
+  async consultarHistoricoCasos() {
+    setTimeout(async () => {
+      const resHc = await this.casosService.post('consultarHistoricoRequerimiento', {
+        Qualification: "45111133",
+      });
+
+      this.noReq1 = resHc.response.lastThreeListValues[0].Request_Number;
+      this.noReq2 = resHc.response.lastThreeListValues[1].Request_Number;
+      this.noReq3 = resHc.response.lastThreeListValues[2].Request_Number;
+      this.noInc1 = resHc.response.lastThreeListValues[0].AppRequestID;
+      this.noInc2 = resHc.response.lastThreeListValues[1].AppRequestID;
+      this.noInc3 = resHc.response.lastThreeListValues[2].AppRequestID;
+      this.statusInc1 = resHc.response.lastThreeListValues[0].Status;
+      this.statusInc2 = resHc.response.lastThreeListValues[1].Status;
+      this.statusInc3 = resHc.response.lastThreeListValues[2].Status;
+      this.sumarryInc1 = resHc.response.lastThreeListValues[0].Summary;
+      this.sumarryInc2 = resHc.response.lastThreeListValues[1].Summary;
+      this.sumarryInc3 = resHc.response.lastThreeListValues[2].Summary;
+      this.fechaInc1 = resHc.response.lastThreeListValues[0].Submit_Date;
+      this.fechaInc2 = resHc.response.lastThreeListValues[1].Submit_Date;
+      this.fechaInc3 = resHc.response.lastThreeListValues[2].Submit_Date;
+
+    }, 1000);
+  }
+
+
+  resetChat() {
+    this.consultarOcrearCaso = false;
+    this.selectReq = false;
+    this.consultaCaso = false;
+    this.numeroRequerimientoIngresado = '';
+    this.Request_Number = null;
+    this.fechaNotaInc1 = '';
+    this.fechaNotaInc2 = '';
+    this.fechaNotaInc3 = '';
+    this.descriptionInc1 = '';
+    this.descriptionInc2 = '';
+    this.descriptionInc3 = '';
+    this.crearNota = false;
+    this.creadoExitoso = '';
+    this.nombreArchivo = '';
+    this.creadoExitoso = '';
+    this.detailedDescriptionCrearNotas = '';
+    this.selectInc = false;
+    this.selectHc = false;
+    this.selectWo = false;
+    this.numeroIncIngresado = '';
+    this.numeroWoIngresado = '';
+    this.WO_Number = null;
+    this.Incident_Number = null;
+    this.noReq1 = null;
   }
 
   async consultarReq() {
     try {
       const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
-      console.log(res.response.Request_Number);
       this.Request_Number = res.response.Request_Number;
       this.AppRequestID = res.response.AppRequestID;
       this.Status = res.response.Status;
       this.Summary = res.response.Summary;
-      this.Submit_Date =  res.response.Submit_Date;
+      this.Submit_Date = res.response.Submit_Date;
       this.Completion_Date = res.response.Completion_Date;
+      this.numeroRequerimientoIngresado = res.response.Request_Number;
+      this.numberRequerimiento.controls['reqNumber'].setValue('');
+
+      this.resolution = null
+      if (this.AppRequestID.startsWith("INC")) {
+        this.resolution 
+        try {
+          const resINC = await this.casosService.post('ConsultarINC', {
+            incNumber: this.AppRequestID,
+          });
+
+          if (!resINC.response.Detailed_Decription) {
+            this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
+            this.statusIncidente = resINC.response.Status;
+            this.descripcionIncidente = resINC.response.Description;
+            this.fechaCreacionIncidente = resINC.response.Submit_Date;
+
+            const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', {
+              incNumber: this.AppRequestID,
+            })
+
+            this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0].Submit_Date;
+            this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1].Submit_Date;
+            this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2].Submit_Date;
+            this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0].Detailed_Description;
+            this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1].Detailed_Description;
+            this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
+            this.resolution = resINC.response.Resolution;
+            this.fechaResolution = resINC.response.Real_Solution_Date;
+          } else {
+            this.Incident_Number = null
+            this.fechaNotaInc1 = null
+          }
+
+        } catch (err) {
+          console.error(err);
+          this.Incident_Number = null
+          this.fechaNotaInc1 = null
+        }
+
+
+      } else if (this.AppRequestID.startsWith("WO")) {
+        try {
+          const resWO = await this.casosService.post('ConsultarWO', {
+            woNumber: this.AppRequestID,
+          });
+
+          if (!resWO.response.Detailed_Description) {
+            this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
+            this.statusIncidente = resWO.response.Status;
+            this.descripcionIncidente = resWO.response.Summary;
+            this.fechaCreacionIncidente = resWO.response.Submit_Date;
+            const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', {
+              woNumber: this.AppRequestID,
+            })
+            this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
+            this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
+            this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
+            this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
+            this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
+            this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+          } else {
+            this.WO_Number = null
+            this.fechaNotaInc1 = null
+          }
+
+
+        }
+        catch (err) {
+          console.error(err);
+          this.WO_Number = null
+          this.fechaNotaInc1 = null
+        }
+
+      }
     } catch (err) {
       console.error(err);
+      this.WO_Number = null
+      this.fechaNotaInc1 = null
     }
+  }
+
+  async consultarInc() {
+    this.resolution = null
+    const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
+    this.Incident_Number = resINC.response.Incident_Number;
+    this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
+    this.statusIncidente = resINC.response.Status;
+    this.descripcionIncidente = resINC.response.Description;
+    this.fechaCreacionIncidente = resINC.response.Submit_Date;
+    this.numeroIncIngresado = resINC.response.Incident_Number;
+
+    const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', this.numberINC.value)
+
+    this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0].Submit_Date;
+    this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1].Submit_Date;
+    this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2].Submit_Date;
+    this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0].Detailed_Description;
+    this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1].Detailed_Description;
+    this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
+    this.resolution = resINC.response.Resolution;
+    this.fechaResolution = resINC.response.Real_Solution_Date;
+  }
+
+  async consultarWo() {
+    try {
+      const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
+      this.WO_Number = resWO.response.Work_Order_ID;
+      this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
+      this.statusIncidente = resWO.response.Status;
+      this.descripcionIncidente = resWO.response.Summary;
+      this.fechaCreacionIncidente = resWO.response.Submit_Date;
+      this.numeroWoIngresado = resWO.response.Work_Order_ID;
+
+      const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value)
+
+      this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
+      this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
+      this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
+      this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
+      this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
+      this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+    } catch (error) {
+      this.WO_Number = null
+      this.fechaNotaInc1 = null
+    }
+
+  }
+
+  async agregarNota(AppRequestID?: string) {
+    try {
+      if (this.peticionEnCurso) {
+        console.log('La petición ya está en curso. Espere a que termine.');
+        return;
+      }
+
+      this.peticionEnCurso = true;
+
+      if (AppRequestID !== undefined) {
+        if (AppRequestID.startsWith("INC")) {
+          const resCrearNotasInc = await this.casosService.post('CrearNotasInc', {
+            Incident_Number: AppRequestID,
+            Work_Log_Submitter: this.infoUser.User,
+            Detailed_Description: this.detailedDescriptionCrearNotas,
+            Work_Log_Type: this.workLogType,
+            WorkInfoAttachment1Name: this.nombreArchivo,
+            WorkInfoAttachment1Data: this.base64ContentString,
+          });
+          this.creadoExitoso = "Nota creada con éxito";
+        } else if (AppRequestID.startsWith("WO")) {
+          const resCrearNotasWo = await this.casosService.post('CrearNotasWo', {
+            Work_Order_ID: AppRequestID,
+            Work_Log_Submitter: this.infoUser.User,
+            Detailed_Description: this.detailedDescriptionCrearNotas,
+            Work_Log_Type: this.workLogType,
+            WorkInfoAttachment1Name: this.nombreArchivo,
+            WorkInfoAttachment1Data: this.base64ContentString,
+          });
+          this.creadoExitoso = "Nota creada con éxito";
+        }
+      } else {
+        console.log('AppRequestID no proporcionado. No se puede agregar nota.');
+      }
+    } catch (error) {
+      console.error('Error al agregar nota:', error);
+      this.creadoExitoso = "No es posible crear la nota";
+    } finally {
+      this.peticionEnCurso = false;
+    }
+  }
+
+  dialogoCrearNota() {
+    this.crearNota = true;
+  }
+
+  onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+
+    if (selectedFile) {
+      this.readFileAsBase64(selectedFile)
+        .then(base64Content => {
+          this.nombreArchivo = `${selectedFile.name}`
+          this.base64ContentString = (base64Content)
+        })
+        .catch(error => {
+          console.error('Error al leer archivo como Base64:', error);
+        });
+    }
+  }
+
+  private readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const base64Content = reader.result as string;
+        resolve(base64Content.split(',')[1]); // Extraer solo el contenido Base64, excluyendo el encabezado
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(file);
+    });
   }
 
 }

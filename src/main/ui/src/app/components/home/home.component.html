@@ -276,57 +276,65 @@
           </button>
         </div>
 
-        <!-- Content y Footer en un contenedor conjunto -->
+        <!-- Content -->
         <div style="display: flex; flex-direction: column; height: 100%;">
-
-          <!-- Content -->
           <div style="overflow: auto; max-height: none;">
-            <!-- Primera conversacion -->
-            <div *ngIf="!consultaCaso">
-              <!-- Contenido del chat 1 -->
+            <!-- Inicio de conversacion -->
+            <div>
+              <!-- Mensaje 1 Anita-->
               <div class="contenido"
-                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;" >
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
                 <p style="margin: 0;"><strong>AnITa:</strong> Hola {{ infoUser.First_Name }}, soy AnITa. Cuentamé, ¿En
                   qué te puedo ayudar?</p>
               </div>
               <br />
-              <!-- Contenido del chat 2 -->
+              <!-- Mensaje 2  Anita -->
               <div class="contenido"
                 style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
                 <p style="margin: 0;"><strong>AnITa:</strong> Selecciona una opción:
                   <br />
                   <span style="color: blue;">&bull; &nbsp;</span> <a (click)="consultarCaso()"
-                    style="text-decoration: underline; color: blue;">Consultar caso de MyIT</a>
+                    style="text-decoration: underline; color: blue;">Consultar o crear caso de MyIT</a>
                 </p>
               </div>
-              <!-- Agrega más contenido aquí -->
-            </div>
+              <br />
+              <!-- Mensaje User 1-->
+              <div class="contenido" *ngIf="consultarOcrearCaso"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> Consultar o crear caso de MyIT
+                </p>
+              </div>
+              <br />
 
-            <!-- Segunda conversación consulta casos -->
-            <div *ngIf="consultaCaso && !selectReq">
-
-              <!-- Contenido consulta caso 1 -->
-              <div class="contenido"
-              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+              <!-- Mensaje 4 Anita (Consultar o Crear Caso) -->
+              <div class="contenido" *ngIf="consultaCaso"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
                 <p style="margin: 0;"><strong>AnITa:</strong> Selecciona el tipo de caso que quieres consultar:
                   <br />
                   <span (click)="SearchReq()" style="color: blue;">&bull; &nbsp;</span> <a (click)="SearchReq()"
                     style="text-decoration: underline; color: blue;">REQ -
                     Requerimiento</a>
                   <br />
-                  <span style="color: blue;">&bull; &nbsp;</span> <a style="text-decoration: underline; color: blue;">INC -
+                  <span (click)="SearchInc()" style="color: blue;">&bull; &nbsp;</span> <a (click)="SearchInc()"
+                    style="text-decoration: underline; color: blue;">INC -
                     Incidente</a>
                   <br />
-                  <span style="color: blue;">&bull; &nbsp;</span> <a style="text-decoration: underline; color: blue;">WO -
+                  <span (click)="SearchWo()" style="color: blue;">&bull; &nbsp;</span> <a (click)="SearchWo()"
+                    style="text-decoration: underline; color: blue;">WO
+                    -
                     Orden de trabajo</a>
                   <br />
-                  <span style="color: blue;">&bull; &nbsp;</span> <a style="text-decoration: underline; color: blue;">Histórico
+                  <span (click)="SearchHC()" style="color: blue;">&bull; &nbsp;</span> <a (click)="SearchHC()"
+                    style="text-decoration: underline; color: blue;">Histórico
                     de mis casos</a>
                 </p>
               </div>
+
               <br />
-              <div class="contenido"
-              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+
+              <!-- Mensaje 5 Anita (Cartilla) -->
+              <div class="contenido" *ngIf="consultaCaso"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
                 <p style="margin: 0;"><strong>AnITa:</strong> Nota: Si aún no sabes cómo consultar un caso, descarga la
                   cartilla haciendo click <a
                     href="https://static-or01.inbenta.com/e3d52cc744f1828a9937b9b1ab54d2ef4b76f18b247b14dab3a61c4a2c031dff/Cartilla%20Consulta%20de%20Casos%20en%20AnITa-comprimido.pdf"
@@ -334,82 +342,439 @@
                   <br />
                 </p>
               </div>
+
               <br />
-              <button (click)="consultarCaso()"> Volver </button>
-            </div>
 
-            <!-- Conversación si se selecciona REQ requerimiento-->
-            <div *ngIf="selectReq">
-
-              <!-- Contenido si selecciona REQ requerimiento -->
-              <div class="contenido"
-              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
-                <p style="margin: 0;"><strong>AnITa:</strong> Escribe el número de REQ - Requerimiento a consultar</p>
+              <!-- Mensaje 2 User (Si se selecciona consultar Requerimiento) -->
+              <div class="contenido" *ngIf="selectReq && !selectInc && !selectWo && !selectHc"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> REQ - Requerimiento
+                </p>
               </div>
-              <br />
-              <div *ngIf="Request_Number" class="contenido"
-              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
-                <p style="margin: 0;">
-                  Descripción del requerimiento:
-                  <br />
-                  <strong>No. de requerimiento:</strong> {{ Request_Number }}
-                  <br />
-                  <strong>No. de incidente / solicitud:</strong> {{ AppRequestID }}
-                  <br />
-                  <strong>Estado:</strong> {{ Status }}
-                  <br />
-                  <strong>Descripción del requerimiento:</strong> {{ Summary }}
-                  <br />
-                  <strong>Fecha de creación:</strong> {{ Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
-                  <br />
-                  <strong>Fecha de soluón:</strong> {{ Completion_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+              <!-- Mensaje 2 User (Si se selecciona consultar Incidente) -->
+              <div class="contenido" *ngIf="!selectReq && selectInc && !selectWo && !selectHc"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> INC - Incidente
+                </p>
+              </div>
+              <!-- Mensaje 2 User (Si se selecciona consultar WO) -->
+              <div class="contenido" *ngIf="!selectReq && !selectInc && selectWo && !selectHc"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> WO - Orden de trabajo
+                </p>
+              </div>
+              <!-- Mensaje 2 User (Si se selecciona Historico Casos ) -->
+              <div class="contenido" *ngIf="!selectReq && !selectInc && !selectWo && selectHc"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> Histórico de mis casos
                 </p>
               </div>
               <br />
-              <button (click)="SearchReq()"> Volver </button>
+
+
+              <!-- Mensaje 6 Anita (Si se selecciona consultar Requerimiento)-->
+              <div class="contenido" *ngIf="selectHc"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Por favor espera un momento mientras revisamos tus casos.
+                  Si quieres consultar el detalle de un caso específico, copia el número, regresa al menú y sigue las
+                  instrucciones.</p>
+              </div>
+
+              <!-- Mensaje 6 Anita (Si se selecciona Consulta Historico Casos)-->
+              <div class="contenido" *ngIf="selectReq || selectInc || selectWo"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Para conocer el estado de tu caso digita el código 👇</p>
+              </div>
+              <br />
+
+              <!-- Mensaje 3 User (Numero de REQ) -->
+              <div class="contenido" *ngIf="selectReq && numeroRequerimientoIngresado"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> {{ numeroRequerimientoIngresado }}
+                </p>
+              </div>
+
+              <!-- Mensaje 3 User (Numero de INC) -->
+              <div class="contenido" *ngIf="selectInc && numeroIncIngresado"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> {{ numeroIncIngresado }}
+                </p>
+              </div>
+
+              <!-- Mensaje 3 User (Numero de WO) -->
+              <div class="contenido" *ngIf="selectWo && numeroWoIngresado"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #ff383f">
+                <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> {{ numeroWoIngresado }}
+                </p>
+              </div>
+
+
+              <!-- Mensaje 7 Anita (Respuesta del numero de requerimiento)-->
+              <div *ngIf="selectReq || selectInc || selectWo">
+                <!-- Contenido si selecciona REQ requerimiento -->
+                <br />
+                <div *ngIf="Request_Number" class="contenido"
+                  style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+                  <p style="margin: 0;"><strong>AnITa:</strong>
+                    Descripción del requerimiento:
+                    <br />
+                    <strong>No. de requerimiento:</strong> {{ Request_Number }}
+                    <br />
+                    <strong>No. de incidente / solicitud:</strong> {{ AppRequestID }}
+                    <br />
+                    <strong>Estado:</strong> {{ Status }}
+                    <br />
+                    <strong>Descripción del requerimiento:</strong> {{ Summary }}
+                    <br />
+                    <strong>Fecha de creación:</strong> {{ Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Fecha de soluón:</strong> {{ Completion_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <br />
+                    <strong >Descripción del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong >No. de INC / WO:</strong> {{ AppRequestID }}
+                    <br />
+                    <strong *ngIf="fechaNotaInc1">Estado:</strong> {{ statusIncidente }}
+                    <br *ngIf="fechaNotaInc1"/>
+                    <strong *ngIf="fechaNotaInc1">Descripción:</strong> {{ descripcionIncidente }}
+                    <br *ngIf="fechaNotaInc1" />
+                    <strong *ngIf="fechaNotaInc1">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br *ngIf="fechaNotaInc1" />
+                  </p>
+                  <div class="descripcion-detallada">
+                    <strong *ngIf="fechaNotaInc1">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                  </div>
+                  <br />
+                  <div *ngIf="!fechaNotaInc1 && WO_Number !== null" class="loading-dots">Cargando notas...</div>
+                  <br *ngIf="!fechaNotaInc1 && WO_Number !== null" />
+                  <p *ngIf="fechaNotaInc1" style="margin: 0;">
+                    <strong>Notas del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc3 }}
+                    <br />
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc2 }}
+                    <br />
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc1 }}
+                    <br />
+                    <br />
+                  </p>
+                  <button *ngIf="fechaNotaInc1" (click)="dialogoCrearNota()">Agregar Nota</button>
+                  <br />
+                  <br />
+                  <p *ngIf="resolution" style="margin: 0;">
+                    <strong>Solución del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong>Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                    <br />
+                  </p>
+                </div>
+
+                <div *ngIf="Incident_Number" class="contenido"
+                  style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+                  <p style="margin: 0;"><strong>AnITa:</strong>
+                    Descripción del incidente:
+                    <br />
+                    <br />
+                    <strong>No. de indicente:</strong> {{ Incident_Number }}
+                    <br />
+                    <strong>Estado:</strong> {{ statusIncidente }}
+                    <br />
+                    <strong>Descripción:</strong> {{ descripcionIncidente }}
+                    <br />
+                    <strong>Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                  </p>
+                  <div class="descripcion-detallada">
+                    <strong>Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                  </div>
+                  <br />
+                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>
+                  <br />
+                  <p *ngIf="fechaNotaInc1" style="margin: 0;">
+                    <strong>Notas del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc3 }}
+                    <br />
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc2 }}
+                    <br />
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc1 }}
+                    <br />
+                    <br />
+                  </p>
+                  <button (click)="dialogoCrearNota()">Agregar Nota</button>
+                  <br />
+                  <br />
+                  <p *ngIf="resolution" style="margin: 0;">
+                    <strong>Solución del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong>Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                    <br />
+                  </p>
+                </div>
+
+
+                <div *ngIf="WO_Number" class="contenido"
+                  style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+                  <p style="margin: 0;"><strong>AnITa:</strong>
+                    Descripción de la solicitud:
+                    <br />
+                    <br />
+                    <strong>No. de indicente:</strong> {{ WO_Number }}
+                    <br />
+                    <strong>Estado:</strong> {{ statusIncidente }}
+                    <br />
+                    <strong>Descripción:</strong> {{ descripcionIncidente }}
+                    <br />
+                    <strong>Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                  </p>
+                  <div class="descripcion-detallada">
+                    <strong>Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                  </div>
+                  <br />
+                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>
+                  <br />
+                  <p *ngIf="fechaNotaInc1" style="margin: 0;">
+                    <strong>Notas del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc3 }}
+                    <br />
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc2 }}
+                    <br />
+                    <br />
+                    <strong>Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Información:</strong> {{ descriptionInc1 }}
+                    <br />
+                    <br />
+                  </p>
+                  <button (click)="dialogoCrearNota()">Agregar Nota</button>
+                  <br />
+                  <br />
+                  <p *ngIf="resolution" style="margin: 0;">
+                    <strong>Solución del Incidente / Solicitud:</strong>
+                    <br />
+                    <strong>Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br />
+                    <strong>Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                    <br />
+                  </p>
+                </div>
+              </div>
+
+              <!-- Mensaje 7 Anita (Si se selecciona hisotico Casos)-->
+              <div *ngIf="noReq1" class="contenido"
+              style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0; overflow: auto;">
+              <p style="margin: 0;"><strong>AnITa:</strong>
+                <br />
+                <strong>No. del requerimiento:</strong> {{ noReq1 }}
+                <br />
+                <strong>No. de incidente / solicitud:</strong> {{ noInc1 }}
+                <br />
+                <strong>Estado:</strong> {{ statusInc1 }}
+                <br />
+                <strong>Resumen del requerimiento:</strong> {{ sumarryInc1 }}
+                <br />
+                <strong>Fecha de creación:</strong> {{ fechaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                <br />
+              </p>
+              <br />
+              <p style="margin: 0;">
+                <br />
+                <strong>No. del requerimiento:</strong> {{ noReq2 }}
+                <br />
+                <strong>No. de incidente / solicitud:</strong> {{ noInc2 }}
+                <br />
+                <strong>Estado:</strong> {{ statusInc2 }}
+                <br />
+                <strong>Resumen del requerimiento:</strong> {{ sumarryInc2 }}
+                <br />
+                <strong>Fecha de creación:</strong> {{ fechaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                <br />
+              </p>
+              <br />
+              <p style="margin: 0;">
+                <br />
+                <strong>No. del requerimiento:</strong> {{ noReq3 }}
+                <br />
+                <strong>No. de incidente / solicitud:</strong> {{ noInc3 }}
+                <br />
+                <strong>Estado:</strong> {{ statusInc3 }}
+                <br />
+                <strong>Resumen del requerimiento:</strong> {{ sumarryInc3 }}
+                <br />
+                <strong>Fecha de creación:</strong> {{ fechaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                <br />
+              </p>
+              <br />
+            </div>
+
+
+              <!-- Mensaje 8 Anita (Si se selecciona crear Nota)-->
+              <div class="contenido" *ngIf="crearNota"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
+                <p style="margin: 0;"><strong>AnITa:</strong> Ingresa la descripción de la nota que quieres agregar al
+                  caso.
+                  <br />
+                  <br />
+                  Nota: Si quieres añadir un archivo adjunto, primero selecciona el archivo y luego, ingresa la
+                  descripción de la nota.
+                </p>
+                <br />
+                <div>
+                  <label for="fileInput">Seleccionar archivo:</label>
+                  <input type="file" id="fileInput" (change)="onFileSelected($event)"
+                    accept=".eml,.msg,.xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf,image/*">
+                </div>
+              </div>
+              <br />
+              <!-- Mensaje 9 Anita (Nota creada con exito)-->
+              <div class="contenido" *ngIf="creadoExitoso"
+                style="position: relative; padding: 10px; border-radius: 10px; background-color: #e0e0e0;">
+                <p style="margin: 0;"><strong>AnITa:</strong> {{ creadoExitoso }}</p>
+              </div>
+              <br />
+              <button *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 " (click)="resetChat()">Volver</button>
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
             </div>
           </div>
         </div>
-      </div>
 
-
-      <!-- AnITa inicial -->
-      <div
-        style="left: 50.5%; top: 13%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 0px; width: 15%; height: 65% "
-        *ngIf="mostrarChat">
-        <img src="./assets/img/home/Saludando.png" class="ml-2" alt=""
-          style="width: 90%; position: relative; left: -10px; top: -9px; max-height: 100%; width: auto; height: auto;" />
-      </div>
-
-      <!-- input inicial -->
-      <div class="ml-auto cpointer float ng-star-inserted"
-      style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%;"
-        *ngIf="mostrarChat">
-        <div>
-          <input type="text" placeholder="Pregunta aquí..."
-            style="width: 100%; height: 50px; border: 2px solid #ffffff;">
+        <!-- AnITa Foto inicial -->
+        <div
+          style="left: 50.5%; top: 13%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 0px; width: 15%; height: 65% "
+          *ngIf="mostrarChat">
+          <img src="./assets/img/home/Saludando.png" class="ml-2" alt=""
+            style="width: 90%; position: relative; left: -10px; top: -9px; max-height: 100%; width: auto; height: auto;" />
         </div>
-      </div>
 
-      <!-- input si selecciona REQ requerimiento -->
-      <form [formGroup]="numberRequerimiento" (ngSubmit)="consultarReq()">
-      <div *ngIf="selectReq && mostrarChat" class="ml-auto cpointer float ng-star-inserted"
-        style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
-        <div>
-          <input type="text" [(ngModel)]="numeroRequerimiento" placeholder="Escribe el número de REQ - Requerimiento..."
-            style="width: 100%; height: 50px; border: 2px solid #ffffff;"  formControlName="reqNumber">
-          <button (click)="consultarReq()">Consultar Requerimiento</button>
+        <!-- input inicial -->
+        <div class="ml-auto cpointer float ng-star-inserted"
+          style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%;"
+          *ngIf="mostrarChat">
+          <div>
+            <input type="text" placeholder="Pregunta aquí..."
+              style="width: 100%; height: 50px; border: 2px solid #ffffff;">
+          </div>
         </div>
-      </div>
-    </form>
 
+        <!-- input si selecciona REQ requerimiento -->
+        <form [formGroup]="numberRequerimiento" (ngSubmit)="consultarReq()">
+          <div *ngIf="selectReq && mostrarChat && !crearNota" class="ml-auto cpointer float ng-star-inserted"
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            <div>
+              <input type="text" [(ngModel)]="numeroRequerimiento"
+                placeholder="Escribe el número de REQ - Requerimiento..."
+                style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="reqNumber">
+              <button (click)="consultarReq()">Consultar Requerimiento</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- input si selecciona INC  -->
+        <form [formGroup]="numberINC" (ngSubmit)="consultarInc()">
+          <div *ngIf="selectInc && mostrarChat && !crearNota" class="ml-auto cpointer float ng-star-inserted"
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            <div>
+              <input type="text" [(ngModel)]="numeroI" placeholder="Escribe el número de INC - Incidente..."
+                style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="incNumber">
+              <button (click)="consultarInc()">Consultar Incidente</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- input si selecciona WO  -->
+        <form [formGroup]="numberWO" (ngSubmit)="consultarWo()">
+          <div *ngIf="selectWo && mostrarChat && !crearNota" class="ml-auto cpointer float ng-star-inserted"
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            <div>
+              <input type="text" [(ngModel)]="numeroW" placeholder="Escribe el número de WO - Orden de trabajo..."
+                style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="woNumber">
+              <button (click)="consultarWo()">Consultar Orden de trabajo</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- input si selecciona Crear Notas con Req -->
+        <form *ngIf="Request_Number" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(AppRequestID)">
+          <div *ngIf="crearNota && Request_Number" class="ml-auto cpointer float ng-star-inserted"
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            <div>
+              <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
+                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
+                style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="reqNumber">
+              <button (click)="agregarNota(AppRequestID)">Crear Nota</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- input si selecciona Crear Notas con INC -->
+        <form *ngIf="Incident_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(Incident_Number)">
+          <div *ngIf="crearNota" class="ml-auto cpointer float ng-star-inserted"
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            <div>
+              <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
+                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
+                style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="reqNumber">
+              <button (click)="agregarNota(Incident_Number)">Crear Nota</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- input si selecciona Crear Notas con WO -->
+        <form *ngIf="WO_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(WO_Number)">
+          <div *ngIf="crearNota" class="ml-auto cpointer float ng-star-inserted"
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            <div>
+              <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
+                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
+                style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="reqNumber">
+              <button (click)="agregarNota(WO_Number)">Crear Nota</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
     </div>
     <!-- Fin Chatbot -->
     <div class="col-md-8 col-12 align-self-center text-right pr-4 d-none d-md-block">
-      <!-- <div class="btnencuestas d-inline-block ml-2" accesskey="y" (click)="abrirChatInHouse()">
-        Consulta de casos
+      <div *ngIf="esContingenciaChatbot" class="btnencuestas d-inline-block ml-2" accesskey="y"
+        (click)="abrirChatInHouse()">
+        Mesa Ágil
         <img src="./assets/img/home/icn-encuentas.png" class="ml-2" alt="" />
-      </div>   -->
+      </div>
       <div class="btnencuestas d-inline-block ml-2" (click)="getSurveys()" accesskey="y"
         *ngIf="!infoUser.esContingencia">
         Encuestas
@@ -447,7 +812,7 @@
           </div>
           <div class="derechos col-md-7 col-12 text-center p-2 d-none d-md-block"
             style="z-index: -1; background-color: #da1024">
-            Claro Colombia 2023. Todos los derechos reservados
+            Claro Colombia 2024. Todos los derechos reservados
           </div>
           <div class="col-md-7 col-12 mt-5">
             <div class="container-fluid p-0">
