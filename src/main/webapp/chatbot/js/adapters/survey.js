@@ -1,4 +1,4 @@
-//This adapter shows a previously-created survey from the same project as the domain/secret key Chatbot SDK. When a user clicks on the "Close" button of the conversation window, the confirmation message appears. If they confirm that you want to leave the conversation, the survey then appears in the conversation window.
+//Version 1.2 Febero 10 2022 This adapter shows a previously-created survey from the same project as the domain/secret key Chatbot SDK. When a user clicks on the "Close" button of the conversation window, the confirmation message appears. If they confirm that you want to leave the conversation, the survey then appears in the conversation window.
 
 function showSurvey(surveyID) {
   var surveyProcess='toInit';
@@ -19,7 +19,8 @@ function showSurvey(surveyID) {
         return next();
       }else {
           //
-            console.log("lanza encuesta...");
+          console.log("lanza encuesta...");
+
         var surveyURL = chatbot.api.getSurvey(surveyID);
         surveyURL.then(({data})=>{
           var survey={
@@ -42,10 +43,10 @@ function showSurvey(surveyID) {
           return next(messageData)
         }
       }
-//        
-        
+//
 
-        
+
+
     })
   }
 }
