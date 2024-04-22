@@ -72,6 +72,7 @@ public class SurveyService {
                     + "   </soapenv:Body>\n"
                     + "</soapenv:Envelope>";
             body = body.replaceAll("--user--", user);
+            
         } else {
             try {
                 body = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soap=\"http://soap.service.wscusprobinquiryv1.claro.com.co/\">\n"
@@ -87,6 +88,8 @@ public class SurveyService {
                         + "      </soap:getPendingInquiryCusProbRequest>\n"
                         + "   </soapenv:Body>\n"
                         + "</soapenv:Envelope>";
+                System.out.println("Request:");
+                System.out.println(body);
             } catch (BadPaddingException ex) {
                 Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalBlockSizeException ex) {
@@ -101,7 +104,8 @@ public class SurveyService {
                 Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        System.out.println("Request");
+        System.out.println(body);
         return fn.SoapRequestSurvey(body, "Get", !this.isContingencia);
     }
 
@@ -153,6 +157,8 @@ public class SurveyService {
                 body = body.replaceAll("--comment--", AES.encryptMethod(datos.getComentario()));
                 body = body.replaceAll("--fecha--", AES.encryptMethod(datos.getFecha()));
                 body = body.replaceAll("--status--", AES.encryptMethod("Responded"));
+                System.out.println("Request:");
+                System.out.println(body);
             }
 
             return fn.SoapRequestSurvey(body, "Set", !this.isContingencia);

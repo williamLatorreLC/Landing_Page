@@ -28,7 +28,7 @@ public class LoginService {
 
     private boolean isContingencia;
     
-    public int userProfile=0;
+    public int userProfile=4;
 
     public LoginService(LoginRequest data, functions fn, boolean isContingencia) {
         this.data = data;
@@ -57,12 +57,14 @@ public class LoginService {
             } catch (InvalidKeyException ex) {
                 Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println(body);
+             System.out.println("Body que se envia");
+             System.out.println(body);
         } else {
             body = Const.xmlRequest;
             body = body.replaceAll("--user--", this.data.getUser());
             body = body.replaceAll("--genericUser--", this.data.getUser());
             body = body.replaceAll(Pattern.quote("--genericPass--"), Matcher.quoteReplacement(this.data.getPass()));
+            System.out.println("Body que se envia");
             System.out.println(body);
         }
 
@@ -84,17 +86,7 @@ public class LoginService {
                 res.addProperty("Internet_Email", (respuesta.has("internetEmail")) ?  AES.decryptMethod(respuesta.get("internetEmail").getAsString()) : "");
                 res.addProperty("Site", (respuesta.has("site")) ?  AES.decryptMethod(respuesta.get("site").getAsString()) : "");
                 userProfile = (respuesta.has("userProfile")) ?  Integer.parseInt(AES.decryptMethod(respuesta.get("userProfile").getAsString())): 0;
-            } catch (BadPaddingException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalBlockSizeException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NoSuchPaddingException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvalidAlgorithmParameterException ex) {
-                Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvalidKeyException ex) {
+            }   catch (NumberFormatException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException ex) {
                 Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {

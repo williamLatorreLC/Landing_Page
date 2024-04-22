@@ -1,4 +1,4 @@
-//Version 7.1 Generada el 15 de Junio 2022
+//Version 8 Generada el 10 de Febrero 2022
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -129,6 +129,10 @@ var categoriesTries = 1;
 var customEscalateForm = '';
 var lastCustomEscalateForm = '';
 
+var userIsActive = true;
+var userNotifications = 0;
+var originalDocumentTitle = document.title;
+
 // Inicializa el chatbot
 function initChatbot(type){
 
@@ -166,6 +170,7 @@ function initChatbot(type){
 
 // Configuracion inicial para Chatbot
     var config = {
+        showDateTime: true,
         //INFORMACION DEL USUARIO EN URL
         tracking:{
             userInfo:{
@@ -183,8 +188,8 @@ function initChatbot(type){
             visible:true
         },
         html : {
-            'custom-window-header':
-                '<div></div>'
+            'custom-window-header':'<div></div>',
+            'conversation-window-footer':'<conversation-window-footer-form><svg id="inbenta-bot-home-btn" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" class="home-btn inbenta-bot-icon home-click"><circle cx="16" cy="16" r="15.5" stroke="#da262c" class="home-click"></circle><path d="m26.184 14.836-9.057-9.052-.607-.607a.739.739 0 0 0-1.04 0l-9.664 9.659a1.497 1.497 0 0 0-.44 1.078c.01.825.696 1.484 1.52 1.484h.997v7.633h16.214v-7.633h1.017c.401 0 .778-.157 1.062-.441a1.49 1.49 0 0 0 .438-1.062c0-.398-.157-.775-.44-1.06Zm-8.872 8.508h-2.625v-4.782h2.626v4.782Zm5.108-7.634v7.634h-3.608V18a.937.937 0 0 0-.937-.938h-3.75a.937.937 0 0 0-.938.938v5.344H9.582V15.71H7.33l8.671-8.665.542.542 8.128 8.123H22.42Z" fill="#da262c" class="home-click"></path></svg><upload-media-button /><chatbot-input /><character-counter /><send-button /></conversation-window-footer-form>'
         },
         userType: perfil_inbenta,
         chatbotId: 'claro_col_chatbot_web',
@@ -583,6 +588,27 @@ function setDepartment (dep){
               });
 
             }
+
+            if(messageData.message === "agent-joined" || messageData.message === "chat-closed") {
+
+              userNotifications++;
+
+              if(userIsActive){
+                //user is here
+                userNotifications = 0;
+                document.title = originalDocumentTitle;
+              } else {
+
+                var txtNotifications = '(' + userNotifications + ') ';
+                document.title = txtNotifications + originalDocumentTitle;
+              }
+
+              //audio para hablar con agente
+              var audio = new Audio('https://asistentevirtual.claro.com.co/webhooks_mesa_servicios/public/swiftly-610.mp3');
+              audio.play();
+
+            }
+
             return next(messageData);
         });
     }
@@ -595,6 +621,10 @@ function openWindow(chatBot){
     chatBot.subscriptions.onReady(function(next) {
         //chatBot.actions.resetSession();
         chatBot.actions.showConversationWindow();
+
+        chatBot.helpers.setListener('.home-btn', 'click', function(){
+          chatBot.actions.sendMessage({message: 'inicio'});
+        });
     });
 
     var patt = new RegExp("{*}");
@@ -1019,13 +1049,29 @@ function gestionaRespuesta(chatbot) {
 
         if(typeof(messageData.user) != 'undefined'){
 
+            userNotifications++;
+
+            if(userIsActive){
+              //user is here
+              userNotifications = 0;
+              document.title = originalDocumentTitle;
+            } else {
+
+              var txtNotifications = '(' + userNotifications + ') ';
+              document.title = txtNotifications + originalDocumentTitle;
+            }
+
             //audio para hablar con agente
             var audio = new Audio('https://asistentevirtual.claro.com.co/webhooks_mesa_servicios/public/swiftly-610.mp3');
             audio.play();
 
             return next(messageData);
         } else {
-            //
+          if(userIsActive){
+            //user is here
+            userNotifications = 0;
+            document.title = originalDocumentTitle;
+          }
         }
 
         if(var_adjuntar_archivo_nota){
@@ -2321,3 +2367,11 @@ function validateEscalateConditions(evaluatedObject){
 }
 
 initChatbot('token');
+
+document.addEventListener("visibilitychange", (event) => {
+  if (document.visibilityState == "visible") {
+    userIsActive = true;
+  } else {
+    userIsActive = false;
+  }
+});

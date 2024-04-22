@@ -7,7 +7,6 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { GtagService } from "../../services/gtmServices/gtag.service";
 import { SessionServiceService } from "../../services/sessionService/session-service.service";
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,6 +16,7 @@ export class LoginComponent implements OnInit {
 
   users: FormGroup;
   isCloseSession:boolean = false;
+  encryptionKey = 'LandingMyITPageK';
 
   userData = {}
   constructor(private factoryService: FactoryService,
@@ -28,13 +28,16 @@ export class LoginComponent implements OnInit {
 
     this.users = this.fb.group({
       user: ['', Validators.required],
-      pass: ['', Validators.required]
+      pass: ['', Validators.required],
+      closeSessions: [this.isCloseSession]
     })
   }
 
   ngOnInit(): void {
     this.GtmServicesService.Tagging("Login","pt_login");
     this.spinner.hide()
+    
+
   }
   login() {
     this.GtmServicesService.Tagging("Login","bt_login_iniciarsesion");
@@ -43,7 +46,13 @@ export class LoginComponent implements OnInit {
       if (this.isCloseSession) {
         this.users.value.closeSessions = true;
       }
-      this.factoryService.post('loginMyIT', this.users.value).then((res) => {
+      const encryptedUser = btoa(this.users.value.user);
+      const encryptedPassword = btoa(this.users.value.pass);
+      this.factoryService.post('loginMyIT', {
+        user: encryptedUser,
+        pass: encryptedPassword,
+        closeSessions: this.users.value.closeSessions
+      }).then((res) => {
         this.spinner.hide()
         if (res.isError === false) {
           sessionStorage.setItem('X_MYIT_LAND', res.response.tokenForm)

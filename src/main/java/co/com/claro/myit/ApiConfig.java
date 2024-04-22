@@ -32,6 +32,15 @@ public class ApiConfig extends Application {
         resources.add(Contingencia.class);
         resources.add(CasesList.class);
         resources.add(CasesCrud.class);
+        resources.add(Casos.class);
+        resources.add(ConsultaINC.class);
+        resources.add(ConsultaWO.class);
+        resources.add(ConsultaNotasINC.class);
+        resources.add(ConsultaNotasWO.class);
+        resources.add(CrearNotasInc.class);
+        resources.add(CrearNotasWo.class);
+        resources.add(ContingenciaChatBot.class);
+        resources.add(ConsultaHistoricoRequerimientos.class);
         return resources;
     }
 

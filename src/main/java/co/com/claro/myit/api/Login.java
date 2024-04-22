@@ -9,7 +9,6 @@ package co.com.claro.myit.api;
  *
  * @author kompl
  */
-import co.com.claro.myit.db.BannerEntity;
 import co.com.claro.myit.db.SupportGroupMembersEntity;
 import co.com.claro.myit.db.SupportGroupsEntity;
 import co.com.claro.myit.db.UserSessionEntity;
@@ -29,18 +28,14 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.XML;
 
@@ -61,15 +56,25 @@ public class Login {
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
         JsonObject respuesta = new JsonObject();
-        try {
-              
+        try { 
+
             LoginRequest datos = fn.getData(data, LoginRequest.class);
+            
+            byte[] decodedU = Base64.getDecoder().decode(datos.getUser());
+            String decodedUser = new String(decodedU, StandardCharsets.UTF_8);
+           
+            byte[] decodedP = Base64.getDecoder().decode(datos.getPass());
+            String decodedPass = new String(decodedP, StandardCharsets.UTF_8);
+            
+            datos.setUser(decodedUser);
+            datos.setPass(decodedPass);
+            
             boolean isContingencia = getContingenciaLogin();
             LoginService loginService=new LoginService(datos,fn,isContingencia);
             boolean loginSSO = false;
             String AuthnRequestID = "";
             String AssertionID = "";
-          
+
             if (haveActiveSession(datos.getUser(), datos.isCloseSessions())) {
                 return fn.respError(null, "Detectamos que tienes otra sesión activa.\n Recuerda que sólo puedes tener una sesión activa a la vez ¿Deseas cerrar todas las sesiones anteriores?", true);
             }
@@ -81,7 +86,7 @@ public class Login {
                 AuthnRequestID = resSSO.getString("AuthnRequestID");
                 AssertionID = resSSO.getString("AssertionID");
             }
-            responseString=loginService.login();
+            responseString = loginService.login();
 
             if (responseString.equals("")) {
                 return fn.respError(null, "Error al consultar información. ", responseString);
@@ -98,13 +103,13 @@ public class Login {
                         JsonObject resTok = new JsonObject();
                         resTok.addProperty("User", AES.encrypt(datos.getUser()));
                         JsonObject res = loginService.getBody(respuesta);
-                        
+
                         if (res.has("Profile_Status") && !res.get("Profile_Status").getAsString().equals("Enabled")) {
                             return fn.respError(null, "Usuario inexistente o inactivo. ", respuesta);
                         }
                         res.addProperty("User_ID", datos.getUser());
                         res.addProperty("loginSSO", loginSSO);
-                        
+
                         if (loginSSO) {
                             res.addProperty("AuthnRequestID", AuthnRequestID);
                             res.addProperty("AssertionID", AssertionID);
@@ -115,7 +120,9 @@ public class Login {
 
                         JsonArray grupos = new JsonArray();
                         boolean status = getContingencia();
-                        
+                        boolean statusChatBot = getContingenciaChatBot();
+
+                        res.addProperty("esContingenciaChatBot", statusChatBot);
                         res.addProperty("esContingencia", status);
                         res.addProperty("esResolutor", (loginService.userProfile != 4));
 
@@ -134,7 +141,7 @@ public class Login {
                         res.add("grupos", grupos);
                         res.addProperty("version", "2.0");
                         res.addProperty("tokenForm", AES.encrypt(res.toString()));
-                        
+
                         UserSessionEntity userSessionEntity = new UserSessionEntity(datos.getUser(), sessionTime);
                         dbUtils.insert(userSessionEntity);
 
@@ -204,7 +211,7 @@ public class Login {
         }
 
     }
-    
+
     public boolean getContingenciaLogin() {
         boolean estado = false;
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
@@ -223,7 +230,25 @@ public class Login {
         }
 
     }
+    
+        public boolean getContingenciaChatBot() {
+        boolean estadoChatBot = false;
+        fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
+        try {
+            List res = dbUtils.readBy("ContingenciaChatBotEntity","tipo='Chatbot'");
 
+            if (!res.isEmpty()) {
+                JSONObject item = new JSONObject(res.get(0));
+                if (item.has("estado")) {
+                    estadoChatBot = (item.getInt("estado") == 1);
+                }
+            }
+            return estadoChatBot;
+        } catch (JSONException e) {
+            return false;
+        }
+
+    }
     public JsonArray getSupportsGroups(String user) {
         user = user.toLowerCase();
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
