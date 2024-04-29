@@ -1,3 +1,4 @@
+/*Version 1.2 Febrero 10 2022 *********************************************************************/
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
 
 .inbenta-bot{
@@ -19,7 +20,7 @@
 }
 
 .inbenta .inbenta-bot__bubble__body a{
-   color: #e7363b; 
+   color: #e7363b;
 }
 
 
@@ -138,7 +139,7 @@
 /****Bubbles chat**/
 .inbenta .inbenta-bot__bubble .messages__message--sent .messages__message__content,
 .inbenta .inbenta-bot__chat .messages__message--sent .messages__message__content {
-  
+
 }
 
 .inbenta .inbenta-bot__bubble .messages__message--received .messages__message__content,
@@ -151,7 +152,11 @@
     border-radius: 30px;
     border-bottom-left-radius: 0;
     color: #ffffff;
-    padding: 15px;
+    padding: 15px 15px 30px 15px;
+}
+
+.inbenta-bot__chat .content__status .status__time {
+	color: #cbc8c8 !important;
 }
 
 /*RECEIVED*/
@@ -232,7 +237,7 @@
     display: inline-block;
     font-size: .8em;
 }
- 
+
 /*tablas*/
 .inbenta .inbenta-bot__chat .messages__message--received .content__text table{
     border-collapse: collapse;
@@ -291,7 +296,7 @@
 .inbenta-bot__chat .messages__message--received,
 .inbenta-bot__chat .messages__message--sent .messages__message__content {
 
-    
+
 }
 
 /*LINKS MULTI-CHOISE: inside the text*/
@@ -333,7 +338,7 @@
     background-color: #e7363b;
     -webkit-border-radius: 1px;
     -moz-border-radius: 1px;
-    border-radius: 1px; 
+    border-radius: 1px;
 }
 
 /*FOOTER*/
@@ -354,9 +359,9 @@ area/campo para comentar*+++++++++++++++++++++++++++++++*/
 
 /*LAUNCHER+++++++++++++++++++++++++++++++++++++++++++++++++++*/
 .inbenta .inbenta-bot__launcher{
-   
+
     opacity: 0.7 !important;
-    
+
     position: fixed!important;
     right: -11px!important;
     bottom: 250px!important;
@@ -364,11 +369,11 @@ area/campo para comentar*+++++++++++++++++++++++++++++++*/
     color:#78c0ce;
     border: 2px solid #78c0ce;
     padding: 0px !important;
-    
+
     -webkit-border-radius: 1px;
     -moz-border-radius: 1px;
     border-radius: 1px;
-    
+
     width: 100px !important;
     height: 90px;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .16), 0 3px 12px 0 rgba(0, 0, 0, .08);
@@ -386,7 +391,7 @@ area/campo para comentar*+++++++++++++++++++++++++++++++*/
 .inbenta .inbenta-bot__launcher__image{
     overflow: visible !important;
     background-image:url(launcher.png);
-    
+
     background-repeat:no-repeat;
     width:100%;
     height:100%;
@@ -395,7 +400,7 @@ area/campo para comentar*+++++++++++++++++++++++++++++++*/
 .inbenta .inbenta-bot__launcher__text{
     display: block !important;
     font-size: 14px;
-  
+
 }
 
 
@@ -406,14 +411,14 @@ area/campo para comentar*+++++++++++++++++++++++++++++++*/
     background-color: #ffffff;
     -webkit-border-radius: 1px;
     -moz-border-radius: 1px;
-    border-radius: 1px; 
+    border-radius: 1px;
 }
 
 .inbenta .content__buttons .inbenta-bot-button:hover{
     border: 2px solid #e7363b;
     color: #ffffff;
     background-color: #e7363b;
-    
+
 }
 
 .inbenta .content__buttons .inbenta-bot-button:disabled{
@@ -432,7 +437,7 @@ area/campo para comentar*+++++++++++++++++++++++++++++++*/
     -webkit-border-radius: 1px;
     -moz-border-radius: 1px;
     border-radius: 1px;
-    
+
 }
 
 
@@ -458,3 +463,9 @@ area/campo para comentar*+++++++++++++++++++++++++++++++*/
 .inbenta .messages__message__content .status__icon.inbenta-bot-icon--check{
     color: #ffffff;
 }
+
+.inbenta .inbenta-bot .footer__form .home-btn{margin-left: 5px}
+.inbenta .inbenta-bot .footer__form .home-btn:hover{cursor:pointer}
+.inbenta .inbenta-bot .footer__form .home-btn circle,.inbenta .inbenta-bot .footer__form .home-btn path{transition:fill .4s ease-out}
+.inbenta .inbenta-bot .footer__form .home-btn:hover circle{fill:#da262c}
+.inbenta .inbenta-bot .footer__form .home-btn:hover path{fill:#fcfcfc}
