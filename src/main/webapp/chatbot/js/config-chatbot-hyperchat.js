@@ -1,4 +1,4 @@
-//Version 8 Generada el 10 de Febrero 2022
+//Version 15 Generada el 7 de Agosto 2024
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -110,6 +110,9 @@ var xchatbot = null;
 var var_tipoDiagnostico = '';
 var var_cavSeleccionado = '';
 var var_ipDiagnosticar = '';
+var var_user_support_group = '';
+var var_show_workorder = '';
+var var_show_incident = '';
 
 var var_org = '';
 var var_dep = '';
@@ -470,6 +473,61 @@ function setCavZone (cav_zone){
     }
 }
 
+function setUserSupportGroup (user_support_group){
+
+  if(user_support_group){
+    var_user_support_group = user_support_group;
+
+    xchatbot.actions.sendMessage({message: var_user_support_group,directCall:"indica_tipo_casos_a_consultar"}).then(function(){
+
+      const userMessageData = {
+          message: var_user_support_group
+      }
+
+      xchatbot.actions.displayUserMessage(userMessageData);
+
+  });
+}
+
+
+
+}
+
+function showWorkorder(workorder){
+
+  if(workorder){
+    var_show_workorder = workorder;
+
+    xchatbot.actions.sendMessage({message: var_show_workorder,directCall:"Consultar_estado_de_una_orden_de_trabajo"}).then(function(){
+
+      const userMessageData = {
+          message: var_show_workorder
+      }
+
+      xchatbot.actions.displayUserMessage(userMessageData);
+
+    });
+  }
+
+}
+
+function showIncident(incident){
+
+  if(incident){
+    var_show_incident = incident;
+
+    xchatbot.actions.sendMessage({message: var_show_incident,directCall:"Consultar_estado_de_un_incidente"}).then(function(){
+
+      const userMessageData = {
+          message: var_show_incident
+      }
+
+      xchatbot.actions.displayUserMessage(userMessageData);
+
+    });
+  }
+
+}
 
 function setCustomerType (customer_type){
 
@@ -1033,6 +1091,9 @@ function gestionaRespuesta(chatbot) {
     var usuario_red = usuarioid;
     var clr_id = var_clr_id;
 
+    var show_incident = var_show_incident;
+    var show_workorder = var_show_workorder;
+
     chatbot.subscriptions.onSendMessage( function(messageData, next) {
 
       if(var_release_support_response == 'waiting'){
@@ -1079,6 +1140,10 @@ function gestionaRespuesta(chatbot) {
         }
 
         if(messageData.attributes) {
+
+            if((var_show_incident || var_show_workorder) && messageData.message.search('Para conocer el estado de tu caso') >= 0){
+                messageData.message = 'Obteniendo información del caso...';
+            }
 
             if(messageData.message.search(/ignorar/i) >= 0){
                 next = null;
@@ -1376,7 +1441,22 @@ function gestionaRespuesta(chatbot) {
                             var_extra_info = "";
 
                             break;
+                  case "params":
 
+                      next = false;
+
+                      var paramsObj = {
+                        'user':usuarioid, //fixme
+                        'support_group': var_user_support_group
+                      };
+
+                      var params = JSON.stringify(paramsObj);
+
+                      xchatbot.actions.sendMessage({message: params});
+
+                      var_user_support_group = "";
+
+                      break;
                     case "create_case_params":
 
                         next = false;
@@ -1445,6 +1525,13 @@ function gestionaRespuesta(chatbot) {
 
                         break;
 
+                    case "email_var":
+                            next = false;
+
+                            xchatbot.actions.sendMessage({message: mail});
+
+                            break;
+
                     case "usuario_red":
                         next = false;
 
@@ -1458,15 +1545,29 @@ function gestionaRespuesta(chatbot) {
                         break;
                     default:
 
-                        if(var_tipoDiagnostico && messageData.message.search('Digita la IP a revisar') >= 0){
-                            if(var_tipoDiagnostico == 'usuario'){
-                                //espera acción del usuario
-                            } else {
-                                //la IP no es importante
-                                next = false;
-                                xchatbot.actions.sendMessage({message: '122.122.122.122'}); //IP DUMMY QUE SE VA A IGNORAR
-                            }
+                    if(var_show_incident && messageData.message.search('Digita el código') >= 0){
+                        next = false;
+                        xchatbot.actions.sendMessage({message: var_show_incident});
+
+                        var_show_incident = '';
+                    }
+
+                    if(var_show_workorder && messageData.message.search('Digita el código') >= 0){
+                        next = false;
+                        xchatbot.actions.sendMessage({message: var_show_workorder});
+
+                        var_show_workorder = '';
+                    }
+
+                    if(var_tipoDiagnostico && messageData.message.search('Digita la IP a revisar') >= 0){
+                        if(var_tipoDiagnostico == 'usuario'){
+                            //espera acción del usuario
+                        } else {
+                            //la IP no es importante
+                            next = false;
+                            xchatbot.actions.sendMessage({message: '122.122.122.122'}); //IP DUMMY QUE SE VA A IGNORAR
                         }
+                    }
 
                         break;
 
