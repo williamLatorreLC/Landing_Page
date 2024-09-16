@@ -1,4 +1,4 @@
-//Version 15 Generada el 7 de Agosto 2024
+//Version 15.1 Generada el 27 de Agosto 2024
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -1525,13 +1525,6 @@ function gestionaRespuesta(chatbot) {
 
                         break;
 
-                    case "email_var":
-                            next = false;
-
-                            xchatbot.actions.sendMessage({message: mail});
-
-                            break;
-
                     case "usuario_red":
                         next = false;
 
@@ -2397,6 +2390,7 @@ function CLAROlaunchNLEsclationForm(checkAgents,escalateNLForm,rejectedEscalatio
         escalationData.cargo = getSessionVariable("Job_Title");
         escalationData.ubicacion = getSessionVariable("Site");
         escalationData.perfil = getSessionVariable("ProfileId");
+        escalationData.usuario_red = getSessionVariable("User_ID");
 
       chatBot.api.track('CONTACT_ATTENDED',{value:"TRUE"});
 

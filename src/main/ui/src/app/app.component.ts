@@ -34,25 +34,25 @@ export class AppComponent {
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
     idle.onIdleEnd.subscribe(() => { 
       this.idleState = 'No longer idle.'
-      console.log(this.idleState);
+     // console.log(this.idleState);
       this.reset();
     });
     
     idle.onTimeout.subscribe(() => {
       this.idleState = 'Timed out!';
       this.timedOut = true;
-      console.log(this.idleState);
+    //  console.log(this.idleState);
       this.cerrarsesion();
     });
     
     idle.onIdleStart.subscribe(() => {
         this.idleState = 'You\'ve gone idle!'
-        console.log(this.idleState);
+    //    console.log(this.idleState);
     });
     
     idle.onTimeoutWarning.subscribe((countdown) => {
       this.idleState = 'You will time out in ' + countdown + ' seconds!'
-      console.log(this.idleState);
+      //  console.log(this.idleState);
     });
 
     keepalive.interval(15);
