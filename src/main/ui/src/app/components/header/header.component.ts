@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRoute = this.activeRoute.replace('#/', '');
-    console.log(this.activeRoute);
+   // console.log(this.activeRoute);
     if (this.activeRoute != 'listaCasos') {
       this.activeRouteLC = true;
     } else {
