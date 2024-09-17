@@ -204,7 +204,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.GtmServicesService.Tagging('Home', 'pt_home');
-    console.log(this.infoUser.esContingencia);
+    //console.log(this.infoUser.esContingencia);
 
     this.banners.length = 0;
     this.avatars.length = 0;
