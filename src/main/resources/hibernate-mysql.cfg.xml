@@ -51,5 +51,6 @@ Contributor(s):
         <mapping class="co.com.claro.myit.db.ContingenciaEntity"/>
         <mapping class="co.com.claro.myit.db.UserSessionEntity"/>
         <mapping class="co.com.claro.myit.db.ContingenciaChatBotEntity"/>
+        <mapping class="co.com.claro.myit.db.InactividadEntity"/>
     </session-factory>
 </hibernate-configuration>
