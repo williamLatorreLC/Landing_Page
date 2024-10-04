@@ -105,7 +105,6 @@ export class AppComponent {
       .post('utils/dec', { token: sessionStorage.getItem('X_MYIT_LAND') })
       .then((res) => {
         this.tiempoInactividad = res.response.map.tiempoInactividad;
-        console.log(this.tiempoInactividad);
         
         // Convertir tiempoInactividad a número y establecer el timeout
         const timeoutValue: number = parseInt(this.tiempoInactividad, 10);
