@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { SessionServiceService } from '../app/services/sessionService/session-service.service';
@@ -12,13 +12,13 @@ import { interval, Subscription } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   title = 'myIT';
 
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date;
-  closeSession: Subscription;
+  closeSession: Subscription | null = null; // Initialize to null
   tiempoInactividad: any;
 
   constructor(
@@ -30,8 +30,6 @@ export class AppComponent {
   ) {
     // Segundos para detectar la inactividad
     idle.setIdle(1);
-    
-    // Establecer los interrupciones
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleEnd.subscribe(() => {
@@ -65,11 +63,14 @@ export class AppComponent {
         this.getInfo(); // Llama a getInfo para establecer tiempoInactividad
         idle.watch();
         this.timedOut = false;
+
         this.closeSession = interval(4000).subscribe(() => {
           this.getInfo();
         });
       } else {
-        this.closeSession.unsubscribe();
+        if (this.closeSession) { // Check if closeSession is initialized
+          this.closeSession.unsubscribe();
+        }
         idle.stop();
       }
     });
@@ -104,19 +105,35 @@ export class AppComponent {
     this.factoryService
       .post('utils/dec', { token: sessionStorage.getItem('X_MYIT_LAND') })
       .then((res) => {
-        this.tiempoInactividad = res.response.map.tiempoInactividad;
-        
-        // Convertir tiempoInactividad a número y establecer el timeout
-        const timeoutValue: number = parseInt(this.tiempoInactividad, 10);
-        if (!isNaN(timeoutValue)) {
-          this.idle.setTimeout(timeoutValue); // Establecer timeout en segundos
+        if (res && res.response && res.response.map) {
+          this.tiempoInactividad = res.response.map.tiempoInactividad;
+          
+          const timeoutValue: number = parseInt(this.tiempoInactividad, 10);
+          if (!isNaN(timeoutValue)) {
+            this.idle.setTimeout(timeoutValue); // Establecer timeout en segundos
+          } else {
+             //console.error("Error: tiempoInactividad no es un número válido.");
+          }
+  
+          // Verificar si hay un error en la respuesta
+          if (res.isError === true) {
+            this.cerrarsesion();
+          }
         } else {
-          console.error("Error: tiempoInactividad no es un número válido.");
+         //  console.error("Error: Respuesta inesperada de la API", res);
+          this.cerrarsesion(); 
         }
-
-        if (res.isError === true) {
-          this.cerrarsesion();
-        }
+      })
+      .catch(error => {
+       //  console.error("Error al obtener información:", error);
+        this.cerrarsesion(); 
       });
+  }
+
+  ngOnDestroy() {
+
+    if (this.closeSession) {
+      this.closeSession.unsubscribe();
+    }
   }
 }
