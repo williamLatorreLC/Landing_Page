@@ -56,21 +56,22 @@ public class Login {
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
         JsonObject respuesta = new JsonObject();
-        try { 
+        try {
 
             LoginRequest datos = fn.getData(data, LoginRequest.class);
-            
+
             byte[] decodedU = Base64.getDecoder().decode(datos.getUser());
             String decodedUser = new String(decodedU, StandardCharsets.UTF_8);
-           
+
             byte[] decodedP = Base64.getDecoder().decode(datos.getPass());
             String decodedPass = new String(decodedP, StandardCharsets.UTF_8);
-            
+
             datos.setUser(decodedUser);
             datos.setPass(decodedPass);
-            
+
             boolean isContingencia = getContingenciaLogin();
-            LoginService loginService=new LoginService(datos,fn,isContingencia);
+            LoginService loginService = new LoginService(datos, fn, isContingencia);
+
             boolean loginSSO = false;
             String AuthnRequestID = "";
             String AssertionID = "";
@@ -121,17 +122,19 @@ public class Login {
                         JsonArray grupos = new JsonArray();
                         boolean status = getContingencia();
                         boolean statusChatBot = getContingenciaChatBot();
+                        String estadoInactividad = getControlInactividad();
 
                         res.addProperty("esContingenciaChatBot", statusChatBot);
                         res.addProperty("esContingencia", status);
                         res.addProperty("esResolutor", (loginService.userProfile != 4));
+                        res.addProperty("tiempoInactividad", estadoInactividad);
 
                         res.addProperty("User", datos.getUser());
                         if (status && (loginService.userProfile != 4)) {
                             grupos = getSupportsGroups(datos.getUser());
                         }
                         Date date = new Date();
-                        String sessionTime=String.valueOf(date.getTime());
+                        String sessionTime = String.valueOf(date.getTime());
                         res.addProperty("sessionID", sessionTime);
                         res.addProperty("AvatarTime", fn.Constanst.getAvatarTime());
                         res.addProperty("BannerTime", fn.Constanst.getBannerTime());
@@ -197,7 +200,7 @@ public class Login {
         boolean estado = false;
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         try {
-            List res = dbUtils.readBy("ContingenciaEntity","tipo='Casos'");
+            List res = dbUtils.readBy("ContingenciaEntity", "tipo='Casos'");
 
             if (!res.isEmpty()) {
                 JSONObject item = new JSONObject(res.get(0));
@@ -216,7 +219,7 @@ public class Login {
         boolean estado = false;
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         try {
-            List res = dbUtils.readBy("ContingenciaEntity","tipo='Login'");
+            List res = dbUtils.readBy("ContingenciaEntity", "tipo='Login'");
 
             if (!res.isEmpty()) {
                 JSONObject item = new JSONObject(res.get(0));
@@ -230,12 +233,12 @@ public class Login {
         }
 
     }
-    
-        public boolean getContingenciaChatBot() {
+
+    public boolean getContingenciaChatBot() {
         boolean estadoChatBot = false;
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         try {
-            List res = dbUtils.readBy("ContingenciaChatBotEntity","tipo='Chatbot'");
+            List res = dbUtils.readBy("ContingenciaChatBotEntity", "tipo='Chatbot'");
 
             if (!res.isEmpty()) {
                 JSONObject item = new JSONObject(res.get(0));
@@ -249,6 +252,28 @@ public class Login {
         }
 
     }
+
+    public String getControlInactividad() {
+        fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
+        dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db.properties"));
+        try {
+            List res = dbUtils.read("InactividadEntity");
+
+            if (!res.isEmpty()) {
+                for (Object obj : res) {
+                    JSONObject item = new JSONObject(obj);
+                    if (item.has("estado")) {
+                        return String.valueOf(item.getInt("estado")); // Retorna el estado directamente
+                    }
+                }
+            }
+
+            return "No hay datos disponibles"; // Mensaje si no hay datos
+        } catch (JSONException e) {
+            return fn.respError(e, "Error al obtener datos.", "");
+        }
+    }
+
     public JsonArray getSupportsGroups(String user) {
         user = user.toLowerCase();
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
