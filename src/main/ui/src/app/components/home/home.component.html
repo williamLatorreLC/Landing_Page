@@ -261,12 +261,12 @@
 
       <!-- Inicio ChatBOT -->
       <div class="ml-auto cpointer float ng-star-inserted"
-        style="left: 60px; top: 13%; position: fixed; background-color: #ffffff; border: 1px solid #ccc; padding: 10px; width: 33%; height: 65%;"
+        style="left: 60px; top: 13%; position: fixed; background-color: #ffffff; border: 1px solid #ccc; padding: 10px; width: 48%; height: 65%;"
         *ngIf="mostrarChat">
 
         <!-- Header -->
         <div class="header"
-          style="margin-bottom: 10px; background-color: #da1024; color: white; padding: 7px; display: flex; justify-content: space-between; align-items: center; position: relative; left: -5.8%; top: -10px; width: 108.5%;">
+          style="margin-bottom: 10px; background-color: #da1024; color: white; padding: 7px; display: flex; justify-content: space-between; align-items: center; position: relative; left: -10px; top: -10px; width: 547px;">
           <!-- Título "AnITa" a la izquierda -->
           <h2 style="margin-right: 10px; text-align: left; margin: 0;"> &nbsp; AnITa</h2>
           <!-- Botón de Cerrar con icono "x" a la derecha -->
@@ -672,17 +672,9 @@
           </div>
         </div>
 
-        <!-- AnITa Foto inicial -->
-        <div
-          style="left: 50.5%; top: 13%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 0px; width: 15%; height: 65% "
-          *ngIf="mostrarChat">
-          <img src="./assets/img/home/Saludando.png" class="ml-2" alt=""
-            style="width: 90%; position: relative; left: -10px; top: -9px; max-height: 100%; width: auto; height: auto;" />
-        </div>
-
         <!-- input inicial -->
         <div class="ml-auto cpointer float ng-star-inserted"
-          style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%;"
+          style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 449px;"
           *ngIf="mostrarChat">
           <div>
             <input type="text" placeholder="Pregunta aquí..."
@@ -693,7 +685,7 @@
         <!-- input si selecciona REQ requerimiento -->
         <form [formGroup]="numberRequerimiento" (ngSubmit)="consultarReq()">
           <div *ngIf="selectReq && mostrarChat && !crearNota" class="ml-auto cpointer float ng-star-inserted"
-            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 449px; ">
             <div>
               <input type="text" [(ngModel)]="numeroRequerimiento"
                 placeholder="Escribe el número de REQ - Requerimiento..."
@@ -706,7 +698,7 @@
         <!-- input si selecciona INC  -->
         <form [formGroup]="numberINC" (ngSubmit)="consultarInc()">
           <div *ngIf="selectInc && mostrarChat && !crearNota" class="ml-auto cpointer float ng-star-inserted"
-            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 449px; ">
             <div>
               <input type="text" [(ngModel)]="numeroI" placeholder="Escribe el número de INC - Incidente..."
                 style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="incNumber">
@@ -718,7 +710,7 @@
         <!-- input si selecciona WO  -->
         <form [formGroup]="numberWO" (ngSubmit)="consultarWo()">
           <div *ngIf="selectWo && mostrarChat && !crearNota" class="ml-auto cpointer float ng-star-inserted"
-            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 449px; ">
             <div>
               <input type="text" [(ngModel)]="numeroW" placeholder="Escribe el número de WO - Orden de trabajo..."
                 style="width: 100%; height: 50px; border: 2px solid #ffffff;" formControlName="woNumber">
@@ -730,7 +722,7 @@
         <!-- input si selecciona Crear Notas con Req -->
         <form *ngIf="Request_Number" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(AppRequestID)">
           <div *ngIf="crearNota && Request_Number" class="ml-auto cpointer float ng-star-inserted"
-            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 449px; ">
             <div>
               <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
                 placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
@@ -743,7 +735,7 @@
         <!-- input si selecciona Crear Notas con INC -->
         <form *ngIf="Incident_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(Incident_Number)">
           <div *ngIf="crearNota" class="ml-auto cpointer float ng-star-inserted"
-            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 449px; ">
             <div>
               <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
                 placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
@@ -756,7 +748,7 @@
         <!-- input si selecciona Crear Notas con WO -->
         <form *ngIf="WO_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(WO_Number)">
           <div *ngIf="crearNota" class="ml-auto cpointer float ng-star-inserted"
-            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 47.5%; ">
+            style="left: 61px; top: 77.9%; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; width: 449px; ">
             <div>
               <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
                 placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
