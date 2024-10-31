@@ -239,7 +239,7 @@
             <img src="./assets/img/home/img-home.png" class="img-fluid" alt="" />
           </div>
           <div class="col-8 position-absolute mt-4" style="right: 0">
-            <div class="btnanita" [hidden]="!chatOpen || esContingenciaChatbot" [hidden]="!menu">
+            <div class="btnanita" [hidden]="!chatOpen" [hidden]="!menu">
               <img src="./assets/img/home/anita.png" class="ml-2 cpointer float" alt="" (click)="abrirChat()"
                 accesskey="a" />
             </div>
@@ -260,7 +260,7 @@
         accesskey="a" />
 
       <!-- Inicio ChatBOT -->
-      <div #chatbotContainer class="chatbot-container" *ngIf="mostrarChat">
+      <div  class="chatbot-container" *ngIf="mostrarChat">
 
         <!-- Header -->
         <div #header class="chatbot-header">
@@ -269,7 +269,7 @@
         </div>
 
         <!-- Content -->
-        <div class="chatbot-content">
+        <div #chat class="chatbot-content">
           <div class="chatbot-messages">
 
             <!-- Inicio de conversacion -->
@@ -629,13 +629,7 @@
               <br />
               <button *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 "
                 (click)="resetChat()">Volver</button>
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
+
             </div>
           </div>
         </div>
@@ -652,22 +646,24 @@
         <!-- input si selecciona REQ requerimiento -->
         <form [formGroup]="numberRequerimiento" (ngSubmit)="consultarReq()">
           <div *ngIf="selectReq && mostrarChat && !crearNota" class="chatbot-input-container">
-            <div>
+            <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="numeroRequerimiento"
-                placeholder="Escribe el número de REQ - Requerimiento..."
-                class="chatbot-input" formControlName="reqNumber">
-              <button (click)="consultarReq()">Consultar Requerimiento</button>
+                     placeholder="Escribe el número de REQ - Requerimiento..."
+                     class="chatbot-input" formControlName="reqNumber">
+              <button class="chatbot-send-button" type="submit">Enviar</button>
             </div>
           </div>
         </form>
 
+        
+
         <!-- input si selecciona INC  -->
         <form [formGroup]="numberINC" (ngSubmit)="consultarInc()">
           <div *ngIf="selectInc && mostrarChat && !crearNota" class="chatbot-input-container">
-            <div>
+            <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="numeroI" placeholder="Escribe el número de INC - Incidente..."
               class="chatbot-input" formControlName="incNumber">
-              <button (click)="consultarInc()">Consultar Incidente</button>
+              <button class="chatbot-send-button" type="submit">Enviar</button>
             </div>
           </div>
         </form>
@@ -675,10 +671,10 @@
         <!-- input si selecciona WO  -->
         <form [formGroup]="numberWO" (ngSubmit)="consultarWo()">
           <div *ngIf="selectWo && mostrarChat && !crearNota" class="chatbot-input-container">
-            <div>
+            <div class="chatbot-input-wrapper" >
               <input type="text" [(ngModel)]="numeroW" placeholder="Escribe el número de WO - Orden de trabajo..."
               class="chatbot-input" formControlName="woNumber">
-              <button (click)="consultarWo()">Consultar Orden de trabajo</button>
+              <button class="chatbot-send-button" type="submit">Enviar</button>
             </div>
           </div>
         </form>
@@ -686,23 +682,23 @@
         <!-- input si selecciona Crear Notas con Req -->
         <form *ngIf="Request_Number" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(AppRequestID)">
           <div *ngIf="crearNota && Request_Number"class="chatbot-input-container">
-            <div>
+            <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
                 placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
                 class="chatbot-input" formControlName="reqNumber">
-              <button (click)="agregarNota(AppRequestID)">Crear Nota</button>
-            </div>
+                <button class="chatbot-send-button" type="submit">Enviar</button>
+              </div>
           </div>
         </form>
 
         <!-- input si selecciona Crear Notas con INC -->
         <form *ngIf="Incident_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(Incident_Number)">
           <div *ngIf="crearNota" class="chatbot-input-container">
-            <div>
+            <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
                 placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
                 class="chatbot-input" formControlName="reqNumber">
-              <button (click)="agregarNota(Incident_Number)">Crear Nota</button>
+                <button class="chatbot-send-button" type="submit">Enviar</button>
             </div>
           </div>
         </form>
@@ -710,11 +706,11 @@
         <!-- input si selecciona Crear Notas con WO -->
         <form *ngIf="WO_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(WO_Number)">
           <div *ngIf="crearNota" class="chatbot-input-container">
-            <div>
+            <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
                 placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
                 class="chatbot-input" formControlName="reqNumber">
-              <button (click)="agregarNota(WO_Number)">Crear Nota</button>
+                <button class="chatbot-send-button" type="submit">Enviar</button>
             </div>
           </div>
         </form>

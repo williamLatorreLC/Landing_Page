@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FactoryService } from 'src/app/services/factory/factory.service';
 import swal from 'sweetalert2';
@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit {
   @ViewChild('mymodalEnc', { static: false }) mymodalEnc:
     | TemplateRef<any>
     | undefined;
+
+ @ViewChild('chat', { static: false }) content!: ElementRef;
 
   mostrarChat: boolean = false;
   menu = true;
@@ -611,6 +613,8 @@ export class HomeComponent implements OnInit {
       this.fechaInc3 = resHc.response.lastThreeListValues[2].Submit_Date;
 
     }, 1000);
+    this.scrollToBottom();
+
   }
 
 
@@ -730,6 +734,8 @@ export class HomeComponent implements OnInit {
       this.WO_Number = null
       this.fechaNotaInc1 = null
     }
+    this.scrollToBottom();
+
   }
 
   async consultarInc() {
@@ -752,6 +758,7 @@ export class HomeComponent implements OnInit {
     this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
     this.resolution = resINC.response.Resolution;
     this.fechaResolution = resINC.response.Real_Solution_Date;
+    this.scrollToBottom();
   }
 
   async consultarWo() {
@@ -776,6 +783,7 @@ export class HomeComponent implements OnInit {
       this.WO_Number = null
       this.fechaNotaInc1 = null
     }
+    this.scrollToBottom();
 
   }
 
@@ -819,10 +827,14 @@ export class HomeComponent implements OnInit {
     } finally {
       this.peticionEnCurso = false;
     }
+    this.scrollToBottom();
   }
 
   dialogoCrearNota() {
+
     this.crearNota = true;
+    this.scrollToBottom();
+
   }
 
   onFileSelected(event: any) {
@@ -838,6 +850,8 @@ export class HomeComponent implements OnInit {
           console.error('Error al leer archivo como Base64:', error);
         });
     }
+    this.scrollToBottom();
+
   }
 
   private readFileAsBase64(file: File): Promise<string> {
@@ -855,6 +869,13 @@ export class HomeComponent implements OnInit {
 
       reader.readAsDataURL(file);
     });
+    this.scrollToBottom();
+
+  }
+
+  scrollToBottom() {
+    const element = this.content.nativeElement;
+    element.scrollTop = element.scrollHeight;
   }
 
 }
