@@ -25,8 +25,10 @@
   background-color: white;
   border: 2px solid #ccc;
   padding: 10px;
-  box-sizing: border-box; /* Incluye el borde y el relleno en las dimensiones */
-  transition: all 0.3s ease; /* Agrega una transición suave para cambios en tamaño y posición */
+  box-sizing: border-box;
+  /* Incluye el borde y el relleno en las dimensiones */
+  transition: all 0.3s ease;
+  /* Agrega una transición suave para cambios en tamaño y posición */
 }
 
 .descripcion-detallada {
@@ -39,8 +41,8 @@
   position: fixed;
   background-color: #ffffff;
   border: 1px solid #ccc;
-  border-radius: 0px;
-  padding: 10px;
+  border-radius: 15px 15px 0 0;
+  padding: 0px;
   width: 48%;
   height: 65%;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
@@ -99,24 +101,27 @@
 }
 
 .anita-message {
-  background-color: #e0e0e0;
-  color: #333;
+  background-color: #878787;
+  color: #ffffff;
+  text-align: left;
 }
 
 .user-message {
-  background-color: #ff383f;
-  color: #fff;
+  background-color: #da1024;
+  color: #ffffff;
+  text-align: left;
 }
 
 .chatbot-option {
-  color: blue;
+  color: #00edff;
 }
 
 .chatbot-link {
   text-decoration: underline;
-  color: blue;
-  cursor: pointer;
+  color: #00edff;
+
 }
+
 
 .chatbot-input-container {
   right: 25px;
@@ -159,9 +164,9 @@
   border-radius: 50%;
   width: 45px;
   height: 45px;
-  margin-left: 10px; 
+  margin-left: 10px;
   cursor: pointer;
-  font-size: small;
+  font-size: large;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -175,4 +180,17 @@
 .chatbot-send-button:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(218, 16, 36, 0.5);
+}
+
+.chatbot-return-button {
+  background-color: #f81d33;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  height: 51px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .3s ease;
 }

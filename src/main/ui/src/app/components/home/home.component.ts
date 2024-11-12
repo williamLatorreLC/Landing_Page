@@ -551,6 +551,9 @@ export class HomeComponent implements OnInit {
     setTimeout(() => {
       this.consultaCaso = !this.consultaCaso;
     }, 400);
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   SearchReq() {
@@ -560,6 +563,9 @@ export class HomeComponent implements OnInit {
       this.selectWo = false;
       this.selectHc = false;
     }, 400);
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   SearchInc() {
@@ -569,6 +575,9 @@ export class HomeComponent implements OnInit {
       this.selectWo = false;
       this.selectHc = false;
     }, 400);
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   SearchWo() {
@@ -578,6 +587,9 @@ export class HomeComponent implements OnInit {
       this.selectReq = false;
       this.selectHc = false;
     }, 400);
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   SearchHC() {
@@ -588,6 +600,9 @@ export class HomeComponent implements OnInit {
       this.selectReq = false;
     }, 500);
     this.consultarHistoricoCasos();
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   async consultarHistoricoCasos() {
@@ -861,7 +876,7 @@ export class HomeComponent implements OnInit {
       reader.onload = () => {
         const base64Content = reader.result as string;
         resolve(base64Content.split(',')[1]); // Extraer solo el contenido Base64, excluyendo el encabezado
-      };
+      }; 
 
       reader.onerror = (error) => {
         reject(error);
