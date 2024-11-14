@@ -101,16 +101,50 @@
 }
 
 .anita-message {
+  position: relative;
   background-color: #878787;
   color: #ffffff;
   text-align: left;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 50px 10px 10px; /* Ajusta para espacio */
+}
+
+.anita-message::after {
+  content: "";
+  position: absolute;
+  top: 20px; /* Ajusta la posición vertical */
+  left: -9px; /* Ajusta la posición horizontal */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 10px 10px 0; /* Triángulo hacia la izquierda */
+  border-color: transparent #878787 transparent transparent;
 }
 
 .user-message {
+  position: relative;
   background-color: #da1024;
   color: #ffffff;
   text-align: left;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 10px 10px 50px; /* Ajusta para espacio */
 }
+
+.user-message::after {
+  content: "";
+  position: absolute;
+  top: 20px; /* Ajusta la posición vertical */
+  right: -9px; /* Ajusta la posición horizontal */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 10px; /* Triángulo hacia la derecha */
+  border-color: transparent transparent transparent #da1024;
+}
+ 
+
 
 .chatbot-option {
   color: #00edff;

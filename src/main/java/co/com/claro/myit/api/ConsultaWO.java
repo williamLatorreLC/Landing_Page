@@ -4,8 +4,6 @@
  */
 package co.com.claro.myit.api;
 
-import co.com.claro.myit.service.ConsultaCasosService;
-import co.com.claro.myit.service.ConsultaIncidenteService;
 import co.com.claro.myit.service.ConsultaOrdenTrabajoService;
 import co.com.claro.myit.util.functions;
 import com.google.gson.JsonObject;

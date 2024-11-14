@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import org.json.JSONException;
 import org.json.XML;
@@ -49,12 +51,18 @@ public class Login {
 
     private functions fn;
 
+    @Context
+    private HttpServletRequest request;
+
     @POST
     @Produces("application/json")
     public String ingresar(String data) {
         String responseString = "";
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
         dbUtils = new MySqlUtils(context.getRealPath("/WEB-INF/db-mysql.properties"));
+
+       
+
         JsonObject respuesta = new JsonObject();
         try {
 
@@ -68,6 +76,9 @@ public class Login {
 
             datos.setUser(decodedUser);
             datos.setPass(decodedPass);
+            
+             HttpSession session = request.getSession(true);
+             session.setAttribute("UserLogueado", decodedUser);
 
             boolean isContingencia = getContingenciaLogin();
             LoginService loginService = new LoginService(datos, fn, isContingencia);

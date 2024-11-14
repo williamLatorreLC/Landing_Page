@@ -297,4 +297,51 @@ public class Const {
             + "    </urn:GetList>"
             + "  </soapenv:Body>"
             + "</soapenv:Envelope>";
+
+    public static final String SoapActionCTMPeopleGet = "urn:CTM_People_WS/Get";
+
+    public static String xmlRequestCTMPeopleGet = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+            + "xmlns:urn=\"urn:CTM_People_WS\">"
+            + " <soapenv:Header>"
+            + "    <urn:AuthenticationInfo>"
+            + "        <urn:userName>matilda.claro</urn:userName>"
+            + "        <urn:password>Claro2018*</urn:password>"
+            + "        <!--Optional:-->"
+            + "        <urn:authentication>?</urn:authentication>"
+            + "        <!--Optional:-->"
+            + "        <urn:locale>?</urn:locale>"
+            + "        <!--Optional:-->"
+            + "        <urn:timeZone>?</urn:timeZone>"
+            + "    </urn:AuthenticationInfo>"
+            + "  </soapenv:Header>"
+            + "  <soapenv:Body>"
+            + "    <urn:Get>"
+            + "      <urn:Remedy_Login_ID>--user--</urn:Remedy_Login_ID>"
+            + "    </urn:Get>"
+            + "  </soapenv:Body>"
+            + "</soapenv:Envelope>";
+
+    public static final String SoapActionCTMSupportGroupPeopleGetList = "urn:CTM_SupportGroupPeople/GetList";
+
+    public static String xmlRequestCTMSupportGroupPeopleGetList = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+            + "xmlns:urn=\"urn:CTM_SupportGroupPeople\">"
+            + " <soapenv:Header>"
+            + "    <urn:AuthenticationInfo>"
+            + "        <urn:userName>matilda.claro</urn:userName>"
+            + "        <urn:password>Claro2018*</urn:password>"
+            + "        <!--Optional:-->"
+            + "        <urn:authentication>?</urn:authentication>"
+            + "        <!--Optional:-->"
+            + "        <urn:locale>?</urn:locale>"
+            + "        <!--Optional:-->"
+            + "        <urn:timeZone>?</urn:timeZone>"
+            + "    </urn:AuthenticationInfo>"
+            + "  </soapenv:Header>"
+            + "  <soapenv:Body>"
+            + "    <urn:GetList>"
+            + "      <urn:Remedy_Login_ID>--user--</urn:Remedy_Login_ID>"
+            + "    </urn:GetList>"
+            + "  </soapenv:Body>"
+            + "</soapenv:Envelope>";
+
 }

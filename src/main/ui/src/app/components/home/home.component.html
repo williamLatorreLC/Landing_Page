@@ -279,7 +279,6 @@
                 <p><strong>Mesa Ágil:</strong> Hola {{ infoUser.First_Name }}, ¿En qué te puedo ayudar?</p>
               </div>
 
-              <br />
               <!-- Mensaje 2  Anita -->
               <div class="chatbot-message anita-message">
                 <p><strong>Mesa Ágil:</strong> Selecciona una opción:
@@ -287,13 +286,10 @@
                   <h6 class="chatbot-link" (click)="consultarCaso()" >Consultar o crear caso de MyIT</h6>
               </div>
 
-              <br />
               <!-- Mensaje User 1-->
               <div *ngIf="consultarOcrearCaso" class="chatbot-message user-message">
                 <p><strong>{{ infoUser.First_Name }}:</strong> Consultar o crear caso de MyIT</p>
               </div>
-
-              <br />
 
               <!-- Mensaje 4 Anita (Consultar o Crear Caso) -->
               <div *ngIf="consultaCaso" class="chatbot-message anita-message">
@@ -306,8 +302,6 @@
                   <h6 (click)="SearchHC()" class="chatbot-link">Histórico de mis casos</h6>                
               </div>
 
-              <br />
-
               <!-- Mensaje 5 Anita (Cartilla) -->
               <div *ngIf="consultaCaso" class="chatbot-message anita-message">
                 <p><strong>Mesa Ágil:</strong> Nota: Si aún no sabes cómo consultar un caso, descarga la cartilla haciendo
@@ -316,7 +310,6 @@
                     class="chatbot-link" target="_blank">aquí</a> y sigue los pasos.
                 </p>
               </div>
-              <br />
 
               <!-- Mensaje 2 User (Si se selecciona consultar Requerimiento) -->
               <div class="chatbot-message user-message" *ngIf="selectReq && !selectInc && !selectWo && !selectHc">
@@ -338,7 +331,6 @@
                 <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> Histórico de mis casos
                 </p>
               </div>
-              <br />
 
 
               <!-- Mensaje 6 Anita (Si se selecciona consultar Requerimiento)-->
@@ -352,7 +344,6 @@
               <div class="chatbot-message anita-message" *ngIf="selectReq || selectInc || selectWo">
                 <p style="margin: 0;"><strong>Mesa Ágil:</strong> Para conocer el estado de tu caso digita el código 👇</p>
               </div>
-              <br />
 
               <!-- Mensaje 3 User (Numero de REQ) -->
               <div class="chatbot-message user-message" *ngIf="selectReq && numeroRequerimientoIngresado">

@@ -89,6 +89,8 @@ public class functions {
             Constanst.setCrearNotasINC(prop.getProperty("CrearNotasINC"));
             Constanst.setCrearNotasWO(prop.getProperty("CrearNotasWO"));
             Constanst.setConsultarHR(prop.getProperty("ConsultarHR"));
+            Constanst.setCTMPeopleWsGet(prop.getProperty("CTMPeopleWsGet"));
+            Constanst.setCTMSupportGroupPeople(prop.getProperty("CTMSupportGroupPeople"));
 
         } catch (Exception e) {
             System.out.println("Exception: " + e);
@@ -505,8 +507,8 @@ public class functions {
         }
         return responseString;
     }
-    
-        public static String SoapRequestHistoricoRequerimientos(String body, boolean aes) {
+
+    public static String SoapRequestHistoricoRequerimientos(String body, boolean aes) {
         String responseString = "";
         try {
 
@@ -531,4 +533,57 @@ public class functions {
         }
         return responseString;
     }
+
+    public static String SoapRequestCTMPeopleGet(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getCTMPeopleWsGet() : Constanst.getCTMPeopleWsGet());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionCTMPeopleGet);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+
+    public static String SoapRequestCTMSupportGroupPeople(String body, boolean aes) {
+        String responseString = "";
+        try {
+
+            StringEntity xmlBody = new StringEntity(body, "UTF-8");
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost((!aes) ? Constanst.getCTMSupportGroupPeople() : Constanst.getCTMSupportGroupPeople());
+            request.setHeader("Content-Type", "text/xml");
+            request.setHeader("SOAPAction", Const.SoapActionCTMSupportGroupPeopleGetList);
+
+            request.setEntity(xmlBody);
+            CloseableHttpResponse response = client.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            responseString = clearResponse(responseString);
+            System.out.println("Response:");
+            System.out.println(responseString);
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "";
+        }
+        return responseString;
+    }
+
 }
