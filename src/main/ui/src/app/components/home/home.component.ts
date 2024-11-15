@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit {
   Status: string;
   Summary: string;
   Submit_Date: string;
-  Completion_Date: string;
+  Closed_Date: string;
   consultarOcrearCaso: boolean = false;
   consultaCaso: boolean = false;
   numeroRequerimientoIngresado: any;
@@ -668,7 +668,7 @@ export class HomeComponent implements OnInit {
       this.Status = res.response.Status;
       this.Summary = res.response.Summary;
       this.Submit_Date = res.response.Submit_Date;
-      this.Completion_Date = res.response.Completion_Date;
+      this.Closed_Date = res.response.Closed_Date;
       this.numeroRequerimientoIngresado = res.response.Request_Number;
       this.numberRequerimiento.controls['reqNumber'].setValue('');
 
