@@ -7,6 +7,7 @@ package co.com.claro.myit.service;
 import co.com.claro.myit.api.CTMPeopleWsGetRequest;
 import co.com.claro.myit.api.Const;
 import co.com.claro.myit.util.functions;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
@@ -39,14 +40,42 @@ public class CTMPeopleWsGetService {
                 .getAsJsonObject("Body")
                 .getAsJsonObject("GetResponse");
 
-        res.addProperty("Id_Area_CA", getResponse.has("Id_Area_CA") ? getResponse.get("Id_Area_CA").getAsString() : "");
-        res.addProperty("Id_Gerencia_CA", getResponse.has("Id_Gerencia_CA") ? getResponse.get("Id_Gerencia_CA").getAsString() : "");
-        res.addProperty("Id_Comite_CA", getResponse.has("Id_Comite_CA") ? getResponse.get("Id_Comite_CA").getAsString() : "");
-        res.addProperty("Contact_Type", getResponse.has("Contact_Type") ? getResponse.get("Contact_Type").getAsString() : "");
+        res.addProperty("Id_Area_CA", getElementAsString(getResponse, "Id_Area_CA"));
+        res.addProperty("Id_Gerencia_CA", getElementAsString(getResponse, "Id_Gerencia_CA"));
+        res.addProperty("Id_Comite_CA", getElementAsString(getResponse, "Id_Comite_CA"));
+        res.addProperty("Contact_Type", getElementAsString(getResponse, "Contact_Type"));
 
         System.out.println("Respuesta CTMPeopleWsGetService.java");
         System.out.println(res);
         return res;
+    }
+
+    private String getElementAsString(JsonObject jsonObject, String key) {
+        if (jsonObject.has(key)) {
+            JsonElement element = jsonObject.get(key);
+            if (element.isJsonPrimitive()) {
+                return element.getAsString();
+            } else if (element.isJsonObject()) {
+                JsonObject obj = element.getAsJsonObject();
+                // Verificar si tiene el atributo '@xsi:nil' y su valor es 'true'
+                if (obj.has("@xsi:nil") && obj.get("@xsi:nil").getAsString().equals("true")) {
+                    return ""; // Retornar cadena vacía o null según tus necesidades
+                } else {
+                    // Si el objeto tiene un valor en texto, extraerlo
+                    if (obj.has("#text")) {
+                        return obj.get("#text").getAsString();
+                    } else {
+                        // Manejar otros casos si es necesario
+                        return "";
+                    }
+                }
+            } else {
+                // Manejar otros tipos (JsonArray, etc.) si es necesario
+                return "";
+            }
+        } else {
+            return ""; // Retornar cadena vacía si la clave no existe
+        }
     }
 
 }
