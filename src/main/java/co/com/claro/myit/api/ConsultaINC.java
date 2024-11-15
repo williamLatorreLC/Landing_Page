@@ -55,9 +55,34 @@ public class ConsultaINC {
         System.out.println("Respuesta de ctmPeopleWsGet con el Remedy_Login_ID del que se loguea: " + responseCTMPeople);
        
         
+        
+         // Llamar al método ctmPeopleWsGet con el Requestor_ID de la respuesta del INC
+        String dataCTMPeople = ""; 
+        String responseCTMPeople = ctmPeopleWsGet(dataCTMPeople);
+        System.out.println("Respuesta de ctmPeopleWsGet: " + responseCTMPeople);
+        
+        
+        // Llamar al método ctmPeopleWsGet con el Requestor_By_ID de la respuesta del INC
+        String dataCTMPeople = ""; 
+        String responseCTMPeople = ctmPeopleWsGet(dataCTMPeople);
+        System.out.println("Respuesta de ctmPeopleWsGet: " + responseCTMPeople);
+        
+        
+        // Llamar al método ctmPeopleWsGet con el Assignee_Login_ID de la respuesta del INC
+        String dataCTMPeople = ""; 
+        String responseCTMPeople = ctmPeopleWsGet(dataCTMPeople);
+        System.out.println("Respuesta de ctmPeopleWsGet: " + responseCTMPeople);
+        
+        
+        // Comparar COMITE, AREA Y GERENCIA de la linea 45 vs la linea 50
+        // Comparar COMITE, AREA Y GERENCIA de la linea 45 vs la linea 56
+        // Comparar COMITE, AREA Y GERENCIA de la linea 45 vs la linea 62 
+        
+       
+        
         // Llamar al método ctmSupportGroupPeople con el Remedy_Login_ID del que se loguea
-        String responseCTMSupportGroup = ctmSupportGroupPeople(userLogueado);
-        System.out.println("Respuesta de ctmSupportGroupPeople: " + responseCTMSupportGroup);
+        // String responseCTMSupportGroup = ctmSupportGroupPeople(userLogueado);
+        // System.out.println("Respuesta de ctmSupportGroupPeople: " + responseCTMSupportGroup);
 
         return fn.respOk(res.getAsJsonObject());
     }
