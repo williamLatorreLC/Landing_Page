@@ -32,12 +32,17 @@ public class ConsultaOrdenTrabajoService {
         return this.fn.SoapRequestConsutaWO(body, false);
     }
 
-    public JsonObject getBody(JsonObject respuesta) {
-        JsonObject res = new JsonObject();
-        
-        JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
-                .getAsJsonObject("Body")
-                .getAsJsonObject("GetResponse");
+   public JsonObject getBody(JsonObject respuesta) {
+    JsonObject res = new JsonObject();
+    
+    JsonObject envelope = respuesta.getAsJsonObject("Envelope");
+    JsonObject body = envelope.getAsJsonObject("Body");
+
+    if (body.has("Fault")) {
+        // Hay un error, devolvemos el mensaje de error
+        res.addProperty("message", "¡Ups! Parece que este caso no existe. Te sugiero revisar esta información.");
+    } else {
+        JsonObject getResponse = body.getAsJsonObject("GetResponse");
 
         if (getResponse.has("Work_Order_ID")) {
             res.addProperty("Work_Order_ID", getResponse.get("Work_Order_ID").getAsString());
@@ -58,10 +63,11 @@ public class ConsultaOrdenTrabajoService {
         if (getResponse.has("Detailed_Description")) {
             res.addProperty("Detailed_Description", getResponse.get("Detailed_Description").getAsString());
         }
-
-        System.out.println("Respuesta ConsultaOrdenTrabajoSerice.java");
-        System.out.println(res);
-        return res;
     }
+
+    System.out.println("Respuesta ConsultaOrdenTrabajoService.java");
+    System.out.println(res);
+    return res;
+}
 
 }

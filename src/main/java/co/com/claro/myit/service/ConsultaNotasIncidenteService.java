@@ -37,39 +37,50 @@ public class ConsultaNotasIncidenteService {
         return this.fn.SoapRequestConsutaNotasINC(body, false);
     }
 
- public JsonObject getBody(JsonObject respuesta) {
+    public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
 
-        JsonObject getListResponse = respuesta.getAsJsonObject("Envelope")
-                .getAsJsonObject("Body")
-                .getAsJsonObject("GetListResponse");
+        JsonObject envelope = respuesta.getAsJsonObject("Envelope");
+        JsonObject body = envelope.getAsJsonObject("Body");
 
-        JsonArray listValues = getListResponse.getAsJsonArray("getListValues");
+        if (body.has("Fault")) {
+            // Hay un error, devolvemos el mensaje de error
+            res.addProperty("message", "¡Ups! Parece que este caso no existe. Te sugiero revisar esta información.");
+        } else {
+            JsonObject getListResponse = body.getAsJsonObject("GetListResponse");
 
-        // Copiar elementos de JsonArray a una lista de Java
-        List<JsonObject> listValuesList = new ArrayList<>();
-        for (int i = 0; i < listValues.size(); i++) {
-            listValuesList.add(listValues.get(i).getAsJsonObject());
+            JsonArray listValues = getListResponse.getAsJsonArray("getListValues");
+
+            // Copiar elementos de JsonArray a una lista de Java filtrando por "View_Access": "Public"
+            List<JsonObject> listValuesList = new ArrayList<>();
+            for (int i = 0; i < listValues.size(); i++) {
+                JsonObject item = listValues.get(i).getAsJsonObject();
+                // Verificar si el campo "View_Access" existe y si su valor es "Public"
+                if (item.has("View_Access") && "Public".equals(item.get("View_Access").getAsString())) {
+                    listValuesList.add(item);
+                }
+            }
+
+            // Ordenar la lista por fecha de presentación
+            Collections.sort(listValuesList, new ListComparator());
+
+            int totalListValues = listValuesList.size();
+            int startIndex = Math.max(0, totalListValues - 3); // Últimas 3 getListValues o menos si hay menos de 3
+
+            JsonArray lastThreeListValues = new JsonArray();
+            for (int i = startIndex; i < totalListValues; i++) {
+                lastThreeListValues.add(listValuesList.get(i));
+            }
+
+            res.add("lastThreeListValues", lastThreeListValues);
         }
-
-        // Ordenar la lista por fecha de presentación
-        Collections.sort(listValuesList, new ListComparator());
-
-        int totalListValues = listValuesList.size();
-        int startIndex = Math.max(0, totalListValues - 3); // Últimas 3 getListValues o menos si hay menos de 3
-
-        JsonArray lastThreeListValues = new JsonArray();
-        for (int i = startIndex; i < totalListValues; i++) {
-            lastThreeListValues.add(listValuesList.get(i));
-        }
-
-        res.add("lastThreeListValues", lastThreeListValues);
 
         System.out.println(res);
         return res;
     }
 
-     private static class ListComparator implements Comparator<JsonObject> {
+    private static class ListComparator implements Comparator<JsonObject> {
+
         @Override
         public int compare(JsonObject o1, JsonObject o2) {
             String date1 = o1.getAsJsonPrimitive("Submit_Date").getAsString();

@@ -40,19 +40,45 @@ public class ConsultaIncidenteService {
     public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
 
-        JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
-                .getAsJsonObject("Body")
-                .getAsJsonObject("GetResponse");
+        JsonObject envelope = respuesta.getAsJsonObject("Envelope");
+        JsonObject body = envelope.getAsJsonObject("Body");
 
-        res.addProperty("Incident_Number", getResponse.has("Incident_Number") ? getResponse.get("Incident_Number").getAsString() : "");
-        res.addProperty("Status", getResponse.has("Status") ? getResponse.get("Status").getAsString() : "");
-        res.addProperty("Description", getResponse.has("Description") ? getResponse.get("Description").getAsString() : "");
-        res.addProperty("Submit_Date", getResponse.has("Submit_Date") ? getResponse.get("Submit_Date").getAsString() : "");
-        res.addProperty("Detailed_Decription", getResponse.has("Detailed_Decription") ? getResponse.get("Detailed_Decription").getAsString() : "");
-        res.addProperty("Resolution", getResponse.has("Resolution") ? getResponse.get("Resolution").getAsString() : "");
-        res.addProperty("Real_Solution_Date", getResponse.has("Real_Solution_Date") ? getResponse.get("Real_Solution_Date").getAsString() : "");
+        if (body.has("Fault")) {
+            // Hay un error, devolvemos el mensaje de error
+            res.addProperty("message", "¡Ups! Parece que este caso no existe. Te sugiero revisar esta información.");
+        } else {
+            JsonObject getResponse = body.getAsJsonObject("GetResponse");
 
-        System.out.println("Respuesta ConsultaOrdenTrabajoSerice.java");
+            if (getResponse.has("Incident_Number")) {
+                res.addProperty("Incident_Number", getResponse.get("Incident_Number").getAsString());
+            }
+
+            if (getResponse.has("Status")) {
+                res.addProperty("Status", getResponse.get("Status").getAsString());
+            }
+
+            if (getResponse.has("Description")) {
+                res.addProperty("Description", getResponse.get("Description").getAsString());
+            }
+
+            if (getResponse.has("Submit_Date")) {
+                res.addProperty("Submit_Date", getResponse.get("Submit_Date").getAsString());
+            }
+
+            if (getResponse.has("Detailed_Decription")) {
+                res.addProperty("Detailed_Decription", getResponse.get("Detailed_Decription").getAsString());
+            }
+
+            if (getResponse.has("Resolution")) {
+                res.addProperty("Resolution", getResponse.get("Resolution").getAsString());
+            }
+
+            if (getResponse.has("Real_Solution_Date")) {
+                res.addProperty("Real_Solution_Date", getResponse.get("Real_Solution_Date").getAsString());
+            }
+        }
+
+        System.out.println("Respuesta ConsultaOrdenTrabajoService.java");
         System.out.println(res);
         return res;
     }

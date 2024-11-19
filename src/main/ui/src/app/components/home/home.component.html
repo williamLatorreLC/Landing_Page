@@ -260,7 +260,7 @@
         accesskey="a" />
 
       <!-- Inicio ChatBOT -->
-      <div  class="chatbot-container" *ngIf="mostrarChat">
+      <div class="chatbot-container" *ngIf="mostrarChat">
 
         <!-- Header -->
         <div #header class="chatbot-header">
@@ -283,7 +283,7 @@
               <div class="chatbot-message anita-message">
                 <p><strong>Mesa Ágil:</strong> Selecciona una opción:
                 </p>
-                  <h6 class="chatbot-link" (click)="consultarCaso()" >Consultar o crear caso de MyIT</h6>
+                <h6 class="chatbot-link" (click)="consultarCaso()">Consultar o crear caso de MyIT</h6>
               </div>
 
               <!-- Mensaje User 1-->
@@ -296,15 +296,16 @@
                 <p>
                   <strong>Mesa Ágil:</strong> Selecciona el tipo de caso que quieres consultar:
                 </p>
-                  <h6 (click)="SearchReq()" class="chatbot-link">REQ - Requerimiento</h6>
-                  <h6 (click)="SearchInc()" class="chatbot-link">INC - Incidente</h6>
-                  <h6 (click)="SearchWo()" class="chatbot-link">WO - Orden de trabajo</h6>
-                  <h6 (click)="SearchHC()" class="chatbot-link">Histórico de mis casos</h6>                
+                <h6 (click)="SearchReq()" class="chatbot-link">REQ - Requerimiento</h6>
+                <h6 (click)="SearchInc()" class="chatbot-link">INC - Incidente</h6>
+                <h6 (click)="SearchWo()" class="chatbot-link">WO - Orden de trabajo</h6>
+                <h6 (click)="SearchHC()" class="chatbot-link">Histórico de mis casos</h6>
               </div>
 
               <!-- Mensaje 5 Anita (Cartilla) -->
               <div *ngIf="consultaCaso" class="chatbot-message anita-message">
-                <p><strong>Mesa Ágil:</strong> Nota: Si aún no sabes cómo consultar un caso, descarga la cartilla haciendo
+                <p><strong>Mesa Ágil:</strong> Nota: Si aún no sabes cómo consultar un caso, descarga la cartilla
+                  haciendo
                   click
                   <a href="https://static-or01.inbenta.com/e3d52cc744f1828a9937b9b1ab54d2ef4b76f18b247b14dab3a61c4a2c031dff/Cartilla%20Consulta%20de%20Casos%20en%20AnITa-comprimido.pdf"
                     class="chatbot-link" target="_blank">aquí</a> y sigue los pasos.
@@ -335,14 +336,16 @@
 
               <!-- Mensaje 6 Anita (Si se selecciona consultar Requerimiento)-->
               <div class="chatbot-message anita-message" *ngIf="selectHc">
-                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Por favor espera un momento mientras revisamos tus casos.
+                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Por favor espera un momento mientras revisamos tus
+                  casos.
                   Si quieres consultar el detalle de un caso específico, copia el número, regresa al menú y sigue las
                   instrucciones.</p>
               </div>
 
               <!-- Mensaje 6 Anita (Si se selecciona Consulta Historico Casos)-->
               <div class="chatbot-message anita-message" *ngIf="selectReq || selectInc || selectWo">
-                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Para conocer el estado de tu caso digita el código 👇</p>
+                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Para conocer el estado de tu caso digita el código 👇
+                </p>
               </div>
 
               <!-- Mensaje 3 User (Numero de REQ) -->
@@ -432,6 +435,12 @@
                     <br />
                     <strong>Solución del Incidente / Solicitud:</strong> {{ resolution }}
                     <br />
+                  </p>
+                </div>
+
+                <div *ngIf="messageError" class="chatbot-message anita-message">
+                  <p style="margin: 0;"><strong>Mesa Ágil:</strong>
+                    {{ messageError }}
                   </p>
                 </div>
 
@@ -538,6 +547,13 @@
                     <br />
                   </p>
                 </div>
+
+              <div *ngIf="messageErrorWO" class="chatbot-message anita-message">
+                <p style="margin: 0;"><strong>Mesa Ágil:</strong>
+                  {{ messageErrorWO }}
+                </p>
+              </div>
+
               </div>
 
               <!-- Mensaje 7 Anita (Si se selecciona hisotico Casos)-->
@@ -589,7 +605,8 @@
 
               <!-- Mensaje 8 Anita (Si se selecciona crear Nota)-->
               <div class="chatbot-message anita-message" *ngIf="crearNota">
-                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Ingresa la descripción de la nota que quieres agregar al
+                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Ingresa la descripción de la nota que quieres agregar
+                  al
                   caso.
                   <br />
                   <br />
@@ -617,11 +634,9 @@
         </div>
 
         <!-- input inicial -->
-        <div  class="chatbot-input-container"
-          *ngIf="mostrarChat">
+        <div class="chatbot-input-container" *ngIf="mostrarChat">
           <div>
-            <input type="text" placeholder="Pregunta aquí..."
-            class="chatbot-input">
+            <input type="text" placeholder="Pregunta aquí..." class="chatbot-input">
           </div>
         </div>
 
@@ -630,21 +645,21 @@
           <div *ngIf="selectReq && mostrarChat && !crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="numeroRequerimiento"
-                     placeholder="Escribe el número de REQ - Requerimiento..."
-                     class="chatbot-input" formControlName="reqNumber">
+                placeholder="Escribe el número de REQ - Requerimiento..." class="chatbot-input"
+                formControlName="reqNumber">
               <button class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>
 
-        
+
 
         <!-- input si selecciona INC  -->
         <form [formGroup]="numberINC" (ngSubmit)="consultarInc()">
           <div *ngIf="selectInc && mostrarChat && !crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="numeroI" placeholder="Escribe el número de INC - Incidente..."
-              class="chatbot-input" formControlName="incNumber">
+                class="chatbot-input" formControlName="incNumber">
               <button class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
@@ -653,9 +668,9 @@
         <!-- input si selecciona WO  -->
         <form [formGroup]="numberWO" (ngSubmit)="consultarWo()">
           <div *ngIf="selectWo && mostrarChat && !crearNota" class="chatbot-input-container">
-            <div class="chatbot-input-wrapper" >
+            <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="numeroW" placeholder="Escribe el número de WO - Orden de trabajo..."
-              class="chatbot-input" formControlName="woNumber">
+                class="chatbot-input" formControlName="woNumber">
               <button class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
@@ -663,13 +678,13 @@
 
         <!-- input si selecciona Crear Notas con Req -->
         <form *ngIf="Request_Number" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(AppRequestID)">
-          <div *ngIf="crearNota && Request_Number"class="chatbot-input-container">
+          <div *ngIf="crearNota && Request_Number" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
-                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
-                class="chatbot-input" formControlName="reqNumber">
-                <button class="chatbot-send-button" type="submit">➤</button>
-              </div>
+                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..." class="chatbot-input"
+                formControlName="reqNumber">
+              <button class="chatbot-send-button" type="submit">➤</button>
+            </div>
           </div>
         </form>
 
@@ -678,9 +693,9 @@
           <div *ngIf="crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
-                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
-                class="chatbot-input" formControlName="reqNumber">
-                <button class="chatbot-send-button" type="submit">➤</button>
+                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..." class="chatbot-input"
+                formControlName="reqNumber">
+              <button class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>
@@ -690,9 +705,9 @@
           <div *ngIf="crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
               <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
-                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..."
-                class="chatbot-input" formControlName="reqNumber">
-                <button class="chatbot-send-button" type="submit">➤</button>
+                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..." class="chatbot-input"
+                formControlName="reqNumber">
+              <button class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>

@@ -34,7 +34,7 @@ public class ConsultaWO {
     private ServletContext context;
 
     private functions fn;
-    
+
     @Context
     private HttpServletRequest request;
 
@@ -50,161 +50,168 @@ public class ConsultaWO {
         JSONObject jsonObj = XML.toJSONObject(responseString);
         respuesta = fn.getResponse(jsonObj.toString());
         JsonObject res = consultaOrdenTrabajoService.getBody(respuesta);
-         
-        HttpSession session = request.getSession(false);
-        String userLogueado = (String) session.getAttribute("UserLogueado");
 
-        // Llamar al método ctmPeopleWsGet con el Remedy_Login_ID del que se loguea
-        String responseCTMPeople = ctmPeopleWsGet(userLogueado);
+        if (res.has("message") && res.get("message").getAsString().equals("¡Ups! Parece que este caso no existe. Te sugiero revisar esta información.")) {
+            return fn.respOk(res);
 
-        // Extraer varibles de la INC Assignee_Login_ID, Requestor_ID, Requestor_By_ID 
-        String assigneeLoginID = null;
-        Pattern pattern = Pattern.compile("<Assignee_Login_ID>(.*?)</Assignee_Login_ID>");
-        Matcher matcher = pattern.matcher(responseString);
-        if (matcher.find()) {
-            assigneeLoginID = matcher.group(1);
-            System.out.println("Assignee_Login_ID encontrado: " + assigneeLoginID);
         } else {
-            System.out.println("No se encontró assigneeLoginID en el XML.");
-        }
 
-        String requestorID = null;
-        Pattern patternRequestorID = Pattern.compile("<Requestor_ID>(.*?)</Requestor_ID>");
-        Matcher matcherRequestorID = patternRequestorID.matcher(responseString);
-        if (matcherRequestorID.find()) {
-            requestorID = matcherRequestorID.group(1);
-            System.out.println("Requestor_ID encontrado: " + requestorID);
-        } else {
-            System.out.println("No se encontró Requestor_ID en el XML.");
-        }
+            HttpSession session = request.getSession(false);
+            String userLogueado = (String) session.getAttribute("UserLogueado");
 
-        String requestorByID = null;
-        Pattern patternRequestorByID = Pattern.compile("<Requestor_By_ID>(.*?)</Requestor_By_ID>");
-        Matcher matcherRequestorByID = patternRequestorByID.matcher(responseString);
-        if (matcherRequestorByID.find()) {
-            requestorByID = matcherRequestorByID.group(1);
-            System.out.println("Requestor_By_ID encontrado: " + requestorByID);
-        } else {
-            System.out.println("No se encontró Requestor_By_ID en el XML.");
-        }
+            // Llamar al método ctmPeopleWsGet con el Remedy_Login_ID del que se loguea
+            String responseCTMPeople = ctmPeopleWsGet(userLogueado);
 
-        // Llamar al método ctmPeopleWsGet con las variables Assignee_Login_ID, Requestor_ID, Requestor_By_ID de la INC
-        String responseAssigneeLoginID = ctmPeopleWsGet(assigneeLoginID);
-        String responseRequestorID = ctmPeopleWsGet(requestorID);
-        String responseRequestorByID = ctmPeopleWsGet(requestorByID);
+            // Extraer varibles de la INC Assignee_Login_ID, Requestor_ID, Requestor_By_ID 
+            String assigneeLoginID = null;
+            Pattern pattern = Pattern.compile("<Assignee_Login_ID>(.*?)</Assignee_Login_ID>");
+            Matcher matcher = pattern.matcher(responseString);
+            if (matcher.find()) {
+                assigneeLoginID = matcher.group(1);
+                System.out.println("Assignee_Login_ID encontrado: " + assigneeLoginID);
+            } else {
+                System.out.println("No se encontró assigneeLoginID en el XML.");
+            }
 
-        // Variables Id_Comite_CA, Id_Gerencia_CA, Id_Area_CA  del usuario logueado
-        String IdComiteCAUserLogueado = extractValue(responseCTMPeople, "\"Id_Comite_CA\":\"(\\d+?)\"");
-        String IdGerenciaCAUserLogueado = extractValue(responseCTMPeople, "\"Id_Gerencia_CA\":\"(\\d+?)\"");
-        String IdAreaCAUserLogueado = extractValue(responseCTMPeople, "\"Id_Area_CA\":\"(\\d+?)\"");
+            String requestorID = null;
+            Pattern patternRequestorID = Pattern.compile("<Requestor_ID>(.*?)</Requestor_ID>");
+            Matcher matcherRequestorID = patternRequestorID.matcher(responseString);
+            if (matcherRequestorID.find()) {
+                requestorID = matcherRequestorID.group(1);
+                System.out.println("Requestor_ID encontrado: " + requestorID);
+            } else {
+                System.out.println("No se encontró Requestor_ID en el XML.");
+            }
 
-        System.out.println("Usuario Logueado - Id_Comite_CA: " + IdComiteCAUserLogueado);
-        System.out.println("Usuario Logueado - Id_Gerencia_CA: " + IdGerenciaCAUserLogueado);
-        System.out.println("Usuario Logueado - Id_Area_CA: " + IdAreaCAUserLogueado);
+            String requestorByID = null;
+            Pattern patternRequestorByID = Pattern.compile("<Requestor_By_ID>(.*?)</Requestor_By_ID>");
+            Matcher matcherRequestorByID = patternRequestorByID.matcher(responseString);
+            if (matcherRequestorByID.find()) {
+                requestorByID = matcherRequestorByID.group(1);
+                System.out.println("Requestor_By_ID encontrado: " + requestorByID);
+            } else {
+                System.out.println("No se encontró Requestor_By_ID en el XML.");
+            }
 
-        // Variables Id_Comite_CA, Id_Gerencia_CA, Id_Area_CA del AssigneeLoginID
-        String IdComiteAssigneeLoginID = extractValue(responseAssigneeLoginID, "\"Id_Comite_CA\":\"(\\d+?)\"");
-        String IdGerenciaAssigneeLoginID = extractValue(responseAssigneeLoginID, "\"Id_Gerencia_CA\":\"(\\d+?)\"");
-        String IdAreaAssigneeLoginID = extractValue(responseAssigneeLoginID, "\"Id_Area_CA\":\"(\\d+?)\"");
+            // Llamar al método ctmPeopleWsGet con las variables Assignee_Login_ID, Requestor_ID, Requestor_By_ID de la INC
+            String responseAssigneeLoginID = ctmPeopleWsGet(assigneeLoginID);
+            String responseRequestorID = ctmPeopleWsGet(requestorID);
+            String responseRequestorByID = ctmPeopleWsGet(requestorByID);
 
-        System.out.println("AssigneeLoginID - Id_Comite_CA: " + IdComiteAssigneeLoginID);
-        System.out.println("AssigneeLoginID - Id_Gerencia_CA: " + IdGerenciaAssigneeLoginID);
-        System.out.println("AssigneeLoginID - Id_Area_CA: " + IdAreaAssigneeLoginID);
+            // Variables Id_Comite_CA, Id_Gerencia_CA, Id_Area_CA  del usuario logueado
+            String IdComiteCAUserLogueado = extractValue(responseCTMPeople, "\"Id_Comite_CA\":\"(\\d+?)\"");
+            String IdGerenciaCAUserLogueado = extractValue(responseCTMPeople, "\"Id_Gerencia_CA\":\"(\\d+?)\"");
+            String IdAreaCAUserLogueado = extractValue(responseCTMPeople, "\"Id_Area_CA\":\"(\\d+?)\"");
 
-        // Variables Id_Comite_CA, Id_Gerencia_CA, Id_Area_CA del RequestorID
-        String IdComiteRequestorID = extractValue(responseRequestorID, "\"Id_Comite_CA\":\"(\\d+?)\"");
-        String IdGerenciaRequestorID = extractValue(responseRequestorID, "\"Id_Gerencia_CA\":\"(\\d+?)\"");
-        String IdAreaRequestorID = extractValue(responseRequestorID, "\"Id_Area_CA\":\"(\\d+?)\"");
+            System.out.println("Usuario Logueado - Id_Comite_CA: " + IdComiteCAUserLogueado);
+            System.out.println("Usuario Logueado - Id_Gerencia_CA: " + IdGerenciaCAUserLogueado);
+            System.out.println("Usuario Logueado - Id_Area_CA: " + IdAreaCAUserLogueado);
 
-        System.out.println("RequestorID - Id_Comite_CA: " + IdComiteRequestorID);
-        System.out.println("RequestorID - Id_Gerencia_CA: " + IdGerenciaRequestorID);
-        System.out.println("RequestorID - Id_Area_CA: " + IdAreaRequestorID);
+            // Variables Id_Comite_CA, Id_Gerencia_CA, Id_Area_CA del AssigneeLoginID
+            String IdComiteAssigneeLoginID = extractValue(responseAssigneeLoginID, "\"Id_Comite_CA\":\"(\\d+?)\"");
+            String IdGerenciaAssigneeLoginID = extractValue(responseAssigneeLoginID, "\"Id_Gerencia_CA\":\"(\\d+?)\"");
+            String IdAreaAssigneeLoginID = extractValue(responseAssigneeLoginID, "\"Id_Area_CA\":\"(\\d+?)\"");
 
-        // Variables Id_Comite_CA, Id_Gerencia_CA, Id_Area_CA del RequestorByID
-        String IdComiteRequestorByID = extractValue(responseRequestorByID, "\"Id_Comite_CA\":\"(\\d+?)\"");
-        String IdGerenciaRequestorByID = extractValue(responseRequestorByID, "\"Id_Gerencia_CA\":\"(\\d+?)\"");
-        String IdAreaRequestorByID = extractValue(responseRequestorByID, "\"Id_Area_CA\":\"(\\d+?)\"");
+            System.out.println("AssigneeLoginID - Id_Comite_CA: " + IdComiteAssigneeLoginID);
+            System.out.println("AssigneeLoginID - Id_Gerencia_CA: " + IdGerenciaAssigneeLoginID);
+            System.out.println("AssigneeLoginID - Id_Area_CA: " + IdAreaAssigneeLoginID);
 
-        System.out.println("RequestorByID - Id_Comite_CA: " + IdComiteRequestorByID);
-        System.out.println("RequestorByID - Id_Gerencia_CA: " + IdGerenciaRequestorByID);
-        System.out.println("RequestorByID - Id_Area_CA: " + IdAreaRequestorByID);
+            // Variables Id_Comite_CA, Id_Gerencia_CA, Id_Area_CA del RequestorID
+            String IdComiteRequestorID = extractValue(responseRequestorID, "\"Id_Comite_CA\":\"(\\d+?)\"");
+            String IdGerenciaRequestorID = extractValue(responseRequestorID, "\"Id_Gerencia_CA\":\"(\\d+?)\"");
+            String IdAreaRequestorID = extractValue(responseRequestorID, "\"Id_Area_CA\":\"(\\d+?)\"");
 
-        JsonObject response = null;
+            System.out.println("RequestorID - Id_Comite_CA: " + IdComiteRequestorID);
+            System.out.println("RequestorID - Id_Gerencia_CA: " + IdGerenciaRequestorID);
+            System.out.println("RequestorID - Id_Area_CA: " + IdAreaRequestorID);
 
-        // filtros de seguridad 
-        // Condición 1: Comparación con AssigneeLoginID
-        boolean condition1 = IdComiteCAUserLogueado.equals(IdComiteAssigneeLoginID)
-                && IdGerenciaCAUserLogueado.equals(IdGerenciaAssigneeLoginID)
-                && IdAreaCAUserLogueado.equals(IdAreaAssigneeLoginID);
+            // Variables Id_Comite_CA, Id_Gerencia_CA, Id_Area_CA del RequestorByID
+            String IdComiteRequestorByID = extractValue(responseRequestorByID, "\"Id_Comite_CA\":\"(\\d+?)\"");
+            String IdGerenciaRequestorByID = extractValue(responseRequestorByID, "\"Id_Gerencia_CA\":\"(\\d+?)\"");
+            String IdAreaRequestorByID = extractValue(responseRequestorByID, "\"Id_Area_CA\":\"(\\d+?)\"");
 
-        // Condición 2: Comparación con RequestorID
-        boolean condition2 = IdComiteCAUserLogueado.equals(IdComiteRequestorID)
-                && IdGerenciaCAUserLogueado.equals(IdGerenciaRequestorID)
-                && IdAreaCAUserLogueado.equals(IdAreaRequestorID);
+            System.out.println("RequestorByID - Id_Comite_CA: " + IdComiteRequestorByID);
+            System.out.println("RequestorByID - Id_Gerencia_CA: " + IdGerenciaRequestorByID);
+            System.out.println("RequestorByID - Id_Area_CA: " + IdAreaRequestorByID);
 
-        // Condición 3: Comparación con RequestorByID
-        boolean condition3 = IdComiteCAUserLogueado.equals(IdComiteRequestorByID)
-                && IdGerenciaCAUserLogueado.equals(IdGerenciaRequestorByID)
-                && IdAreaCAUserLogueado.equals(IdAreaRequestorByID);
+            JsonObject response = null;
 
-        if (condition1 || condition2 || condition3) {
-            response = res.getAsJsonObject();
-        } else {
-            System.out.println("Ninguna coincidencia encontrada. Realizando validación de seguridad... 2");
+            // filtros de seguridad 
+            // Condición 1: Comparación con AssigneeLoginID
+            boolean condition1 = IdComiteCAUserLogueado.equals(IdComiteAssigneeLoginID)
+                    && IdGerenciaCAUserLogueado.equals(IdGerenciaAssigneeLoginID)
+                    && IdAreaCAUserLogueado.equals(IdAreaAssigneeLoginID);
 
-            // Llamar al método ctmSupportGroupPeople con el Remedy_Login_ID del usuario logueado
-            String responseCTMSupportGroup = ctmSupportGroupPeople(userLogueado);
+            // Condición 2: Comparación con RequestorID
+            boolean condition2 = IdComiteCAUserLogueado.equals(IdComiteRequestorID)
+                    && IdGerenciaCAUserLogueado.equals(IdGerenciaRequestorID)
+                    && IdAreaCAUserLogueado.equals(IdAreaRequestorID);
 
-            // Extraer Assigned_Group_ID desde responseString
-            String assignedGroupID = extractValue(responseString, "\"Assigned_Group_ID\":\"(\\w+?)\"");
+            // Condición 3: Comparación con RequestorByID
+            boolean condition3 = IdComiteCAUserLogueado.equals(IdComiteRequestorByID)
+                    && IdGerenciaCAUserLogueado.equals(IdGerenciaRequestorByID)
+                    && IdAreaCAUserLogueado.equals(IdAreaRequestorByID);
 
-            // Validación adicional
-            String supportGroupID = extractValue(responseCTMSupportGroup, "\"Support_Group_ID\":\"(\\w+?)\"");
-
-            if (assignedGroupID.equals(supportGroupID)) {
-                System.out.println("Decisión: Assigned_Group_ID coincide con Support_Group_ID.");
+            if (condition1 || condition2 || condition3) {
                 response = res.getAsJsonObject();
             } else {
-                System.out.println("Decisión: No coincide Assigned_Group_ID con Support_Group_ID. Realizando validación de seguridad... 3");
+                System.out.println("Ninguna coincidencia encontrada. Realizando validación de seguridad... 2");
 
-                // Extraer Contact_Type de las respuestas
-                String contactTypeRemedyLoginID = extractValue(responseCTMPeople, "\"Contact_Type\":\"(\\d+?)\"");
-                String contactTypeRequestorID = extractValue(responseRequestorID, "\"Contact_Type\":\"(\\d+?)\"");
-                String contactTypeRequestorByID = extractValue(responseRequestorByID, "\"Contact_Type\":\"(\\d+?)\"");
+                // Llamar al método ctmSupportGroupPeople con el Remedy_Login_ID del usuario logueado
+                String responseCTMSupportGroup = ctmSupportGroupPeople(userLogueado);
 
-                // Lista de Contact_Type válidos
-                List<String> validContactTypes = Arrays.asList("6", "7", "8", "10", "11", "12", "13", "14", "16");
+                // Extraer Assigned_Group_ID desde responseString
+                String assignedGroupID = extractValue(responseString, "\"Assigned_Group_ID\":\"(\\w+?)\"");
 
-                // Evaluar las condiciones
-                boolean condition1ContactType = validContactTypes.contains(contactTypeRequestorID)
-                        && contactTypeRequestorID.equals(contactTypeRemedyLoginID);
+                // Validación adicional
+                String supportGroupID = extractValue(responseCTMSupportGroup, "\"Support_Group_ID\":\"(\\w+?)\"");
 
-                boolean condition2ContactType = validContactTypes.contains(contactTypeRequestorByID)
-                        && contactTypeRequestorByID.equals(contactTypeRemedyLoginID);
-
-                boolean result = condition1ContactType || condition2ContactType;
-
-                if (result) {
-                    System.out.println("Decisión: Contact_Type coincide con los valores permitidos.");
+                if (assignedGroupID.equals(supportGroupID)) {
+                    System.out.println("Decisión: Assigned_Group_ID coincide con Support_Group_ID.");
                     response = res.getAsJsonObject();
-
                 } else {
-                    System.out.println("Decisión: Ninguna coincidencia encontrada en Contact_Type.");
-                    JsonObject mensajeSeguridad = new JsonObject();
-                    mensajeSeguridad.addProperty("message", "Por políticas de seguridad no puedes consultar la información de este caso.");
-                    response = mensajeSeguridad;
+                    System.out.println("Decisión: No coincide Assigned_Group_ID con Support_Group_ID. Realizando validación de seguridad... 3");
+
+                    // Extraer Contact_Type de las respuestas
+                    String contactTypeRemedyLoginID = extractValue(responseCTMPeople, "\"Contact_Type\":\"(\\d+?)\"");
+                    String contactTypeRequestorID = extractValue(responseRequestorID, "\"Contact_Type\":\"(\\d+?)\"");
+                    String contactTypeRequestorByID = extractValue(responseRequestorByID, "\"Contact_Type\":\"(\\d+?)\"");
+
+                    // Lista de Contact_Type válidos
+                    List<String> validContactTypes = Arrays.asList("6", "7", "8", "10", "11", "12", "13", "14", "16");
+
+                    // Evaluar las condiciones
+                    boolean condition1ContactType = validContactTypes.contains(contactTypeRequestorID)
+                            && contactTypeRequestorID.equals(contactTypeRemedyLoginID);
+
+                    boolean condition2ContactType = validContactTypes.contains(contactTypeRequestorByID)
+                            && contactTypeRequestorByID.equals(contactTypeRemedyLoginID);
+
+                    boolean result = condition1ContactType || condition2ContactType;
+
+                    if (result) {
+                        System.out.println("Decisión: Contact_Type coincide con los valores permitidos.");
+                        response = res.getAsJsonObject();
+
+                    } else {
+                        System.out.println("Decisión: Ninguna coincidencia encontrada en Contact_Type.");
+                        JsonObject mensajeSeguridad = new JsonObject();
+                        mensajeSeguridad.addProperty("message", "Por políticas de seguridad no puedes consultar la información de este caso.");
+                        response = mensajeSeguridad;
+                    }
+
                 }
-
             }
-        }
 
-        return fn.respOk(response);
+            return fn.respOk(response);
+        }
     }
 
     @POST
     @Path("/CTMPeopleWsGet")
     @Produces("application/json")
-    public String ctmPeopleWsGet(String data) {
+    public String ctmPeopleWsGet(String data
+    ) {
         data = "{\"data\": {\"remedyLoginID\": \"" + data + "\"}}";
         String responseString = "";
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
@@ -222,7 +229,8 @@ public class ConsultaWO {
     @POST
     @Path("/CTMSupportGroupPeople")
     @Produces("application/json")
-    public String ctmSupportGroupPeople(String data) {
+    public String ctmSupportGroupPeople(String data
+    ) {
         data = "{\"data\": {\"remedyLoginID\": \"" + data + "\"}}";
         String responseString = "";
         fn = new functions(context.getRealPath("/WEB-INF/config.properties"));
