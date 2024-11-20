@@ -114,17 +114,17 @@ export class HomeComponent implements OnInit {
   statusIncidente: any;
   descripcionIncidenteDetallada: any;
   fechaCreacionIncidente: any;
-  fechaNotaInc1: any;
-  fechaNotaInc2: string;
-  fechaNotaInc3: string;
-  fechaNotaWo1: string;
-  fechaNotaWo2: string;
-  fechaNotaWo3: string;
-  descriptionInc1: any;
-  descriptionInc2: any;
-  descriptionInc3: any;
-  resolution: any;
-  fechaResolution: any;
+  fechaNotaInc1 = null;
+  fechaNotaInc2 = null;
+  fechaNotaInc3 = null;
+  fechaNotaWo1 = null;
+  fechaNotaWo2 = null;
+  fechaNotaWo3 = null;
+  descriptionInc1 = null;
+  descriptionInc2 = null;
+  descriptionInc3 = null;
+  resolution = null;
+  fechaResolution = null;
   loadingMessage: string = 'Cargando notas';
   dots: string = '';
   detailedDescriptionCrearNotas: string = '';
@@ -163,6 +163,7 @@ export class HomeComponent implements OnInit {
   fechaInc3: any;
   messageError: any;
   messageErrorWO: any;
+  datosCargados: boolean;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -639,30 +640,64 @@ export class HomeComponent implements OnInit {
     this.consultarOcrearCaso = false;
     this.selectReq = false;
     this.consultaCaso = false;
-    this.numeroRequerimientoIngresado = '';
-    this.Request_Number = null;
-    this.fechaNotaInc1 = '';
-    this.fechaNotaInc2 = '';
-    this.fechaNotaInc3 = '';
-    this.descriptionInc1 = '';
-    this.descriptionInc2 = '';
-    this.descriptionInc3 = '';
-    this.crearNota = false;
-    this.creadoExitoso = '';
-    this.nombreArchivo = '';
-    this.creadoExitoso = '';
-    this.detailedDescriptionCrearNotas = '';
     this.selectInc = false;
     this.selectHc = false;
     this.selectWo = false;
-    this.numeroIncIngresado = '';
-    this.numeroWoIngresado = '';
+    this.selectHc = false;
+  }
+
+  resetInfo() {
+    this.numeroRequerimientoIngresado = null;
+    this.Request_Number = null;
+    this.fechaNotaInc1 = null;
+    this.fechaNotaInc2 = null;
+    this.fechaNotaInc3 = null;
+    this.descriptionInc1 = null;
+    this.descriptionInc2 = null;
+    this.descriptionInc3 = null;
+    this.creadoExitoso = '';
+    this.nombreArchivo = '';
+    this.detailedDescriptionCrearNotas = '';
+    this.numeroIncIngresado = null;
+    this.numeroWoIngresado = null;
     this.WO_Number = null;
     this.Incident_Number = null;
     this.noReq1 = null;
+    this.messageError = null;
+    this.messageErrorWO = null;
+    this.numeroRequerimiento = '';
+    this.numeroW = '';
+    this.numeroI = '';
+    this.descripcionIncidente = null;
+    this.statusIncidente = null;
+    this.descripcionIncidenteDetallada = null;
+    this.fechaCreacionIncidente = null;
+    this.resolution = null;
+    this.fechaResolution = null;
+    this.fechaNotaWo1 = null;
+    this.fechaNotaWo2 = null;
+    this.fechaNotaWo3 = null;
+    this.base64ContentString = '';
+    this.esContingenciaChatbot = null;
+    this.qualification = null;
+    this.noReq2 = null;
+    this.noReq3 = null;
+    this.noInc1 = null;
+    this.noInc2 = null;
+    this.noInc3 = null;
+    this.statusInc1 = null;
+    this.statusInc2 = null;
+    this.statusInc3 = null;
+    this.sumarryInc1 = null;
+    this.sumarryInc2 = null;
+    this.sumarryInc3 = null;
+    this.fechaInc1 = null;
+    this.fechaInc2 = null;
+    this.fechaInc3 = null;
   }
 
   async consultarReq() {
+
     try {
       const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
       this.Request_Number = res.response.Request_Number;
@@ -682,7 +717,7 @@ export class HomeComponent implements OnInit {
             incNumber: this.AppRequestID,
           });
 
-          if (!resINC.response.Detailed_Decription) {
+          if (resINC.response.Status) {
             this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
             this.statusIncidente = resINC.response.Status;
             this.descripcionIncidente = resINC.response.Description;
@@ -691,17 +726,41 @@ export class HomeComponent implements OnInit {
               incNumber: this.AppRequestID,
             })
 
-            this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0].Submit_Date;
-            this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1].Submit_Date;
-            this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2].Submit_Date;
-            this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0].Detailed_Description;
-            this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1].Detailed_Description;
-            this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
+            this.datosCargados = false;
+
+            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 0) {
+              this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Submit_Date?.trim() || null;
+              this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc1 = null;
+              this.descriptionInc1 = null;
+            }
+
+            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 1) {
+              this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Submit_Date?.trim() || null;
+              this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc2 = null;
+              this.descriptionInc2 = null;
+            }
+
+            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 2) {
+              this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Submit_Date?.trim() || null;
+              this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc3 = null;
+              this.descriptionInc3 = null;
+            }
+
+            this.datosCargados = true;
             this.resolution = resINC.response.Resolution;
             this.fechaResolution = resINC.response.Real_Solution_Date;
+            this.scrollToBottom();
+
           } else {
             this.Incident_Number = null
             this.fechaNotaInc1 = null
+
           }
 
         } catch (err) {
@@ -717,7 +776,7 @@ export class HomeComponent implements OnInit {
             woNumber: this.AppRequestID,
           });
 
-          if (!resWO.response.Detailed_Description) {
+          if (resWO.response.Status) {
             this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
             this.statusIncidente = resWO.response.Status;
             this.descripcionIncidente = resWO.response.Summary;
@@ -725,12 +784,37 @@ export class HomeComponent implements OnInit {
             const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', {
               woNumber: this.AppRequestID,
             })
-            this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
-            this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
-            this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
-            this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
-            this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
-            this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+
+            this.datosCargados = false;
+
+            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 0) {
+              this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Work_Log_Submit_Date?.trim() || null;
+              this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc1 = null;
+              this.descriptionInc1 = null;
+            }
+
+            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 1) {
+              this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Work_Log_Submit_Date?.trim() || null;
+              this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc2 = null;
+              this.descriptionInc2 = null;
+            }
+
+            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 2) {
+              this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Work_Log_Submit_Date?.trim() || null;
+              this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc3 = null;
+              this.descriptionInc3 = null;
+            }
+
+            this.datosCargados = true;
+            this.scrollToBottom();
+
+
           } else {
             this.WO_Number = null
             this.fechaNotaInc1 = null
@@ -761,6 +845,7 @@ export class HomeComponent implements OnInit {
 
     if (resINC.response.message) {
       this.messageError = resINC.response.message;
+      this.scrollToBottom();
     } else {
 
       this.Incident_Number = resINC.response.Incident_Number;
@@ -782,9 +867,10 @@ export class HomeComponent implements OnInit {
       // Datos adicionales
       this.resolution = resINC.response.Resolution;
       this.fechaResolution = resINC.response.Real_Solution_Date;
+      this.numeroI = "";
+      this.scrollToBottom();
     }
 
-    this.scrollToBottom();
   }
 
 
@@ -794,6 +880,7 @@ export class HomeComponent implements OnInit {
 
       if (resWO.response?.message) {
         this.messageErrorWO = resWO.response.message;
+        this.scrollToBottom();
         return;
       }
 
@@ -814,17 +901,12 @@ export class HomeComponent implements OnInit {
       this.descriptionInc1 = notas[0]?.Detailed_Description || '';
       this.descriptionInc2 = notas[1]?.Detailed_Description || '';
       this.descriptionInc3 = notas[2]?.Detailed_Description || '';
+      this.numeroW = "";
+      this.scrollToBottom();
     } catch (error) {
-      this.WO_Number = null;
-      this.fechaNotaInc1 = null;
-      this.fechaNotaInc2 = '';
-      this.fechaNotaInc3 = '';
-      this.descriptionInc1 = '';
-      this.descriptionInc2 = '';
-      this.descriptionInc3 = '';
+      this.resetInfo()
     }
 
-    this.scrollToBottom();
   }
 
   async agregarNota(AppRequestID?: string) {

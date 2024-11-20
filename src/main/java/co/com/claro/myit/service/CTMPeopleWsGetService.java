@@ -36,17 +36,46 @@ public class CTMPeopleWsGetService {
     public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
 
-        JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
-                .getAsJsonObject("Body")
-                .getAsJsonObject("GetResponse");
+        // Validar si la estructura principal existe
+        if (respuesta.has("Envelope")
+                && respuesta.getAsJsonObject("Envelope").has("Body")
+                && respuesta.getAsJsonObject("Envelope").getAsJsonObject("Body").has("GetResponse")) {
 
-        res.addProperty("Id_Area_CA", getElementAsString(getResponse, "Id_Area_CA"));
-        res.addProperty("Id_Gerencia_CA", getElementAsString(getResponse, "Id_Gerencia_CA"));
-        res.addProperty("Id_Comite_CA", getElementAsString(getResponse, "Id_Comite_CA"));
-        res.addProperty("Contact_Type", getElementAsString(getResponse, "Contact_Type"));
+            JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
+                    .getAsJsonObject("Body")
+                    .getAsJsonObject("GetResponse");
+
+            // Validar y agregar cada propiedad individualmente
+            if (getResponse.has("Id_Area_CA")) {
+                res.addProperty("Id_Area_CA", getResponse.get("Id_Area_CA").getAsString());
+            } else {
+                res.addProperty("Id_Area_CA", "");
+            }
+
+            if (getResponse.has("Id_Gerencia_CA")) {
+                res.addProperty("Id_Gerencia_CA", getResponse.get("Id_Gerencia_CA").getAsString());
+            } else {
+                res.addProperty("Id_Gerencia_CA", "");
+            }
+
+            if (getResponse.has("Id_Comite_CA")) {
+                res.addProperty("Id_Comite_CA", getResponse.get("Id_Comite_CA").getAsString());
+            } else {
+                res.addProperty("Id_Comite_CA", "");
+            }
+
+            if (getResponse.has("Contact_Type")) {
+                res.addProperty("Contact_Type", getResponse.get("Contact_Type").getAsString());
+            } else {
+                res.addProperty("Contact_Type", "");
+            }
+        } else {
+            res.addProperty("message", "¡Ups! La estructura de la respuesta no es válida.");
+        }
 
         System.out.println("Respuesta CTMPeopleWsGetService.java");
         System.out.println(res);
+
         return res;
     }
 

@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
  * @author Dussan
  */
 public class CTMSupportGroupPeopleService {
-    
+
     private final CTMSupportGroupPeopleRequest data;
 
     private functions fn;
@@ -35,15 +35,27 @@ public class CTMSupportGroupPeopleService {
     public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
 
-        JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
-                .getAsJsonObject("Body")
-                .getAsJsonObject("GetResponse");
+        if (respuesta.has("Envelope")
+                && respuesta.getAsJsonObject("Envelope").has("Body")
+                && respuesta.getAsJsonObject("Envelope").getAsJsonObject("Body").has("GetResponse")) {
 
-        res.addProperty("Support_Group_ID", getResponse.has("Support_Group_ID") ? getResponse.get("Support_Group_ID").getAsString() : "");
-        
+            JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
+                    .getAsJsonObject("Body")
+                    .getAsJsonObject("GetResponse");
+
+            if (getResponse.has("Support_Group_ID")) {
+                res.addProperty("Support_Group_ID", getResponse.get("Support_Group_ID").getAsString());
+            } else {
+                res.addProperty("Support_Group_ID", "");
+            }
+        } else {
+            res.addProperty("message", "¡Ups! La estructura de la respuesta no es válida.");
+        }
+
         System.out.println("Respuesta CTMSupportGroupPeopleService.java");
         System.out.println(res);
+
         return res;
     }
-    
+
 }
