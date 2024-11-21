@@ -7,7 +7,6 @@ package co.com.claro.myit.service;
 import co.com.claro.myit.api.CTMSupportGroupPeopleRequest;
 import co.com.claro.myit.api.Const;
 import co.com.claro.myit.util.functions;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -54,15 +53,9 @@ public class CTMSupportGroupPeopleService {
                         JsonObject group = element.getAsJsonObject();
                         JsonObject supportGroup = new JsonObject();
 
-                        supportGroup.addProperty("Remedy_Login_ID", group.has("Remedy_Login_ID")
-                                ? group.get("Remedy_Login_ID").getAsString()
-                                : "");
-                        supportGroup.addProperty("Support_Group_ID", group.has("Support_Group_ID")
-                                ? group.get("Support_Group_ID").getAsString()
-                                : "");
-                        supportGroup.addProperty("Support_Group_Name", group.has("Support_Group_Name")
-                                ? group.get("Support_Group_Name").getAsString()
-                                : "");
+                        supportGroup.addProperty("Remedy_Login_ID", getElementAsString(group, "Remedy_Login_ID"));
+                        supportGroup.addProperty("Support_Group_ID", getElementAsString(group, "Support_Group_ID"));
+                        supportGroup.addProperty("Support_Group_Name", getElementAsString(group, "Support_Group_Name"));
 
                         supportGroups.add(supportGroup);
                     }
@@ -77,10 +70,30 @@ public class CTMSupportGroupPeopleService {
             res.addProperty("message", "Se produjo un error procesando la respuesta: " + e.getMessage());
         }
 
-        System.out.println("Respuesta CTMSupportGroupPeopleService.java");
-        System.out.println(res);
-
         return res;
+    }
+
+    private String getElementAsString(JsonObject jsonObject, String key) {
+        if (jsonObject.has(key)) {
+            JsonElement element = jsonObject.get(key);
+            if (element.isJsonNull()) {
+                return "";
+            }
+            if (element.isJsonPrimitive()) {
+                return element.getAsString();
+            }
+            if (element.isJsonObject()) {
+                JsonObject obj = element.getAsJsonObject();
+                if (obj.has("@xsi:nil") && "true".equals(obj.get("@xsi:nil").getAsString())) {
+                    return "";
+                }
+                if (obj.has("#text")) {
+                    return obj.get("#text").getAsString();
+                }
+                return "";
+            }
+        }
+        return "";
     }
 
 }

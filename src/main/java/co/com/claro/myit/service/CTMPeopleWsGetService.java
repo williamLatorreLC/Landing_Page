@@ -36,7 +36,6 @@ public class CTMPeopleWsGetService {
     public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
 
-        // Validar si la estructura principal existe
         if (respuesta.has("Envelope")
                 && respuesta.getAsJsonObject("Envelope").has("Body")
                 && respuesta.getAsJsonObject("Envelope").getAsJsonObject("Body").has("GetResponse")) {
@@ -45,32 +44,13 @@ public class CTMPeopleWsGetService {
                     .getAsJsonObject("Body")
                     .getAsJsonObject("GetResponse");
 
-            // Validar y agregar cada propiedad individualmente
-            if (getResponse.has("Id_Area_CA")) {
-                res.addProperty("Id_Area_CA", getResponse.get("Id_Area_CA").getAsString());
-            } else {
-                res.addProperty("Id_Area_CA", "");
-            }
+            res.addProperty("Id_Area_CA", getElementAsString(getResponse, "Id_Area_CA"));
+            res.addProperty("Id_Gerencia_CA", getElementAsString(getResponse, "Id_Gerencia_CA"));
+            res.addProperty("Id_Comite_CA", getElementAsString(getResponse, "Id_Comite_CA"));
+            res.addProperty("Contact_Type", getElementAsString(getResponse, "Contact_Type"));
 
-            if (getResponse.has("Id_Gerencia_CA")) {
-                res.addProperty("Id_Gerencia_CA", getResponse.get("Id_Gerencia_CA").getAsString());
-            } else {
-                res.addProperty("Id_Gerencia_CA", "");
-            }
-
-            if (getResponse.has("Id_Comite_CA")) {
-                res.addProperty("Id_Comite_CA", getResponse.get("Id_Comite_CA").getAsString());
-            } else {
-                res.addProperty("Id_Comite_CA", "");
-            }
-
-            if (getResponse.has("Contact_Type")) {
-                res.addProperty("Contact_Type", getResponse.get("Contact_Type").getAsString());
-            } else {
-                res.addProperty("Contact_Type", "");
-            }
         } else {
-            res.addProperty("message", "¡Ups! La estructura de la respuesta no es válida.");
+            res.addProperty("message", "¡Ups! La estructura del getBody CTMPeopleWsGetService no es válida.");
         }
 
         System.out.println("Respuesta CTMPeopleWsGetService.java");
@@ -82,29 +62,24 @@ public class CTMPeopleWsGetService {
     private String getElementAsString(JsonObject jsonObject, String key) {
         if (jsonObject.has(key)) {
             JsonElement element = jsonObject.get(key);
-            if (element.isJsonPrimitive()) {
-                return element.getAsString();
-            } else if (element.isJsonObject()) {
-                JsonObject obj = element.getAsJsonObject();
-                // Verificar si tiene el atributo '@xsi:nil' y su valor es 'true'
-                if (obj.has("@xsi:nil") && obj.get("@xsi:nil").getAsString().equals("true")) {
-                    return ""; // Retornar cadena vacía o null según tus necesidades
-                } else {
-                    // Si el objeto tiene un valor en texto, extraerlo
-                    if (obj.has("#text")) {
-                        return obj.get("#text").getAsString();
-                    } else {
-                        // Manejar otros casos si es necesario
-                        return "";
-                    }
-                }
-            } else {
-                // Manejar otros tipos (JsonArray, etc.) si es necesario
+            if (element.isJsonNull()) {
                 return "";
             }
-        } else {
-            return ""; // Retornar cadena vacía si la clave no existe
+            if (element.isJsonPrimitive()) {
+                return element.getAsString();
+            }
+            if (element.isJsonObject()) {
+                JsonObject obj = element.getAsJsonObject();
+                if (obj.has("@xsi:nil") && "true".equals(obj.get("@xsi:nil").getAsString())) {
+                    return "";
+                }
+                if (obj.has("#text")) {
+                    return obj.get("#text").getAsString();
+                }
+                return "";
+            }
         }
+        return "";
     }
 
 }
