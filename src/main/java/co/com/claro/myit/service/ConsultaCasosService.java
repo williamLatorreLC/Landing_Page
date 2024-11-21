@@ -36,52 +36,62 @@ public class ConsultaCasosService {
     public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
 
-        JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
-                .getAsJsonObject("Body")
-                .getAsJsonObject("GetResponse");
+        try {
+            // Validamos si "Envelope" y "Body" existen antes de proceder
+            if (!respuesta.has("Envelope") || !respuesta.getAsJsonObject("Envelope").has("Body")) {
+                res.addProperty("message", "Estructura de respuesta no válida: faltan 'Envelope' o 'Body'.");
+                return res;
+            }
 
-        if (getResponse.has("Request_Number")) {
-            res.addProperty("Request_Number", getResponse.get("Request_Number").getAsString());
+            JsonObject envelope = respuesta.getAsJsonObject("Envelope");
+            JsonObject body = envelope.getAsJsonObject("Body");
+
+            // Validamos si hay un error en el Body
+            if (body.has("Fault")) {
+                res.addProperty("message", "¡Ups! Parece que este caso no existe. Te sugiero revisar esta información.");
+                return res;
+            }
+
+            JsonObject getResponse = body.getAsJsonObject("GetResponse");
+
+            // Extraemos propiedades si están presentes
+            if (getResponse.has("Request_Number")) {
+                res.addProperty("Request_Number", getResponse.get("Request_Number").getAsString());
+            }
+            if (getResponse.has("AppRequestID")) {
+                res.addProperty("AppRequestID", getResponse.get("AppRequestID").getAsString());
+            }
+            if (getResponse.has("Status")) {
+                res.addProperty("Status", getResponse.get("Status").getAsString());
+            }
+            if (getResponse.has("Summary")) {
+                res.addProperty("Summary", getResponse.get("Summary").getAsString());
+            }
+            if (getResponse.has("Submit_Date")) {
+                res.addProperty("Submit_Date", getResponse.get("Submit_Date").getAsString());
+            }
+            if (getResponse.has("Completion_Date")) {
+                res.addProperty("Completion_Date", getResponse.get("Completion_Date").getAsString());
+            }
+            if (getResponse.has("Closed_Date")) {
+                res.addProperty("Closed_Date", getResponse.get("Closed_Date").getAsString());
+            }
+            if (getResponse.has("Requestor_ID")) {
+                res.addProperty("Requestor_ID", getResponse.get("Requestor_ID").getAsString());
+            }
+            if (getResponse.has("Requestor_By_ID")) {
+                res.addProperty("Requestor_By_ID", getResponse.get("Requestor_By_ID").getAsString());
+            }
+        } catch (Exception e) {
+            // Capturamos errores inesperados y retornamos un mensaje genérico
+            res.addProperty("message", "Se produjo un error al procesar la respuesta: " + e.getMessage());
         }
 
-        if (getResponse.has("AppRequestID")) {
-            res.addProperty("AppRequestID", getResponse.get("AppRequestID").getAsString());
-        }
-
-        if (getResponse.has("Status")) {
-            res.addProperty("Status", getResponse.get("Status").getAsString());
-        }
-
-        if (getResponse.has("Summary")) {
-            res.addProperty("Summary", getResponse.get("Summary").getAsString());
-        }
-
-        if (getResponse.has("Submit_Date")) {
-            res.addProperty("Submit_Date", getResponse.get("Submit_Date").getAsString());
-        }
-
-        if (getResponse.has("Completion_Date")) {
-            res.addProperty("Completion_Date", getResponse.get("Completion_Date").getAsString());
-        }
-
-        if (getResponse.has("Closed_Date")) {
-            res.addProperty("Closed_Date", getResponse.get("Closed_Date").getAsString());
-        }
-
-       /*if (getResponse.has("Status_Reason")) {
-            res.addProperty("Status_Reason", getResponse.get("Status_Reason").getAsString());
-        } */
-
-        if (getResponse.has("Requestor_ID")) {
-            res.addProperty("Requestor_ID", getResponse.get("Requestor_ID").getAsString());
-        }
-
-        if (getResponse.has("Requestor_By_ID")) {
-            res.addProperty("Requestor_By_ID", getResponse.get("Requestor_By_ID").getAsString());
-        }
-
+        // Registro de la respuesta generada para fines de depuración
         System.out.println("Respuesta ConsultaCasosService.java linea 55");
         System.out.println(res);
+
         return res;
     }
+
 }

@@ -8,6 +8,9 @@ import co.com.claro.myit.api.CTMSupportGroupPeopleRequest;
 import co.com.claro.myit.api.Const;
 import co.com.claro.myit.util.functions;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  *
@@ -35,21 +38,43 @@ public class CTMSupportGroupPeopleService {
     public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
 
-        if (respuesta.has("Envelope")
-                && respuesta.getAsJsonObject("Envelope").has("Body")
-                && respuesta.getAsJsonObject("Envelope").getAsJsonObject("Body").has("GetResponse")) {
+        try {
+            if (respuesta.has("Envelope")
+                    && respuesta.getAsJsonObject("Envelope").has("Body")
+                    && respuesta.getAsJsonObject("Envelope").getAsJsonObject("Body").has("GetListResponse")) {
 
-            JsonObject getResponse = respuesta.getAsJsonObject("Envelope")
-                    .getAsJsonObject("Body")
-                    .getAsJsonObject("GetResponse");
+                JsonObject getListResponse = respuesta.getAsJsonObject("Envelope")
+                        .getAsJsonObject("Body")
+                        .getAsJsonObject("GetListResponse");
 
-            if (getResponse.has("Support_Group_ID")) {
-                res.addProperty("Support_Group_ID", getResponse.get("Support_Group_ID").getAsString());
+                if (getListResponse.has("getListValues") && getListResponse.get("getListValues").isJsonArray()) {
+                    JsonArray supportGroups = new JsonArray();
+                    JsonArray listValues = getListResponse.getAsJsonArray("getListValues");
+                    for (JsonElement element : listValues) {
+                        JsonObject group = element.getAsJsonObject();
+                        JsonObject supportGroup = new JsonObject();
+
+                        supportGroup.addProperty("Remedy_Login_ID", group.has("Remedy_Login_ID")
+                                ? group.get("Remedy_Login_ID").getAsString()
+                                : "");
+                        supportGroup.addProperty("Support_Group_ID", group.has("Support_Group_ID")
+                                ? group.get("Support_Group_ID").getAsString()
+                                : "");
+                        supportGroup.addProperty("Support_Group_Name", group.has("Support_Group_Name")
+                                ? group.get("Support_Group_Name").getAsString()
+                                : "");
+
+                        supportGroups.add(supportGroup);
+                    }
+                    res.add("Support_Groups", supportGroups);
+                } else {
+                    res.addProperty("message", "No se encontraron valores en 'getListValues'.");
+                }
             } else {
-                res.addProperty("Support_Group_ID", "");
+                res.addProperty("message", "¡Ups! La estructura de la respuesta no es válida.");
             }
-        } else {
-            res.addProperty("message", "¡Ups! La estructura de la respuesta no es válida.");
+        } catch (Exception e) {
+            res.addProperty("message", "Se produjo un error procesando la respuesta: " + e.getMessage());
         }
 
         System.out.println("Respuesta CTMSupportGroupPeopleService.java");

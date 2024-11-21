@@ -10,6 +10,7 @@ import co.com.claro.myit.service.CTMSupportGroupPeopleService;
 import co.com.claro.myit.service.ConsultaIncidenteService;
 import co.com.claro.myit.util.functions;
 import com.google.gson.JsonObject;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -163,11 +164,20 @@ public class ConsultaINC {
                 // Extraer Assigned_Group_ID desde responseString
                 String assignedGroupID = extractValue(responseString, "\"Assigned_Group_ID\":\"(\\w+?)\"");
 
-                // Validación adicional
-                String supportGroupID = extractValue(responseCTMSupportGroup, "\"Support_Group_ID\":\"(\\w+?)\"");
+                // Extraer Support_Group_IDs desde responseCTMSupportGroup (asumiendo múltiples valores)
+                List<String> supportGroupIDs = extractValues(responseCTMSupportGroup, "\"Support_Group_ID\":\"(\\w+?)\"");
 
-                if (assignedGroupID.equals(supportGroupID)) {
-                    System.out.println("Decisión: Assigned_Group_ID coincide con Support_Group_ID.");
+                // Validación adicional
+                boolean matchFound = false;
+                for (String supportGroupID : supportGroupIDs) {
+                    if (assignedGroupID.equals(supportGroupID)) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+
+                if (matchFound) {
+                    System.out.println("Decisión: Assigned_Group_ID coincide con uno de los Support_Group_ID.");
                     response = res.getAsJsonObject();
                 } else {
                     System.out.println("Decisión: No coincide Assigned_Group_ID con Support_Group_ID. Realizando validación de seguridad... 3");
@@ -251,6 +261,18 @@ public class ConsultaINC {
         } else {
             return "No encontrado";
         }
+    }
+
+    private static List<String> extractValues(String input, String patternString) {
+        List<String> values = new ArrayList<>();
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(input);
+
+        while (matcher.find()) {
+            values.add(matcher.group(1)); // Agrega cada coincidencia a la lista
+        }
+
+        return values;
     }
 
 }
