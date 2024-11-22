@@ -402,8 +402,8 @@
                     <strong>Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
                   </div>
                   <br />
-                  <div *ngIf="!fechaNotaInc1 || WO_Number !== null" class="loading-dots">Cargando notas...</div>
-                  <br *ngIf="!fechaNotaInc1 || WO_Number !== null" />
+                  <div *ngIf="(!fechaNotaInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" class="loading-dots">Cargando notas... PRUEBAA</div>
+                  <br *ngIf="(!fechaNotaInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" />
                   <p *ngIf="fechaNotaInc1" style="margin: 0;">
                     <strong>Notas del Incidente / Solicitud:</strong>
                     <br />
@@ -537,11 +537,6 @@
                   </p>
                 </div>
                
-                <div *ngIf="messageErrorWO" class="chatbot-message anita-message">
-                  <p style="margin: 0;"><strong>Mesa Ágil:</strong>
-                    {{ messageErrorWO }}
-                  </p>
-                </div>
               </div>
 
               <!-- Mensaje 7 Anita (Si se selecciona hisotico Casos)-->
@@ -613,7 +608,7 @@
                 <p style="margin: 0;"><strong>Mesa Ágil:</strong> {{ creadoExitoso }}</p>
               </div>
               <button class="chatbot-return-button"
-                *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO"
+                *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO || selectHc"
                 (click)="resetChat()">Volver</button>
             </div>
           </div>
