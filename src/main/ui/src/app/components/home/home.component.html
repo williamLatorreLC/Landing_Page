@@ -304,11 +304,8 @@
 
               <!-- Mensaje 5 Anita (Cartilla) -->
               <div *ngIf="consultaCaso" class="chatbot-message anita-message">
-                <p><strong>Mesa Ágil:</strong> Nota: Si aún no sabes cómo consultar un caso, descarga la cartilla
-                  haciendo
-                  click
-                  <a href="https://static-or01.inbenta.com/e3d52cc744f1828a9937b9b1ab54d2ef4b76f18b247b14dab3a61c4a2c031dff/Cartilla%20Consulta%20de%20Casos%20en%20AnITa-comprimido.pdf"
-                    class="chatbot-link" target="_blank">aquí</a> y sigue los pasos.
+                <p><strong>Mesa Ágil:</strong> Nota: Para consultar tu caso, selecciona el tipo de caso que quieres consultar
+                  e ingresa todo el código de tu caso. Ejemplo: REQ00000XXXXXXX, WO000000XXXXXXX o INC00000XXXXXX.
                 </p>
               </div>
 
@@ -343,7 +340,7 @@
 
               <!-- Mensaje 6 Anita (Si se selecciona Consulta Historico Casos)-->
               <div class="chatbot-message anita-message" *ngIf="selectReq || selectInc || selectWo">
-                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Para conocer el estado de tu caso digita el código 👇
+                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Para conocer el estado de tu caso digita todo el código (Ejemplo: REQ00000XXXXXXX, WO000000XXXXXXX o INC00000XXXXXX) 👇
                 </p>
               </div>
 
