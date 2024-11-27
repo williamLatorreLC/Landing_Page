@@ -16,6 +16,26 @@
     </properties>
 
     <dependencies>
+        <!-- Jackson Core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+
+        <!-- Jackson Databind (JSON Binding) -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+
+        <!-- Jackson XML -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.15.2</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-json -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
@@ -196,14 +216,14 @@
 
                 <executions>
                     <execution>
-	                <id>install node and npm</id>
-	                <goals>
-	                    <goal>install-node-and-npm</goal>
-	                </goals>
-	                <configuration>
-	                    <nodeVersion>v14.17.5</nodeVersion>
-	                </configuration>
-	            </execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v14.17.5</nodeVersion>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>npm install</id>
                         <goals>
@@ -265,17 +285,17 @@
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                  <filesets>
-                    <fileset>
-                      <directory>${project.basedir}/src/main/webapp</directory>
-                      <excludes>
-                        <exclude>**/META-INF/**</exclude>
-                        <exclude>**/WEB-INF/**</exclude>
-                        <exclude>**/chatbot/**</exclude>
-                      </excludes>
-                      <followSymlinks>false</followSymlinks>
-                    </fileset>
-                  </filesets>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/src/main/webapp</directory>
+                            <excludes>
+                                <exclude>**/META-INF/**</exclude>
+                                <exclude>**/WEB-INF/**</exclude>
+                                <exclude>**/chatbot/**</exclude>
+                            </excludes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
                 </configuration>
             </plugin>
             <plugin>

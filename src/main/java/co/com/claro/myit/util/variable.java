@@ -34,6 +34,8 @@ public class variable {
     String CrearNotasINC;
     String CrearNotasWO;
     String ConsultarHR;
+    String CTMPeopleWsGet;
+    String CTMSupportGroupPeople;
 
     public String getConsultarHR() {
         return ConsultarHR;
@@ -219,4 +221,23 @@ public class variable {
     public void setSurveyDirAES(String SurveyDirAES) {
         this.SurveyDirAES = SurveyDirAES;
     }
+
+    public String getCTMPeopleWsGet() {
+        return CTMPeopleWsGet;
+    }
+
+    public void setCTMPeopleWsGet(String CTMPeopleWsGet) {
+        this.CTMPeopleWsGet = CTMPeopleWsGet;
+    }
+
+    public String getCTMSupportGroupPeople() {
+        return CTMSupportGroupPeople;
+    }
+
+    public void setCTMSupportGroupPeople(String CTMSupportGroupPeople) {
+        this.CTMSupportGroupPeople = CTMSupportGroupPeople;
+    }
+    
+    
+    
 }
