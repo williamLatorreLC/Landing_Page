@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FactoryService } from 'src/app/services/factory/factory.service';
 import swal from 'sweetalert2';
@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit {
   @ViewChild('mymodalEnc', { static: false }) mymodalEnc:
     | TemplateRef<any>
     | undefined;
+
+  @ViewChild('chat', { static: false }) content!: ElementRef;
 
   mostrarChat: boolean = false;
   menu = true;
@@ -104,7 +106,7 @@ export class HomeComponent implements OnInit {
   Status: string;
   Summary: string;
   Submit_Date: string;
-  Completion_Date: string;
+  Closed_Date: string;
   consultarOcrearCaso: boolean = false;
   consultaCaso: boolean = false;
   numeroRequerimientoIngresado: any;
@@ -112,24 +114,24 @@ export class HomeComponent implements OnInit {
   statusIncidente: any;
   descripcionIncidenteDetallada: any;
   fechaCreacionIncidente: any;
-  fechaNotaInc1: any;
-  fechaNotaInc2: string;
-  fechaNotaInc3: string;
-  fechaNotaWo1: string;
-  fechaNotaWo2: string;
-  fechaNotaWo3: string;
-  descriptionInc1: any;
-  descriptionInc2: any;
-  descriptionInc3: any;
-  resolution: any;
-  fechaResolution: any;
+  fechaNotaInc1 = null;
+  fechaNotaInc2 = null;
+  fechaNotaInc3 = null;
+  fechaNotaWo1 = null;
+  fechaNotaWo2 = null;
+  fechaNotaWo3 = null;
+  descriptionInc1 = null;
+  descriptionInc2 = null;
+  descriptionInc3 = null;
+  resolution = null;
+  fechaResolution = null;
   loadingMessage: string = 'Cargando notas';
   dots: string = '';
   detailedDescriptionCrearNotas: string = '';
   CrearNotas: FormGroup;
   workLogType: FormGroup;
   crearNota: boolean = false;
-  creadoExitoso: string;
+  creadoExitoso: any;
   peticionEnCurso: any;
   doc = [];
   documentos = [{ nombre: "", file: [] }];
@@ -159,6 +161,10 @@ export class HomeComponent implements OnInit {
   fechaInc1: any;
   fechaInc2: any;
   fechaInc3: any;
+  messageError: any;
+  messageErrorWO: any;
+  datosCargados: boolean;
+  numeroNotas: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -549,6 +555,9 @@ export class HomeComponent implements OnInit {
     setTimeout(() => {
       this.consultaCaso = !this.consultaCaso;
     }, 400);
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   SearchReq() {
@@ -558,6 +567,9 @@ export class HomeComponent implements OnInit {
       this.selectWo = false;
       this.selectHc = false;
     }, 400);
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   SearchInc() {
@@ -567,6 +579,9 @@ export class HomeComponent implements OnInit {
       this.selectWo = false;
       this.selectHc = false;
     }, 400);
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   SearchWo() {
@@ -576,6 +591,9 @@ export class HomeComponent implements OnInit {
       this.selectReq = false;
       this.selectHc = false;
     }, 400);
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   SearchHC() {
@@ -586,30 +604,49 @@ export class HomeComponent implements OnInit {
       this.selectReq = false;
     }, 500);
     this.consultarHistoricoCasos();
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 500);
   }
 
   async consultarHistoricoCasos() {
     setTimeout(async () => {
       const resHc = await this.casosService.post('consultarHistoricoRequerimiento', {
-        Qualification: "45111133",
+       Qualification: this.infoUser.User,
+       //  Qualification: "45111133",
       });
 
-      this.noReq1 = resHc.response.lastThreeListValues[0].Request_Number;
-      this.noReq2 = resHc.response.lastThreeListValues[1].Request_Number;
-      this.noReq3 = resHc.response.lastThreeListValues[2].Request_Number;
-      this.noInc1 = resHc.response.lastThreeListValues[0].AppRequestID;
-      this.noInc2 = resHc.response.lastThreeListValues[1].AppRequestID;
-      this.noInc3 = resHc.response.lastThreeListValues[2].AppRequestID;
-      this.statusInc1 = resHc.response.lastThreeListValues[0].Status;
-      this.statusInc2 = resHc.response.lastThreeListValues[1].Status;
-      this.statusInc3 = resHc.response.lastThreeListValues[2].Status;
-      this.sumarryInc1 = resHc.response.lastThreeListValues[0].Summary;
-      this.sumarryInc2 = resHc.response.lastThreeListValues[1].Summary;
-      this.sumarryInc3 = resHc.response.lastThreeListValues[2].Summary;
-      this.fechaInc1 = resHc.response.lastThreeListValues[0].Submit_Date;
-      this.fechaInc2 = resHc.response.lastThreeListValues[1].Submit_Date;
-      this.fechaInc3 = resHc.response.lastThreeListValues[2].Submit_Date;
+      if (resHc?.response?.lastThreeListValues) {
+        const sortedValues = resHc.response.lastThreeListValues.sort((a: any, b: any) => {
+          return new Date(b.Submit_Date).getTime() - new Date(a.Submit_Date).getTime();
+        });
 
+        this.noReq1 = sortedValues[0]?.Request_Number || null;
+        this.noReq2 = sortedValues[1]?.Request_Number || null;
+        this.noReq3 = sortedValues[2]?.Request_Number || null;
+
+        this.noInc1 = sortedValues[0]?.AppRequestID || null;
+        this.noInc2 = sortedValues[1]?.AppRequestID || null;
+        this.noInc3 = sortedValues[2]?.AppRequestID || null;
+
+        this.statusInc1 = sortedValues[0]?.Status || null;
+        this.statusInc2 = sortedValues[1]?.Status || null;
+        this.statusInc3 = sortedValues[2]?.Status || null;
+
+        this.sumarryInc1 = sortedValues[0]?.Summary || null;
+        this.sumarryInc2 = sortedValues[1]?.Summary || null;
+        this.sumarryInc3 = sortedValues[2]?.Summary || null;
+
+        this.fechaInc1 = sortedValues[0]?.Submit_Date || null;
+        this.fechaInc2 = sortedValues[1]?.Submit_Date || null;
+        this.fechaInc3 = sortedValues[2]?.Submit_Date || null;
+
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 1500);
+      } else {
+        console.error("No se encontraron datos en lastThreeListValues.");
+      }
     }, 1000);
   }
 
@@ -618,70 +655,152 @@ export class HomeComponent implements OnInit {
     this.consultarOcrearCaso = false;
     this.selectReq = false;
     this.consultaCaso = false;
-    this.numeroRequerimientoIngresado = '';
-    this.Request_Number = null;
-    this.fechaNotaInc1 = '';
-    this.fechaNotaInc2 = '';
-    this.fechaNotaInc3 = '';
-    this.descriptionInc1 = '';
-    this.descriptionInc2 = '';
-    this.descriptionInc3 = '';
-    this.crearNota = false;
-    this.creadoExitoso = '';
-    this.nombreArchivo = '';
-    this.creadoExitoso = '';
-    this.detailedDescriptionCrearNotas = '';
     this.selectInc = false;
     this.selectHc = false;
     this.selectWo = false;
-    this.numeroIncIngresado = '';
-    this.numeroWoIngresado = '';
+    this.selectHc = false;
+    this.crearNota = false;
+
+    //Variables para el boton de volver
+    this.messageError = null;
+    this.messageErrorWO = null;
+    this.Request_Number = null;
+    this.Incident_Number = null;
+    this.WO_Number = null;
+    this.noReq1 = null;
+    this.creadoExitoso = null;
+  }
+
+  resetInfo() {
+    this.numeroRequerimientoIngresado = null;
+    this.Request_Number = null;
+    this.fechaNotaInc1 = null;
+    this.fechaNotaInc2 = null;
+    this.fechaNotaInc3 = null;
+    this.descriptionInc1 = null;
+    this.descriptionInc2 = null;
+    this.descriptionInc3 = null;
+    this.creadoExitoso = '';
+    this.nombreArchivo = '';
+    this.detailedDescriptionCrearNotas = '';
+    this.numeroIncIngresado = null;
+    this.numeroWoIngresado = null;
     this.WO_Number = null;
     this.Incident_Number = null;
     this.noReq1 = null;
+    this.messageError = null;
+    this.messageErrorWO = null;
+    this.numeroRequerimiento = '';
+    this.numeroW = '';
+    this.numeroI = '';
+    this.descripcionIncidente = null;
+    this.statusIncidente = null;
+    this.descripcionIncidenteDetallada = null;
+    this.fechaCreacionIncidente = null;
+    this.resolution = null;
+    this.fechaResolution = null;
+    this.fechaNotaWo1 = null;
+    this.fechaNotaWo2 = null;
+    this.fechaNotaWo3 = null;
+    this.base64ContentString = '';
+    this.qualification = null;
+    this.noReq2 = null;
+    this.noReq3 = null;
+    this.noInc1 = null;
+    this.noInc2 = null;
+    this.noInc3 = null;
+    this.statusInc1 = null;
+    this.statusInc2 = null;
+    this.statusInc3 = null;
+    this.sumarryInc1 = null;
+    this.sumarryInc2 = null;
+    this.sumarryInc3 = null;
+    this.fechaInc1 = null;
+    this.fechaInc2 = null;
+    this.fechaInc3 = null;
+    this.numeroNotas = null;
   }
 
   async consultarReq() {
     try {
+      const isValid = await this.validacionSeguridad();
+
+      if (!isValid) {
+        this.numeroRequerimiento = "";
+        this.scrollToBottom();
+        return;
+      }
+
       const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
       this.Request_Number = res.response.Request_Number;
       this.AppRequestID = res.response.AppRequestID;
       this.Status = res.response.Status;
       this.Summary = res.response.Summary;
       this.Submit_Date = res.response.Submit_Date;
-      this.Completion_Date = res.response.Completion_Date;
+      this.Closed_Date = res.response.Closed_Date;
       this.numeroRequerimientoIngresado = res.response.Request_Number;
       this.numberRequerimiento.controls['reqNumber'].setValue('');
 
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 1000);
+
       this.resolution = null
       if (this.AppRequestID.startsWith("INC")) {
-        this.resolution 
+        this.resolution
         try {
           const resINC = await this.casosService.post('ConsultarINC', {
             incNumber: this.AppRequestID,
           });
 
-          if (!resINC.response.Detailed_Decription) {
+          if (resINC.response.Status) {
             this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
             this.statusIncidente = resINC.response.Status;
             this.descripcionIncidente = resINC.response.Description;
             this.fechaCreacionIncidente = resINC.response.Submit_Date;
+            this.scrollToBottom();
 
             const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', {
               incNumber: this.AppRequestID,
             })
 
-            this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0].Submit_Date;
-            this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1].Submit_Date;
-            this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2].Submit_Date;
-            this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0].Detailed_Description;
-            this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1].Detailed_Description;
-            this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
+            this.datosCargados = false;
+            this.numeroNotas = consultarNotaInc.response.lastThreeListValues.length
+
+            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 0) {
+              this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Submit_Date?.trim() || null;
+              this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc1 = null;
+              this.descriptionInc1 = null;
+            }
+
+            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 1) {
+              this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Submit_Date?.trim() || null;
+              this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc2 = null;
+              this.descriptionInc2 = null;
+            }
+
+            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 2) {
+              this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Submit_Date?.trim() || null;
+              this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc3 = null;
+              this.descriptionInc3 = null;
+            }
+
+            this.datosCargados = true;
             this.resolution = resINC.response.Resolution;
             this.fechaResolution = resINC.response.Real_Solution_Date;
+            this.scrollToBottom();
+
+
           } else {
             this.Incident_Number = null
             this.fechaNotaInc1 = null
+
           }
 
         } catch (err) {
@@ -697,24 +816,57 @@ export class HomeComponent implements OnInit {
             woNumber: this.AppRequestID,
           });
 
-          if (!resWO.response.Detailed_Description) {
+          if (resWO.response.Status) {
             this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
             this.statusIncidente = resWO.response.Status;
             this.descripcionIncidente = resWO.response.Summary;
             this.fechaCreacionIncidente = resWO.response.Submit_Date;
+            this.scrollToBottom();
+
             const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', {
               woNumber: this.AppRequestID,
             })
-            this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
-            this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
-            this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
-            this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
-            this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
-            this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+
+            this.datosCargados = false;
+
+            this.numeroNotas = consultarNotaWO.response.lastThreeListValues.length
+
+            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 0) {
+              this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Work_Log_Submit_Date?.trim() || null;
+              this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc1 = null;
+              this.descriptionInc1 = null;
+            }
+
+            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 1) {
+              this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Work_Log_Submit_Date?.trim() || null;
+              this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc2 = null;
+              this.descriptionInc2 = null;
+            }
+
+            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 2) {
+              this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Work_Log_Submit_Date?.trim() || null;
+              this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
+            } else {
+              this.fechaNotaInc3 = null;
+              this.descriptionInc3 = null;
+            }
+
+            this.datosCargados = true;
+            this.scrollToBottom();
+
+
           } else {
             this.WO_Number = null
             this.fechaNotaInc1 = null
           }
+
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 1000);
 
 
         }
@@ -732,49 +884,163 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  async consultarInc() {
-    this.resolution = null
-    const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
-    this.Incident_Number = resINC.response.Incident_Number;
-    this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
-    this.statusIncidente = resINC.response.Status;
-    this.descripcionIncidente = resINC.response.Description;
-    this.fechaCreacionIncidente = resINC.response.Submit_Date;
-    this.numeroIncIngresado = resINC.response.Incident_Number;
 
-    const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', this.numberINC.value)
+  async validacionSeguridad(): Promise<boolean> {
+    try {
+      const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
+      this.AppRequestID = res.response.AppRequestID;
 
-    this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0].Submit_Date;
-    this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1].Submit_Date;
-    this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2].Submit_Date;
-    this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0].Detailed_Description;
-    this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1].Detailed_Description;
-    this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2].Detailed_Description;
-    this.resolution = resINC.response.Resolution;
-    this.fechaResolution = resINC.response.Real_Solution_Date;
+      if (res.response.message) {
+        this.messageError = "¡Ups! Parece que este caso no existe. Te sugiero revisar esta información.";
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 500);
+        return false;
+      } else {
+
+        if (this.AppRequestID.startsWith("INC")) {
+          const resINC = await this.casosService.post('ConsultarINC', { incNumber: this.AppRequestID });
+          if (resINC.response?.message) {
+            this.messageError = resINC.response.message;
+            return false;
+          }
+        }
+
+        if (this.AppRequestID.startsWith("WO")) {
+          const resWO = await this.casosService.post('ConsultarWO', { woNumber: this.AppRequestID });
+          if (resWO.response?.message) {
+            this.messageError = resWO.response.message;
+            return false;
+          }
+        }
+      }
+      return true;
+    } catch (err) {
+      console.error('Error en validacionSeguridad: ', err);
+      return false;
+    }
   }
+
+
+  async consultarInc() {
+    this.resolution = null;
+
+    const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
+
+    if (resINC.response.message) {
+      this.messageError = resINC.response.message;
+      this.numeroI = "";
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 1000);
+    } else {
+
+      this.Incident_Number = resINC.response.Incident_Number;
+      this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
+      this.statusIncidente = resINC.response.Status;
+      this.descripcionIncidente = resINC.response.Description;
+      this.fechaCreacionIncidente = resINC.response.Submit_Date;
+      this.numeroIncIngresado = resINC.response.Incident_Number;
+      this.scrollToBottom();
+      this.numeroI = "";
+
+      const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', this.numberINC.value);
+
+      this.datosCargados = false;
+      this.numeroNotas = consultarNotaInc.response.lastThreeListValues.length
+
+      if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 0) {
+        this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Submit_Date?.trim() || null;
+        this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
+      } else {
+        this.fechaNotaInc1 = null;
+        this.descriptionInc1 = null;
+      }
+
+      if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 1) {
+        this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Submit_Date?.trim() || null;
+        this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
+      } else {
+        this.fechaNotaInc2 = null;
+        this.descriptionInc2 = null;
+      }
+
+      if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 2) {
+        this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Submit_Date?.trim() || null;
+        this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
+      } else {
+        this.fechaNotaInc3 = null;
+        this.descriptionInc3 = null;
+      }
+
+      this.datosCargados = true;
+      // Datos adicionales
+      this.resolution = resINC.response.Resolution;
+      this.fechaResolution = resINC.response.Real_Solution_Date;
+      this.scrollToBottom();
+
+    }
+
+  }
+
 
   async consultarWo() {
     try {
       const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
-      this.WO_Number = resWO.response.Work_Order_ID;
-      this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
-      this.statusIncidente = resWO.response.Status;
-      this.descripcionIncidente = resWO.response.Summary;
-      this.fechaCreacionIncidente = resWO.response.Submit_Date;
-      this.numeroWoIngresado = resWO.response.Work_Order_ID;
 
-      const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value)
+      if (resWO.response?.message) {
+        this.messageError = resWO.response.message;
+        this.numeroW = "";
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 1000);
+        return;
+      }
 
-      this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0].Work_Log_Submit_Date;
-      this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1].Work_Log_Submit_Date;
-      this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2].Work_Log_Submit_Date;
-      this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0].Detailed_Description;
-      this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1].Detailed_Description;
-      this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2].Detailed_Description;
+      this.WO_Number = resWO.response?.Work_Order_ID || null;
+      this.descripcionIncidenteDetallada = resWO.response?.Detailed_Description || '';
+      this.statusIncidente = resWO.response?.Status || '';
+      this.descripcionIncidente = resWO.response?.Summary || '';
+      this.fechaCreacionIncidente = resWO.response?.Submit_Date || '';
+      this.numeroWoIngresado = resWO.response?.Work_Order_ID || '';
+      this.scrollToBottom();
+
+      const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value);
+
+      this.datosCargados = false;
+
+      this.numeroNotas = consultarNotaWO.response.lastThreeListValues.length
+
+      if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 0) {
+        this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Work_Log_Submit_Date?.trim() || null;
+        this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
+      } else {
+        this.fechaNotaInc1 = null;
+        this.descriptionInc1 = null;
+      }
+
+      if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 1) {
+        this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Work_Log_Submit_Date?.trim() || null;
+        this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
+      } else {
+        this.fechaNotaInc2 = null;
+        this.descriptionInc2 = null;
+      }
+
+      if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 2) {
+        this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Work_Log_Submit_Date?.trim() || null;
+        this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
+      } else {
+        this.fechaNotaInc3 = null;
+        this.descriptionInc3 = null;
+      }
+
+      this.datosCargados = true;
+      this.numeroW = "";
+      this.scrollToBottom();
+
     } catch (error) {
-      this.WO_Number = null
-      this.fechaNotaInc1 = null
+      this.resetInfo()
     }
 
   }
@@ -799,6 +1065,7 @@ export class HomeComponent implements OnInit {
             WorkInfoAttachment1Data: this.base64ContentString,
           });
           this.creadoExitoso = "Nota creada con éxito";
+          this.detailedDescriptionCrearNotas = "";
         } else if (AppRequestID.startsWith("WO")) {
           const resCrearNotasWo = await this.casosService.post('CrearNotasWo', {
             Work_Order_ID: AppRequestID,
@@ -809,10 +1076,15 @@ export class HomeComponent implements OnInit {
             WorkInfoAttachment1Data: this.base64ContentString,
           });
           this.creadoExitoso = "Nota creada con éxito";
+          this.detailedDescriptionCrearNotas = "";
         }
       } else {
         console.log('AppRequestID no proporcionado. No se puede agregar nota.');
+        this.detailedDescriptionCrearNotas = "";
       }
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 1500);
     } catch (error) {
       console.error('Error al agregar nota:', error);
       this.creadoExitoso = "No es posible crear la nota";
@@ -823,6 +1095,8 @@ export class HomeComponent implements OnInit {
 
   dialogoCrearNota() {
     this.crearNota = true;
+    this.scrollToBottom();
+
   }
 
   onFileSelected(event: any) {
@@ -838,6 +1112,8 @@ export class HomeComponent implements OnInit {
           console.error('Error al leer archivo como Base64:', error);
         });
     }
+    this.scrollToBottom();
+
   }
 
   private readFileAsBase64(file: File): Promise<string> {
@@ -855,6 +1131,13 @@ export class HomeComponent implements OnInit {
 
       reader.readAsDataURL(file);
     });
+    this.scrollToBottom();
+
+  }
+
+  scrollToBottom() {
+    const element = this.content.nativeElement;
+    element.scrollTop = element.scrollHeight;
   }
 
 }
