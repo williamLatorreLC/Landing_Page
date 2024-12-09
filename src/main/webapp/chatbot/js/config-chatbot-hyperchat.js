@@ -1,4 +1,4 @@
-//Version 16.2 Generada el 14 de Noviembre 2024
+//Version 17 Generada el 27 de Noviembre 2024
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -29,7 +29,7 @@ function decryptData(encryptedData = ''){
       var decryptedBytes = CryptoJS.AES.decrypt({ ciphertext: rawData }, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
       var decryptedData = decryptedBytes.toString(CryptoJS.enc.Latin1);
     } catch (e) {
-      console.log('Excepcion al intentar obtener informaciÃ³n desde X_MYIT_INFO');
+      console.log('Excepcion al intentar obtener información desde X_MYIT_INFO');
       console.log(e);
     }
 
@@ -67,10 +67,10 @@ function getSessionVariable(variable) {
                     break;
                 }
             } else {
-                console.log('No se encontro la variable '+variable+' en X_MYIT_INFO. Se inicializarÃ¡ la variable con valor default');
+                console.log('No se encontro la variable '+variable+' en X_MYIT_INFO. Se inicializará la variable con valor default');
             }
         } else {
-          console.log('No se obtuvo un JSON desde X_MYIT_INFO. Se inicializarÃ¡ la variable chatbot con valores default');
+          console.log('No se obtuvo un JSON desde X_MYIT_INFO. Se inicializará la variable chatbot con valores default');
         }
 
     } else {
@@ -81,7 +81,7 @@ function getSessionVariable(variable) {
         value = myParam;
         console.log("Se obtiene valor de variable desde url query: " + variable);
       } else {
-        console.log("Informacion de sesion X_MYIT_INFO no encontrada se inicializarÃ¡ el chatbot con valores default. " + variable);
+        console.log("Informacion de sesion X_MYIT_INFO no encontrada se inicializará el chatbot con valores default. " + variable);
       }
     }
 
@@ -104,8 +104,8 @@ var perfil_contenido = getSessionVariable("ProfileId");
 var perfil_inbenta = parseInt(perfil_contenido, 10);
 var avatar_name = "Anita";
 var username = nombre+" "+apellido;
-var datospersonales = "Nombre: "+nombre+" "+apellido+" | Tipo de usuario: "+staff+" | Estado de usuario: "+perfilstatus+" | DirecciÃ³n Ãrea: "+organizacion+" | Gerencia: "+depto+" | Cargo: "+titulo+" | Usuario Red: "+usuarioid+" | Correo: "+mail+" | Perfil Contenido: "+perfil_contenido+" | UbicaciÃ³n: "+site; // Variable con todos los datos
-var intentos = 1; //NÃºmero de intentos antes de contactar asesor
+var datospersonales = "Nombre: "+nombre+" "+apellido+" | Tipo de usuario: "+staff+" | Estado de usuario: "+perfilstatus+" | Dirección Área: "+organizacion+" | Gerencia: "+depto+" | Cargo: "+titulo+" | Usuario Red: "+usuarioid+" | Correo: "+mail+" | Perfil Contenido: "+perfil_contenido+" | Ubicación: "+site; // Variable con todos los datos
+var intentos = 1; //Número de intentos antes de contactar asesor
 //Variables de consulta y creacion de casos, y de revision de redes
 var nomred = nombre+" "+usuarioid;
 var var_clr_id = '';
@@ -147,7 +147,7 @@ var originalDocumentTitle = document.title;
 // Inicializa el chatbot
 function initChatbot(type){
 
-    var surveyID = 2;
+    var surveyID = 7;
 
     //NUEVA INSTANCIA
     var DomainKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJwcm9qZWN0IjoiY2xuX2NsYXJvX2NvbG9tYmlhc2VydmljaW9zX2lfNDdiOV9jaGF0Ym90X2VzIiwiZG9tYWluX2tleV9pZCI6IkJpRWxCajdyeXdUVzE3dTVSX1hobmc6OiJ9.LIvRmPfifmChDgy3JN0N2ROVdryLpA75oZSIWxw0NEGBd5oP-o6hxCV9NaNMkwPP9e6jjx6ZjLjX4tYfkv3JDQ';
@@ -161,7 +161,7 @@ function initChatbot(type){
     //Rejected escalation will display What else can I do for you? as a chatbotMessage
     var rejectedEscalation={
         action:'displayChatbotMessage',
-        value:'Â¿Que mÃ¡s puedo hacer por ti?'
+        value:'¿Que más puedo hacer por ti?'
     };
 
     //NoAgentsAvailable: requiere crear un contenido en el KNOWLEDGE del chatbot con este mismo titulo con una respuesta personalizada
@@ -176,9 +176,9 @@ function initChatbot(type){
         lang             : 'es',
         fileUploadsActive: true,
         room: function () {
-            return '1';//cola de chat 1: Soporte | 2: Pruebas
+            return '1';//cola de chat 1: Soporte | 2: Pruebas | 4: Continua
         },
-        surveys   : { id: 2 },
+        surveys   : { id: 7 },
 		    transcript: { download: true },
     });
 
@@ -239,30 +239,30 @@ function initChatbot(type){
             es: {
                 'yes': 'Si',
                 'no': 'No',
-                'escalate-chat' : 'Â¿Quieres comunicarte con un asesor?',
+                'escalate-chat' : '¿Quieres comunicarte con un asesor?',
                 'generic-error-message': 'Por favor intente con otra pregunta',
-                'enter-question': 'Pregunta aquÃ­',
+                'enter-question': 'Pregunta aquí',
                 'interface-title': 'MyIT',//titulo del header del Chatbot
                 'guest-name': 'Tu',
-                'help-question': 'Â¿CÃ³mo te puedo ayudar?',
+                'help-question': '¿Cómo te puedo ayudar?',
                 'thanks': 'Gracias!',
-                'rate-content': 'Â¿Esto te ha sido Ãºtil?',
+                'rate-content': '¿Esto te ha sido útil?',
                 'form-message': 'Por favor dinos por que',
                 'submit': 'Enviar',
                 'alert-title' : 'OOOOPS...!',
-                'alert-message' : 'Algo saliÃ³ mal, por favor intenta de nuevo.',
+                'alert-message' : 'Algo salió mal, por favor intenta de nuevo.',
                 'alert-button' : 'Intenta de nuevo',
                 'agent-joined' : '{agentName} se ha unido al chat',
                 'agent-left' : '{agentName} ha dejado el chat',
                 'wait-for-agent' : 'Esperando por un agente...',
                 'no-agents' : 'No hay agentes disponibiles',
-                'close-chat' : 'Â¿Quieres cerrar el chat?',
+                'close-chat' : '¿Quieres cerrar el chat?',
                 'chat-closed' : 'Chat cerrado',
                 'download' : 'Descargar',
-                'agent-typing': '{agentName} estÃ¡ escribiendo',
+                'agent-typing': '{agentName} está escribiendo',
                 'agents-typing': '{agentName} y {agentName2}  estan escribiendo',
-                'several-typing': 'Varias personas estÃ¡n escribiendo',
-				'queue-estimation-first': 'Pronto serÃ¡s atendido'
+                'several-typing': 'Varias personas están escribiendo',
+				'queue-estimation-first': 'Pronto serás atendido'
             }
         },
         avatar: {
@@ -318,8 +318,8 @@ function initChatbot(type){
 // funcion para cambiar el texto de bienvenida del chatbot
 function stringManipulate(chatBot) {
     var patt = new RegExp("{*}");
-    let originalString = 'Hola, Â¿en quÃ© te puedo ayudar?';
-    let newString = "Hola "+username+" soy "+avatar_name+", tu asistente virtual, Â¿En quÃ© puedo ayudarte?.";
+    let originalString = 'Hola, ¿en qué te puedo ayudar?';
+    let newString = "Hola "+username+" soy "+avatar_name+", tu asistente virtual, ¿En qué puedo ayudarte?.";
 
     var chatBot_action = chatBot;
     var usuario_red = usuarioid;
@@ -332,15 +332,48 @@ function stringManipulate(chatBot) {
             messageData.message = messageData.message.replace('{avatar_name}', avatar_name);
 
             if(perfil_inbenta){
-            console.log('perfil inbenta',perfil_inbenta);
-            chatBot_action.api.addVariable('USUARIO_PERFIL', perfil_inbenta);
+            //console.log('perfil inbenta',perfil_inbenta);
+            //chatBot_action.api.addVariable('USUARIO_PERFIL', perfil_inbenta);
+
+            var variableList =
+            [
+                {
+                  name: "FIRST_NAME",
+                  value: nomred
+                },
+                {
+                  name: 'EMAIL_ADDRESS',
+                  value: mail
+                },
+                {name: 'USUARIO_PERFIL', value: perfil_inbenta}
+            ];
+
+          chatBot_action.api.addMultipleVariables(variableList);
+
+
           }
 
         } else if (messageData.message == originalString) {
             messageData.message = newString;
             if(perfil_inbenta){
-            console.log('perfil inbenta',perfil_inbenta);
-            chatBot_action.api.addVariable('USUARIO_PERFIL', perfil_inbenta);
+            //console.log('perfil inbenta',perfil_inbenta);
+            //chatBot_action.api.addVariable('USUARIO_PERFIL', perfil_inbenta);
+
+            var variableList =
+            [
+                {
+                  name: "FIRST_NAME",
+                  value: nomred
+                },
+                {
+                  name: 'EMAIL_ADDRESS',
+                  value: mail
+                },
+                {name: 'USUARIO_PERFIL', value: perfil_inbenta}
+            ];
+
+          chatBot_action.api.addMultipleVariables(variableList);
+
           }
 
         }
@@ -382,7 +415,7 @@ function setSite (site){
         xchatbot.actions.sendMessage(directMessageData).then(function(){
 
           const userMessageData = {
-              message: 'UbicaciÃ³n: ' + site,
+              message: 'Ubicación: ' + site,
           }
 
           xchatbot.actions.displayUserMessage(userMessageData);
@@ -593,7 +626,7 @@ function setCategory (clr_id){
 
           var directMessageData = {
               message: var_clr_id,
-              directCall: 'show_instructions', //capturados los parametros hay que solicitar la scripciÃ³n detallada
+              directCall: 'show_instructions', //capturados los parametros hay que solicitar la scripción detallada
           }
 
           xchatbot.actions.sendMessage(directMessageData);
@@ -601,7 +634,7 @@ function setCategory (clr_id){
     }
 }
 
-//Flujo_Personalizacion_DiseÃ±o_Servicios
+//Flujo_Personalizacion_Diseño_Servicios
 function setOrganization (org){
 
     if(org != null){
@@ -617,7 +650,7 @@ function setOrganization (org){
         xchatbot.actions.sendMessage(directMessageData).then(function(){
 
           const userMessageData = {
-              message: 'Ãrea: ' + org,
+              message: 'Área: ' + org,
           }
 
           xchatbot.actions.displayUserMessage(userMessageData);
@@ -626,7 +659,7 @@ function setOrganization (org){
     }
 }
 
-//Flujo_Personalizacion_DiseÃ±o_Servicios
+//Flujo_Personalizacion_Diseño_Servicios
 function setDepartment (dep){
 
     if(dep != null){
@@ -712,9 +745,9 @@ function openWindow(chatBot){
 function showSites(chatbot,un_sites){
 
     //se puede usar el api para obtener las variables generadas por el webhook para mostrar las cuentas del usuario
-    //podrÃ­a hacerse en el callback
+    //podría hacerse en el callback
     xchatbot = chatbot;
-    var sitesMessage = 'Selecciona tu ubicaciÃ³n:<br/>';
+    var sitesMessage = 'Selecciona tu ubicación:<br/>';
 
     try {
 
@@ -757,7 +790,7 @@ function showSites(chatbot,un_sites){
 
 function showCustomerTypes(chatbot,types){
     //se puede usar el api para obtener las variables generadas por el webhook para mostrar las cuentas del usuario
-    //podrÃ­a hacerse en el callback
+    //podría hacerse en el callback
     xchatbot = chatbot;
     var message = 'Selecciona el tipo de cliente:<br/>';
 
@@ -782,7 +815,7 @@ function showCustomerTypes(chatbot,types){
 
 };
 
-//Flujo_Personalizacion_DiseÃ±o_Servicios
+//Flujo_Personalizacion_Diseño_Servicios
 function showOrganizations(organizations){
 
     organizations = JSON.parse(organizations);
@@ -810,7 +843,7 @@ function showOrganizations(organizations){
 
 };
 
-//Flujo_Personalizacion_DiseÃ±o_Servicios
+//Flujo_Personalizacion_Diseño_Servicios
 function showDepartments(departments){
     var message = 'Gerencia Solicitante:<br/>';
 
@@ -839,7 +872,7 @@ function showDepartments(departments){
 
 function showCavList(chatbot,cavs){
     //se puede usar el api para obtener las variables generadas por el webhook para mostrar las cuentas del usuario
-    //podrÃ­a hacerse en el callback
+    //podría hacerse en el callback
     xchatbot = chatbot;
     var message = 'Selecciona el CAV donde estas ubicado:<br/>';
 
@@ -972,23 +1005,23 @@ function getDirectCallToCreate(datos){
 		case 'servicio.seguridad.infraestructura de seguridad.mi seguridad de la informacion.asesorias y solicitudes.enabled': //FIXME FALTA PRODUCT NAME, ES NECESARIO?
 			direct_call_option = 'create_case_type_2'; //direccion ip del equipo
 			break;
-    case 'servicio.tecnico.diseÃ±o de servicios.servicios de it para it.asesorias y solicitudes.enabled':
+    case 'servicio.tecnico.diseño de servicios.servicios de it para it.asesorias y solicitudes.enabled':
 
-      //Flujo_Personalizacion_DiseÃ±o_Servicios
+      //Flujo_Personalizacion_Diseño_Servicios
       if(datos.Service_Categorization_Tier_3.toLowerCase() == 'acercamiento entrega operaciones introduccion del servicio'){
 
         //categoria:
-        //Acercamiento entrega operaciones introducciÃ³n del servicio
+        //Acercamiento entrega operaciones introducción del servicio
 
         direct_call_option = 'create_case_type_acercamiento_entrega';
       } else {
         //categoria:
-        //CapacitaciÃ³n proceso introducciÃ³n del servicio
-        //Acercamiento entrega operaciones introducciÃ³n del servicio
+        //Capacitación proceso introducción del servicio
+        //Acercamiento entrega operaciones introducción del servicio
         //Seguimiento de entrega a operaciones
-        //ValidaciÃ³n de entregables
-        //AsesorÃ­a catÃ¡logo de servicio/diseÃ±o de servicio
-        //ActualizaciÃ³n Ã¡rbol categorizaciÃ³n / catÃ¡logo de servicios
+        //Validación de entregables
+        //Asesoría catálogo de servicio/diseño de servicio
+        //Actualización árbol categorización / catálogo de servicios
         //Crear/Modificar/Eliminar Grupos Resolutores
 
         direct_call_option = 'create_case_type_disenio_servicios';
@@ -1011,7 +1044,7 @@ function getDirectCallToCreate(datos){
 
 function showCategories(chatbot,categories_origin){
     //se puede usar el api para obtener las variables generadas por el webhook para mostrar las cuentas del usuario
-    //podrÃ­a hacerse en el callback
+    //podría hacerse en el callback
     xchatbot = chatbot;
     var message = 'Selecciona la categoria:<br/>';
 
@@ -1110,7 +1143,7 @@ function gestionaRespuesta(chatbot) {
     );
 
     chatbot.subscriptions.onDisplayChatbotMessage(function(messageData, next) {
-        let originalString = 'Hola {nombre} soy Anita, tu asistente virtual, Â¿En quÃ© puedo ayudarte?';
+        let originalString = 'Hola {nombre} soy Anita, tu asistente virtual, ¿En qué puedo ayudarte?';
         var mensaje = messageData;
 
         if(typeof(messageData.user) != 'undefined'){
@@ -1147,7 +1180,7 @@ function gestionaRespuesta(chatbot) {
         if(messageData.attributes) {
 
             if((var_show_incident || var_show_workorder) && messageData.message.search('Para conocer el estado de tu caso') >= 0){
-                messageData.message = 'Obteniendo informaciÃ³n del caso...';
+                messageData.message = 'Obteniendo información del caso...';
             }
 
             if(messageData.message.search(/ignorar/i) >= 0){
@@ -1167,7 +1200,7 @@ function gestionaRespuesta(chatbot) {
                         var_flujo_felicitacion = true;
                       break;
                     case 'select_diagnosis_test_type':
-                            messageData.message += "<br><button class='chatbot_button' onclick='setDiagnosisType(\"ultima_milla\",\"Ãšltima milla\")'>Ãšltima milla</button>";
+                            messageData.message += "<br><button class='chatbot_button' onclick='setDiagnosisType(\"ultima_milla\",\"Última milla\")'>Última milla</button>";
                             messageData.message += "<br><button class='chatbot_button' onclick='setDiagnosisType(\"citrix\",\"Citrix\")'>Citrix</button>";
                             messageData.message += "<br><button class='chatbot_button' onclick='setDiagnosisType(\"poliedro\",\"Poliedro\")'>Poliedro</button>";
                             messageData.message += "<br><button class='chatbot_button' onclick='setDiagnosisType(\"correo\",\"Correo\")'>Correo</button>";
@@ -1258,7 +1291,7 @@ function gestionaRespuesta(chatbot) {
 
                         var directMessageData = {
                             message: 'Crear caso',
-                            directCall: directCallOption, //ya deberiasmo tener todo lo necesario para solicitar la descripciÃ³n del caso
+                            directCall: directCallOption, //ya deberiasmo tener todo lo necesario para solicitar la descripción del caso
                         }
 
                         xchatbot.actions.sendMessage(directMessageData);
@@ -1278,7 +1311,7 @@ function gestionaRespuesta(chatbot) {
 
                         var directMessageData = {
                             message: 'Crear nota de caso',
-                            directCall: 'crear_nota_opcional', //se creÃ³ el caso y se deberÃ­a agregar una nota?
+                            directCall: 'crear_nota_opcional', //se creó el caso y se debería agregar una nota?
                         }
 
                         xchatbot.actions.sendMessage(directMessageData);
@@ -1427,13 +1460,13 @@ function gestionaRespuesta(chatbot) {
 
                     case 'selecciona_zona':
 
-                            messageData.message = "Selecciona la regiÃ³n a la cual pertenece el CAV donde estas ubicado:"
+                            messageData.message = "Selecciona la región a la cual pertenece el CAV donde estas ubicado:"
 
-                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Centro\")'>RegiÃ³n Centro</button>";
-                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Costa\")'>RegiÃ³n Costa</button>";
-                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Noroccidente\")'>RegiÃ³n Noroccidente</button>";
-                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Occidente\")'>RegiÃ³n Occidente</button>";
-                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Oriente\")'>RegiÃ³n Oriente</button>";
+                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Centro\")'>Región Centro</button>";
+                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Costa\")'>Región Costa</button>";
+                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Noroccidente\")'>Región Noroccidente</button>";
+                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Occidente\")'>Región Occidente</button>";
+                            messageData.message += "<br><button class='chatbot_button' onclick='setCavZone(\"Region Oriente\")'>Región Oriente</button>";
 
                         break;
 
@@ -1543,14 +1576,14 @@ function gestionaRespuesta(chatbot) {
                         break;
                     default:
 
-                    if(var_show_incident && messageData.message.search('Digita el cÃ³digo') >= 0){
+                    if(var_show_incident && messageData.message.search('Digita el código') >= 0){
                         next = false;
                         xchatbot.actions.sendMessage({message: var_show_incident});
 
                         var_show_incident = '';
                     }
 
-                    if(var_show_workorder && messageData.message.search('Digita el cÃ³digo') >= 0){
+                    if(var_show_workorder && messageData.message.search('Digita el código') >= 0){
                         next = false;
                         xchatbot.actions.sendMessage({message: var_show_workorder});
 
@@ -1559,7 +1592,7 @@ function gestionaRespuesta(chatbot) {
 
                     if(var_tipoDiagnostico && messageData.message.search('Digita la IP a revisar') >= 0){
                         if(var_tipoDiagnostico == 'usuario'){
-                            //espera acciÃ³n del usuario
+                            //espera acción del usuario
                         } else {
                             //la IP no es importante
                             next = false;
@@ -1649,21 +1682,21 @@ var tratamiento = (function (window, undefined) {
                 case 'incidente':
                     titulo = 'Consulta Incidente';
                     cons += '<div style="max-width:304px;">'+
-                            '<div><strong>DescripciÃ³n del incidente:<strong><br/><br/></div> ';
+                            '<div><strong>Descripción del incidente:<strong><br/><br/></div> ';
 
                             var_numero_caso = datos.datos.no_incidente;
 
                         cons += '<div><strong>No de Incidente:</strong>  ' + datos.datos.no_incidente + ' </div> ' +
                         '<div><strong>Estado del Incidente:</strong> ' + datos.datos.estatus + ' </div>' +
-                        '<div><strong>DescripciÃ³n del Incidente:</strong> '+ datos.datos.descripcion_incidente + '</div>' +
-                        '<div><strong>Fecha de CreaciÃ³n:</strong> '+ datos.datos.fecha_creacion + ' </div>' +
-                        '<div><strong>DescripciÃ³n detallada:</strong> '+ datos.datos.descripcion_detallada + ' </div>' +
+                        '<div><strong>Descripción del Incidente:</strong> '+ datos.datos.descripcion_incidente + '</div>' +
+                        '<div><strong>Fecha de Creación:</strong> '+ datos.datos.fecha_creacion + ' </div>' +
+                        '<div><strong>Descripción detallada:</strong> '+ datos.datos.descripcion_detallada + ' </div>' +
                         '<br/><hr/>' +
                         '<div><strong>Notas del incidente:</strong><br/></div>';
 
                     for (var i = 0; i < datos.datos.notas.length; i++) {
                         cons += '<br/><div><strong>Fecha de la nota:</strong> ' + datos.datos.notas[i].fecha_nota + ' </div> ' +
-                            '<div><strong>InformaciÃ³n:</strong> '+ datos.datos.notas[i].descripcion_nota + ' </div> ';
+                            '<div><strong>Información:</strong> '+ datos.datos.notas[i].descripcion_nota + ' </div> ';
 
                             if(typeof(datos.datos.notas[i].archivos) != 'undefined'){
 
@@ -1679,9 +1712,9 @@ var tratamiento = (function (window, undefined) {
 
                     cons += '<br/><hr/>';
 
-                    cons += '<div><strong>SoluciÃ³n del Incidente:</strong><br/><br/></div>'+
-                            '<div><strong>Fecha de SoluciÃ³n:</strong> '+ datos.datos.fecha_solucion + ' </div>' +
-                            '<div><strong>SoluciÃ³n del Incidente:</strong> ' + datos.datos.solucion + '</div>';
+                    cons += '<div><strong>Solución del Incidente:</strong><br/><br/></div>'+
+                            '<div><strong>Fecha de Solución:</strong> '+ datos.datos.fecha_solucion + ' </div>' +
+                            '<div><strong>Solución del Incidente:</strong> ' + datos.datos.solucion + '</div>';
 
                     cons += '</div>';
                     break;
@@ -1690,21 +1723,21 @@ var tratamiento = (function (window, undefined) {
                     titulo = 'Consulta de Solicitudes';
 
                     cons += '<div style="max-width:304px;">'+
-                        '<div><strong>DescripciÃ³n de la Orden de Trabajo:<strong><br/><br/></div> ';
+                        '<div><strong>Descripción de la Orden de Trabajo:<strong><br/><br/></div> ';
 
                         var_numero_caso = datos.datos.no_incidente;
 
                         cons += '<div><strong>No de Solicitud:</strong>  ' + datos.datos.no_incidente + ' </div> ' +
                         '<div><strong>Estado de la Solicitud:</strong> ' + datos.datos.estatus + ' </div>' +
-                        '<div><strong>DescripciÃ³n de la solicitud:</strong> '+ datos.datos.descripcion_incidente + ' </div>' +
-                        '<div><strong>Fecha de CreaciÃ³n:</strong> '+ datos.datos.fecha_creacion + ' </div>' +
-                        '<div><strong>DescripciÃ³n detallada:</strong> '+ datos.datos.descripcion_detallada + ' </div>' +
+                        '<div><strong>Descripción de la solicitud:</strong> '+ datos.datos.descripcion_incidente + ' </div>' +
+                        '<div><strong>Fecha de Creación:</strong> '+ datos.datos.fecha_creacion + ' </div>' +
+                        '<div><strong>Descripción detallada:</strong> '+ datos.datos.descripcion_detallada + ' </div>' +
                         '<br/><hr/>' +
                         '<div><strong>Notas de la Orden de Trabajo:</strong><br/></div>';
 
                     for (var i = 0; i < datos.datos.notas.length; i++) {
                         cons += '<br/><div><strong>Fecha de la nota:</strong> ' + datos.datos.notas[i].fecha_nota + ' </div> ' +
-                            '<div><strong>InformaciÃ³n:</strong> '+ datos.datos.notas[i].descripcion_nota + ' </div> ';
+                            '<div><strong>Información:</strong> '+ datos.datos.notas[i].descripcion_nota + ' </div> ';
 
                         if(typeof(datos.datos.notas[i].archivos) != 'undefined'){
 
@@ -1719,9 +1752,9 @@ var tratamiento = (function (window, undefined) {
 
                     cons += '<br/><hr/>';
 
-                    cons += '<div><strong>SoluciÃ³n de la Orden de trabajo:</strong><br/><br/></div>'+
-                            '<div><strong>Fecha de SoluciÃ³n:</strong> '+ datos.datos.fecha_solucion + ' </div>' +
-                            '<div><strong>SoluciÃ³n de la Orden de trabajo:</strong> ' + datos.datos.solucion + '</div>';
+                    cons += '<div><strong>Solución de la Orden de trabajo:</strong><br/><br/></div>'+
+                            '<div><strong>Fecha de Solución:</strong> '+ datos.datos.fecha_solucion + ' </div>' +
+                            '<div><strong>Solución de la Orden de trabajo:</strong> ' + datos.datos.solucion + '</div>';
 
                     cons += '</div>';
 
@@ -1731,31 +1764,31 @@ var tratamiento = (function (window, undefined) {
                     titulo = 'Consulta de Requerimiento';
 
                     cons += '<div style="max-width:304px;">'+
-                        '<div><strong>DescripciÃ³n del Requerimiento:<strong><br/><br/></div> ';
+                        '<div><strong>Descripción del Requerimiento:<strong><br/><br/></div> ';
 
                     var_numero_caso = datos.datos.no_caso;
 
                     cons += '<div><strong>No del Requerimiento:</strong>  ' + datos.datos.no_requerimiento + ' </div> ' +
                         '<div><strong>No de Incidente /Solicitud:</strong> ' + datos.datos.no_caso + ' </div>' +
                         '<div><strong>Estado:</strong> '+ datos.datos.estatus + ' </div>' +
-                        '<div><strong>DescripciÃ³n del Requerimiento:</strong> '+ datos.datos.descripcion + ' </div>' +
+                        '<div><strong>Descripción del Requerimiento:</strong> '+ datos.datos.descripcion + ' </div>' +
                         '<div><strong>Fecha del Requerimiento:</strong> ' + datos.datos.caso.fecha_creacion + ' </div>';
 
                     cons += '<br/>';
 
-                    cons += '<div><strong>DescripciÃ³n del Incidente / Solicitud:<strong><br/><br/></div>'+
+                    cons += '<div><strong>Descripción del Incidente / Solicitud:<strong><br/><br/></div>'+
                     '<div><strong>No de Incidente:</strong>  ' + datos.datos.caso.no_incidente + ' </div> ' +
                     '<div><strong>Estado del Incidente:</strong> ' + datos.datos.caso.estatus + ' </div>' +
-                    '<div><strong>DescripciÃ³n del Incidente:</strong> '+ datos.datos.caso.descripcion_incidente + ' </div>' +
-                    '<div><strong>Fecha de CreaciÃ³n:</strong> '+ datos.datos.caso.fecha_creacion + ' </div>' +
-                    '<div><strong>DescripciÃ³n detallada:</strong> '+ datos.datos.caso.descripcion_detallada + ' </div>';
+                    '<div><strong>Descripción del Incidente:</strong> '+ datos.datos.caso.descripcion_incidente + ' </div>' +
+                    '<div><strong>Fecha de Creación:</strong> '+ datos.datos.caso.fecha_creacion + ' </div>' +
+                    '<div><strong>Descripción detallada:</strong> '+ datos.datos.caso.descripcion_detallada + ' </div>';
 
                     cons += '<br/><hr/>';
                     cons += '<div><strong>Notas del Incidente / Solicitud:</strong><br/></div>';
 
                     for (var i = 0; i < datos.datos.caso.notas.length; i++) {
                         cons += '<br/><div><strong>Fecha de la Nota:</strong> ' + datos.datos.caso.notas[i].fecha_nota + ' </div> ' +
-                            '<div><strong>InformaciÃ³n:</strong> '+ datos.datos.caso.notas[i].descripcion_nota + ' </div> ';
+                            '<div><strong>Información:</strong> '+ datos.datos.caso.notas[i].descripcion_nota + ' </div> ';
 
                             if(typeof(datos.datos.caso.notas[i].archivos) != 'undefined'){
 
@@ -1770,9 +1803,9 @@ var tratamiento = (function (window, undefined) {
 
                     cons += '<br/><hr/>';
 
-                    cons += '<div><strong>SoluciÃ³n del Incidente / Solicitud:</strong><br/><br/></div>'+
-                            '<div><strong>Fecha de SoluciÃ³n:</strong> '+ datos.datos.caso.fecha_solucion + ' </div>' +
-                            '<div><strong>SoluciÃ³n del Incidente / Solicitud:</strong> ' + datos.datos.caso.solucion + '</div>';
+                    cons += '<div><strong>Solución del Incidente / Solicitud:</strong><br/><br/></div>'+
+                            '<div><strong>Fecha de Solución:</strong> '+ datos.datos.caso.fecha_solucion + ' </div>' +
+                            '<div><strong>Solución del Incidente / Solicitud:</strong> ' + datos.datos.caso.solucion + '</div>';
 
                     cons += '</div>';
 
@@ -1793,7 +1826,7 @@ var tratamiento = (function (window, undefined) {
 
                         cons += '<div>Estado: ' + datos.datos.notas[i].estatus + ' </div> ' +
                                 '<div>Resumen del Caso: ' + datos.datos.notas[i].resumen_caso + ' </div> ' +
-                                '<div>Fecha de creaciÃ³n: '+ datos.datos.notas[i].fecha_creacion + ' </div> ' +
+                                '<div>Fecha de creación: '+ datos.datos.notas[i].fecha_creacion + ' </div> ' +
                                 '<br/><hr>';
 
                     }
@@ -1862,7 +1895,7 @@ var diagnosticoRed = (function (window, undefined) {
                 diagnosticoRed.resultados(xhr.responseText);
 
             } else {
-                xchatbot.actions.displaySystemMessage({translate: false,message: 'Error al realizar el diagnÃ³stico. Intentalo mas tarde'});
+                xchatbot.actions.displaySystemMessage({translate: false,message: 'Error al realizar el diagnóstico. Intentalo mas tarde'});
             }
 
             var_tipoDiagnostico = '';
@@ -1871,7 +1904,7 @@ var diagnosticoRed = (function (window, undefined) {
         };
 
         xchatbot.actions.disableInput();
-        xchatbot.actions.displaySystemMessage({translate: false,message: "Realizando diagnÃ³stico. Puede tardar algunos minutos, por favor espera a que se muestre el resultado.<br><br>Si tienes alguna inquietud o tu diagnÃ³stico fue fallido genera un requerimiento en MyIT y escala con Red Corporativa - Nocdatos comunicÃ¡ndote a las extensiones 65789 o 65786 opciÃ³n 2 o a la sala 06623."});
+        xchatbot.actions.displaySystemMessage({translate: false,message: "Realizando diagnóstico. Puede tardar algunos minutos, por favor espera a que se muestre el resultado.<br><br>Si tienes alguna inquietud o tu diagnóstico fue fallido genera un requerimiento en MyIT y escala con Red Corporativa - Nocdatos comunicándote a las extensiones 65789 o 65786 opción 2 o a la sala 06623."});
 
         webhookLoader.show();
 
@@ -1893,7 +1926,7 @@ var diagnosticoRed = (function (window, undefined) {
 
         try {
 
-            titulo = 'Resultado de diagnÃ³stico ';
+            titulo = 'Resultado de diagnóstico ';
 
             if(datos.status == 'success'){
 
@@ -1905,8 +1938,8 @@ var diagnosticoRed = (function (window, undefined) {
                             '<div><strong style="font-size:18px;">Estado: ' + responses[i].estado + ' </strong></div> ' +
                             '<div>Origen: '+ responses[i].origen + ' </div> ' +
                             '<div>Paquetes enviados: '+ responses[i].paquetes_enviados + ' </div> ' +
-                            '<div>Tiempo mÃ¡ximo: '+ responses[i].tiempo_maximo + ' </div> ' +
-                            '<div>Tiempo mÃ­nimo: '+ responses[i].tiempo_minimo + ' </div> ' +
+                            '<div>Tiempo máximo: '+ responses[i].tiempo_maximo + ' </div> ' +
+                            '<div>Tiempo mínimo: '+ responses[i].tiempo_minimo + ' </div> ' +
                             '<div>Tiempo promedio: '+ responses[i].tiempo_promedio + ' </div> ' +
                             '<div>Porcentaje de paquetes perdidos: '+ responses[i].porcentaje_paquetes_perdidos + ' </div> ' +
                             '<hr>';
@@ -1915,8 +1948,8 @@ var diagnosticoRed = (function (window, undefined) {
                             '+Estado: ' + responses[i].estado +
                             '+Origen: '+ responses[i].origen +
                             '+Paquetes enviados: '+ responses[i].paquetes_enviados +
-                            '+Tiempo mÃ¡ximo: '+ responses[i].tiempo_maximo +
-                            '+Tiempo mÃ­nimo: '+ responses[i].tiempo_minimo +
+                            '+Tiempo máximo: '+ responses[i].tiempo_maximo +
+                            '+Tiempo mínimo: '+ responses[i].tiempo_minimo +
                             '+Tiempo promedio: '+ responses[i].tiempo_promedio +
                             '+Porcentaje de paquetes perdidos: '+ responses[i].porcentaje_paquetes_perdidos +
                             '----';
@@ -1977,7 +2010,7 @@ var diagnosticoCMC = (function (window, undefined) {
                 diagnosticoCMC.resultados(xhr.responseText);
 
             } else {
-                xchatbot.actions.displaySystemMessage({translate: false,message: 'Error al realizar el diagnÃ³stico. Intentalo mas tarde'});
+                xchatbot.actions.displaySystemMessage({translate: false,message: 'Error al realizar el diagnóstico. Intentalo mas tarde'});
             }
 
         };
@@ -2012,10 +2045,10 @@ var diagnosticoCMC = (function (window, undefined) {
                 cons = datos.chatbot_response;
 
             } else {
-                cons = 'Error al realizar el diagnÃ³stico. Intentalo mas tarde';
+                cons = 'Error al realizar el diagnóstico. Intentalo mas tarde';
             }
 
-            titulo = 'Resultado de diagnÃ³stico ';
+            titulo = 'Resultado de diagnóstico ';
 
             var contenido = {
                 sideWindowTitle: titulo,
@@ -2055,7 +2088,7 @@ var changeEmail = (function (window, undefined) {
 
         xhr.onload = function() {
 
-            var msj = 'OcurriÃ³ un erro al realizar el cambio de tu email. Intentalo mas tarde';
+            var msj = 'Ocurrió un erro al realizar el cambio de tu email. Intentalo mas tarde';
 
             if (xhr.status === 200) {
                 var datos = JSON.parse(xhr.responseText);
@@ -2109,7 +2142,7 @@ var designService = (function (window, undefined) {
 
         xhr.onload = function() {
 
-            var msj = 'OcurriÃ³ un error al obtener las areas. Porfavor escribe el area';
+            var msj = 'Ocurrió un error al obtener las areas. Porfavor escribe el area';
 
             if (xhr.status === 200) {
                 var datos = JSON.parse(xhr.responseText);
@@ -2120,7 +2153,7 @@ var designService = (function (window, undefined) {
                       htmlOrganizations = showOrganizations(datos.chatbot_response);
 
                       var contenido = {
-                          sideWindowTitle: 'Selecciona Ã¡rea',
+                          sideWindowTitle: 'Selecciona área',
                           sideWindowContent: htmlOrganizations
                       };
 
@@ -2159,7 +2192,7 @@ var designService = (function (window, undefined) {
 
         xhr.onload = function() {
 
-            var msj = 'OcurriÃ³ un error al obtener el catalogo de gerencias. Porfavor escribe la gerencia';
+            var msj = 'Ocurrió un error al obtener el catalogo de gerencias. Porfavor escribe la gerencia';
 
             if (xhr.status === 200) {
                 var datos = JSON.parse(xhr.responseText);
@@ -2216,7 +2249,7 @@ var webhookLoader = (function (window, undefined) {
 
     var show = function(){
 
-        titulo = 'Realizando diagnÃ³stico ...';
+        titulo = 'Realizando diagnóstico ...';
 
         var cons = 'Por favor espera...';
         cons += '<img src="https://asistentevirtual.claro.com.co/webhooks_mesa_servicios/public/loader.gif">';
