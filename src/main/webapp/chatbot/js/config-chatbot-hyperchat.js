@@ -1,4 +1,4 @@
-//Version 15.1 Generada el 27 de Agosto 2024
+//Version 17 Generada el 27 de Noviembre 2024
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -74,7 +74,15 @@ function getSessionVariable(variable) {
         }
 
     } else {
-      console.log("Informacion de sesion X_MYIT_INFO no encontrada se inicializará el chatbot con valores default. " + variable);
+      const urlParams = new URLSearchParams(window.location.search);
+      const myParam = urlParams.get(variable);
+
+      if(myParam){
+        value = myParam;
+        console.log("Se obtiene valor de variable desde url query: " + variable);
+      } else {
+        console.log("Informacion de sesion X_MYIT_INFO no encontrada se inicializará el chatbot con valores default. " + variable);
+      }
     }
 
     return value;
@@ -141,9 +149,14 @@ function initChatbot(type){
 
     var surveyID = 7;
 
+    //NUEVA INSTANCIA
+    var DomainKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJwcm9qZWN0IjoiY2xuX2NsYXJvX2NvbG9tYmlhc2VydmljaW9zX2lfNDdiOV9jaGF0Ym90X2VzIiwiZG9tYWluX2tleV9pZCI6IkJpRWxCajdyeXdUVzE3dTVSX1hobmc6OiJ9.LIvRmPfifmChDgy3JN0N2ROVdryLpA75oZSIWxw0NEGBd5oP-o6hxCV9NaNMkwPP9e6jjx6ZjLjX4tYfkv3JDQ';
+    var ApiKey = 'BhgclyrXw/uvso2ZzPzepd9llRGhKKL7+264EjkJpc8=';
+
+    //VIEJA INSTANCIA
 	  //var DomainKey = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJwcm9qZWN0IjoiY2xhcm9fY29fc2VydmljaW9zSVRfY2hhdGJvdF9lcyIsImRvbWFpbl9rZXlfaWQiOiJCVzVsVFFDd3Y0ODlpWmRua2lwM0p3OjoifQ.OGp-xTI0cPojEhlXi3WTB87ZcrSsrJNFhD_-UanvsV4NUInB6HQ6EqhVFp3Xiwt2xsNWTfSD3_lOVJHpAB_58Q';
-    var DomainKey = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJwcm9qZWN0IjoiY2xhcm9fY29fc2VydmljaW9zSVRfY2hhdGJvdF9lcyIsImRvbWFpbl9rZXlfaWQiOiJCWEZNNXhqZV9aSFZGRU0yaG4wMnN3OjoifQ.YDNhj2vByXsv6VShdUNndzWRwMape77ZRNqV3_9zMbb_3NUMo7-lsOQKdAEILoUVCvRnV78bzEjD_HOC3O-i3A';
-    var ApiKey = 'LDjoN3GfFSUEt1LixzSLOYFx78IY6/RrQcRWoQa5Z4I=';
+    //var DomainKey = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJwcm9qZWN0IjoiY2xhcm9fY29fc2VydmljaW9zSVRfY2hhdGJvdF9lcyIsImRvbWFpbl9rZXlfaWQiOiJCWEZNNXhqZV9aSFZGRU0yaG4wMnN3OjoifQ.YDNhj2vByXsv6VShdUNndzWRwMape77ZRNqV3_9zMbb_3NUMo7-lsOQKdAEILoUVCvRnV78bzEjD_HOC3O-i3A';
+    //var ApiKey = 'LDjoN3GfFSUEt1LixzSLOYFx78IY6/RrQcRWoQa5Z4I=';
 
     //Rejected escalation will display What else can I do for you? as a chatbotMessage
     var rejectedEscalation={
@@ -163,7 +176,7 @@ function initChatbot(type){
         lang             : 'es',
         fileUploadsActive: true,
         room: function () {
-            return '1';//cola de chat 1: Soporte | 2: Pruebas
+            return '1';//cola de chat 1: Soporte | 2: Pruebas | 4: Continua
         },
         surveys   : { id: 7 },
 		    transcript: { download: true },
@@ -194,7 +207,6 @@ function initChatbot(type){
             'custom-window-header':'<div></div>',
             'conversation-window-footer':'<conversation-window-footer-form><svg id="inbenta-bot-home-btn" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" class="home-btn inbenta-bot-icon home-click"><circle cx="16" cy="16" r="15.5" stroke="#da262c" class="home-click"></circle><path d="m26.184 14.836-9.057-9.052-.607-.607a.739.739 0 0 0-1.04 0l-9.664 9.659a1.497 1.497 0 0 0-.44 1.078c.01.825.696 1.484 1.52 1.484h.997v7.633h16.214v-7.633h1.017c.401 0 .778-.157 1.062-.441a1.49 1.49 0 0 0 .438-1.062c0-.398-.157-.775-.44-1.06Zm-8.872 8.508h-2.625v-4.782h2.626v4.782Zm5.108-7.634v7.634h-3.608V18a.937.937 0 0 0-.937-.938h-3.75a.937.937 0 0 0-.938.938v5.344H9.582V15.71H7.33l8.671-8.665.542.542 8.128 8.123H22.42Z" fill="#da262c" class="home-click"></path></svg><upload-media-button /><chatbot-input /><character-counter /><send-button /></conversation-window-footer-form>'
         },
-        userType: perfil_inbenta,
         chatbotId: 'claro_col_chatbot_web',
         showRatingWithinMessages: true,
         ratingOptions: [{
@@ -213,15 +225,14 @@ function initChatbot(type){
             title: ""
         },
         adapters: [
-            gestionaRespuesta,
-            addVariablesCol(),
-            stringManipulate, //llama la funcion para cambiar el texto de bienvenida del chatbot
-            openWindow, //acciones onReady
-            CLAROlaunchNLEsclationForm(SDKHCAdapter.checkEscalationConditions,'ChatWithLiveAgentContactForm',rejectedEscalation, noAgentsAvailable, intentos),
-            SDKHCAdapter.build(), // IMPORTANTE: requiere crear un contenido en el KNOWLEDGE del chatbot con nombre 'ChatWithLiveAgentContactForm' con una respuesta personalizada, posteriormente crear un FORM dentro del contenido creado con los campos requeridos. (USUARIO_RED, FIRST_NAME, EMAIL_ADDRESS, etc.)
-            //https://help.inbenta.io/creating-required-contents-for-live-chat-escalation/
-            showSurvey(surveyID)
-
+          gestionaRespuesta,
+          addVariablesCol(),
+          stringManipulate, //llama la funcion para cambiar el texto de bienvenida del chatbot
+          openWindow, //acciones onReady
+          CLAROlaunchNLEsclationForm(SDKHCAdapter.checkEscalationConditions,'ChatWithLiveAgentContactForm',rejectedEscalation, noAgentsAvailable, intentos),
+          SDKHCAdapter.build(), // IMPORTANTE: requiere crear un contenido en el KNOWLEDGE del chatbot con nombre 'ChatWithLiveAgentContactForm' con una respuesta personalizada, posteriormente crear un FORM dentro del contenido creado con los campos requeridos. (USUARIO_RED, FIRST_NAME, EMAIL_ADDRESS, etc.)
+          //https://help.inbenta.io/creating-required-contents-for-live-chat-escalation/
+          showSurvey(surveyID)
         ],
 
         labels: {
@@ -319,8 +330,52 @@ function stringManipulate(chatBot) {
         if(res) {
             messageData.message = messageData.message.replace('{username}', username);
             messageData.message = messageData.message.replace('{avatar_name}', avatar_name);
+
+            if(perfil_inbenta){
+            //console.log('perfil inbenta',perfil_inbenta);
+            //chatBot_action.api.addVariable('USUARIO_PERFIL', perfil_inbenta);
+
+            var variableList =
+            [
+                {
+                  name: "FIRST_NAME",
+                  value: nomred
+                },
+                {
+                  name: 'EMAIL_ADDRESS',
+                  value: mail
+                },
+                {name: 'USUARIO_PERFIL', value: perfil_inbenta}
+            ];
+
+          chatBot_action.api.addMultipleVariables(variableList);
+
+
+          }
+
         } else if (messageData.message == originalString) {
             messageData.message = newString;
+            if(perfil_inbenta){
+            //console.log('perfil inbenta',perfil_inbenta);
+            //chatBot_action.api.addVariable('USUARIO_PERFIL', perfil_inbenta);
+
+            var variableList =
+            [
+                {
+                  name: "FIRST_NAME",
+                  value: nomred
+                },
+                {
+                  name: 'EMAIL_ADDRESS',
+                  value: mail
+                },
+                {name: 'USUARIO_PERFIL', value: perfil_inbenta}
+            ];
+
+          chatBot_action.api.addMultipleVariables(variableList);
+
+          }
+
         }
 
         switch(messageData.message){
@@ -683,23 +738,6 @@ function openWindow(chatBot){
         chatBot.helpers.setListener('.home-btn', 'click', function(){
           chatBot.actions.sendMessage({message: 'inicio'});
         });
-    });
-
-    var patt = new RegExp("{*}");
-    let originalString = 'Hola, ¿en qué te puedo ayudar?';
-    let newString = "Hola "+username+" soy "+avatar_name+", tu asistente virtual, ¿En qué puedo ayudarte?.";
-
-    chatBot.subscriptions.onDisplayChatbotMessage(function(messageData, next) {
-        var res = patt.test(messageData.message);
-
-        if(res) {
-            messageData.message = messageData.message.replace('{username}', username);
-            messageData.message = messageData.message.replace('{avatar_name}', avatar_name);
-        } else if (messageData.message == originalString) {
-            messageData.message = newString;
-        }
-
-        return next(messageData);
     });
 }
 
