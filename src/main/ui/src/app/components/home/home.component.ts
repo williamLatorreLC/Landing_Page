@@ -1141,7 +1141,7 @@ export class HomeComponent implements OnInit {
   }
 
   redirectToUrl(): void {
-    window.location.href = 'https://miasistencia360-portal-prd.claro.com.co/admin/#/landing';
+    window.open('https://miasistencia360-portal-prd.claro.com.co/admin/#/landing', '_blank');
   }
 
 }
