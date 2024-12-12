@@ -1140,4 +1140,8 @@ export class HomeComponent implements OnInit {
     element.scrollTop = element.scrollHeight;
   }
 
+  redirectToUrl(): void {
+    window.location.href = 'https://miasistencia360-portal-prd.claro.com.co/admin/#/landing';
+  }
+
 }
