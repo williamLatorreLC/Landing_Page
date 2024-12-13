@@ -118,13 +118,13 @@
           </div>
           <div class="btnoption inner w-50 text-center" accesskey="h" (click)="goToUsuMyIt()">
             <span class="h maletin inner"></span>
-            <span class="inner ml-2">Usuario de MyIT</span>
+            <span class="inner ml-2">Usuario MiAsistencia360 </span>
           </div>
         </div>
         <div class="column align-self-center align-content-center text-center mt-4">
           <div class="btnoption inner w-50 text-center" accesskey="r" (click)="goToUsuRes()">
             <span class="h hombre inner"></span>
-            <span class="inner ml-2">Usuario Resolutor</span>
+            <span class="inner ml-2">Usuario Resolutor MiAsistencia360</span>
           </div>
         </div>
       </div>
@@ -304,8 +304,7 @@
 
               <!-- Mensaje 5 Anita (Cartilla) -->
               <div *ngIf="consultaCaso" class="chatbot-message anita-message">
-                <p><strong>Mesa Ágil:</strong> Nota: Para consultar tu caso, selecciona el tipo de caso que quieres
-                  consultar
+                <p><strong>Mesa Ágil:</strong> Nota: Para consultar tu caso, selecciona el tipo de caso que quieres consultar
                   e ingresa todo el código de tu caso. Ejemplo: REQ00000XXXXXXX, WO000000XXXXXXX o INC00000XXXXXX.
                 </p>
               </div>
@@ -341,8 +340,7 @@
 
               <!-- Mensaje 6 Anita (Si se selecciona Consulta Historico Casos)-->
               <div class="chatbot-message anita-message" *ngIf="selectReq || selectInc || selectWo">
-                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Para conocer el estado de tu caso digita todo el
-                  código (Ejemplo: REQ00000XXXXXXX, WO000000XXXXXXX o INC00000XXXXXX) 👇
+                <p style="margin: 0;"><strong>Mesa Ágil:</strong> Para conocer el estado de tu caso digita todo el código (Ejemplo: REQ00000XXXXXXX, WO000000XXXXXXX o INC00000XXXXXX) 👇
                 </p>
               </div>
 
@@ -401,26 +399,22 @@
                     <strong>Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
                   </div>
                   <br />
-                  <div *ngIf="(!fechaNotaInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))"
-                    class="loading-dots">Cargando notas... PRUEBAA</div>
+                  <div *ngIf="(!fechaNotaInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" class="loading-dots">Cargando notas... PRUEBAA</div>
                   <br *ngIf="(!fechaNotaInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" />
                   <p *ngIf="fechaNotaInc1" style="margin: 0;">
                     <strong>Notas del Incidente / Solicitud:</strong>
                     <br />
-                    <strong *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd
-                    HH:mm:ss' }}
-                    <br *ngIf="this.numeroNotas > 2" />
-                    <strong *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
-                    <br *ngIf="this.numeroNotas > 2" />
-                    <strong *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd
-                    HH:mm:ss' }}
-                    <br *ngIf="this.numeroNotas > 1" />
-                    <strong *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
-                    <br *ngIf="this.numeroNotas > 1" />
-                    <strong *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd
-                    HH:mm:ss' }}
-                    <br *ngIf="this.numeroNotas > 0" />
-                    <strong *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
+                    <strong *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br *ngIf="this.numeroNotas > 2" />
+                      <strong *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
+                      <br *ngIf="this.numeroNotas > 2"/>
+                      <strong *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br *ngIf="this.numeroNotas > 1"/>
+                      <strong *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
+                      <br *ngIf="this.numeroNotas > 1"/>
+                      <strong *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br *ngIf="this.numeroNotas > 0"/>
+                      <strong *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
                   </p>
                   <br />
                   <button *ngIf="fechaNotaInc1" (click)="dialogoCrearNota()">Agregar Nota</button>
@@ -464,21 +458,18 @@
                   <br />
                   <p *ngIf="datosCargados && (fechaNotaInc1 || fechaNotaInc2 || fechaNotaInc3)" style="margin: 0;">
                     <strong>Notas del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd
-                    HH:mm:ss' }}
-                    <br *ngIf="this.numeroNotas > 2" />
-                    <strong *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
-                    <br *ngIf="this.numeroNotas > 2" />
-                    <strong *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd
-                    HH:mm:ss' }}
-                    <br *ngIf="this.numeroNotas > 1" />
-                    <strong *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
-                    <br *ngIf="this.numeroNotas > 1" />
-                    <strong *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd
-                    HH:mm:ss' }}
-                    <br *ngIf="this.numeroNotas > 0" />
-                    <strong *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
+                       <br />
+                      <strong *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br *ngIf="this.numeroNotas > 2" />
+                      <strong *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
+                      <br *ngIf="this.numeroNotas > 2"/>
+                      <strong *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br *ngIf="this.numeroNotas > 1"/>
+                      <strong *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
+                      <br *ngIf="this.numeroNotas > 1"/>
+                      <strong *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br *ngIf="this.numeroNotas > 0"/>
+                      <strong *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
                   </p>
                   <br />
                   <button (click)="dialogoCrearNota()">Agregar Nota</button>
@@ -517,19 +508,16 @@
                   <p *ngIf="fechaNotaInc1" style="margin: 0;">
                     <strong>Notas del Incidente / Solicitud:</strong>
                     <br />
-                    <strong *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd
-                    HH:mm:ss' }}
+                    <strong *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
                     <br *ngIf="this.numeroNotas > 2" />
                     <strong *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
-                    <br *ngIf="this.numeroNotas > 2" />
-                    <strong *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd
-                    HH:mm:ss' }}
-                    <br *ngIf="this.numeroNotas > 1" />
+                    <br *ngIf="this.numeroNotas > 2"/>
+                    <strong *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br *ngIf="this.numeroNotas > 1"/>
                     <strong *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
-                    <br *ngIf="this.numeroNotas > 1" />
-                    <strong *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd
-                    HH:mm:ss' }}
-                    <br *ngIf="this.numeroNotas > 0" />
+                    <br *ngIf="this.numeroNotas > 1"/>
+                    <strong *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br *ngIf="this.numeroNotas > 0"/>
                     <strong *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
                   </p>
                   <br />
@@ -545,7 +533,7 @@
                     <br />
                   </p>
                 </div>
-
+               
               </div>
 
               <!-- Mensaje 7 Anita (Si se selecciona hisotico Casos)-->
@@ -765,28 +753,31 @@
                     <div class="row justify-content-around">
                       <div class="col-md-5 p10 col-10 box-my text-center cpointer" (click)="open(mymodal)"
                         accesskey="i">
-                        <img src="./assets/img/home/img-pcdesktop.png" alt="" style="width: 75px" />
-                        <p class="font-weight-bold my-1">
-                          <span style="color: #dc3545">MiA</span>sistencia360
-                        </p>
-                        <p class="mt-2">
-                          Con MiAsistencia360 reporta tus casos de manera sencilla. Registra y
-                          consulta tus casos asociados a servicios de IT.
-                        </p>
-                      </div>
-
-
-                      <div class="col-md-5 p10 col-10 box-my text-center mt-3 mt-md-0 cpointer"
-                        (click)="open(mymodalStore)" accesskey="s">
-                        <img src="./assets/img/home/icon-store.png" alt="" style="width: 100px" />
-                        <p class="font-weight-bold my-1">
-                          Mesa <span style="color: #dc3545">Store</span>
-                        </p>
-                        <p class="mt-2">
-                          Ingresa a la tienda desde un navegador Internet Explorer.
-                        </p>
-                      </div>
-
+                      <img src="./assets/img/home/img-pcdesktop.png" alt="" style="width: 75px" />
+                      <p class="font-weight-bold my-1">
+                        <span style="color: #dc3545">MiA</span>sistencia360
+                      </p>
+                      <p class="mt-2">
+                        Con MiAsistencia360 reporta tus casos de manera sencilla. Registra y
+                        consulta tus casos asociados a servicios de IT.
+                      </p>
+                  </div>
+                  
+              <!-- 
+<div class="col-md-5 p10 col-10 box-my text-center mt-3 mt-md-0 cpointer"
+     (click)="open(mymodalStore)" accesskey="s">
+     
+    <img src="./assets/img/home/icon-store.png" alt="" style="width: 100px" />
+    
+    <p class="font-weight-bold my-1">
+        Mesa <span style="color: #dc3545">Store</span>
+    </p>
+    
+    <p class="mt-2">
+        Ingresa a la tienda desde un navegador Internet Explorer.
+    </p>
+</div>
+-->
 
                     </div>
                   </div>
