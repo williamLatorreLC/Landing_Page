@@ -165,6 +165,7 @@ export class HomeComponent implements OnInit {
   messageErrorWO: any;
   datosCargados: boolean;
   numeroNotas: any;
+  validarConsultaDeCaso: boolean;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -392,6 +393,7 @@ export class HomeComponent implements OnInit {
       });
   }
   abrirChat() {
+    this.validarConsultaDeCaso = false;
     this.GtmServicesService.Tagging('Home', 'bt_home_chatbot');
     const chatURL = encodeURI('./chatbot');
     $('#siteloader').html(
@@ -544,6 +546,7 @@ export class HomeComponent implements OnInit {
 
   abrirChatInHouse() {
     this.mostrarChat = true;
+    this.validarConsultaDeCaso = false;
   }
 
   cerrarChatInHouse() {
@@ -1138,6 +1141,10 @@ export class HomeComponent implements OnInit {
   scrollToBottom() {
     const element = this.content.nativeElement;
     element.scrollTop = element.scrollHeight;
+  }
+
+  validarConsulta(){
+    this.validarConsultaDeCaso =  true;
   }
 
 }

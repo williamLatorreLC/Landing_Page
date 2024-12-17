@@ -145,15 +145,15 @@
 }
  
 
-
 .chatbot-option {
   color: #00edff;
+  cursor: pointer;
 }
 
 .chatbot-link {
   text-decoration: underline;
   color: #00edff;
-
+  cursor: pointer;
 }
 
 
@@ -228,3 +228,46 @@
   justify-content: center;
   transition: background-color .3s ease;
 }
+  .validar-container {
+     /* font-family: Arial, sans-serif; */
+     background-color: #f9f9f9;
+     border: 1px solid #ddd;
+     border-radius: 13px;
+     padding: 35px;
+     box-shadow: 0 4px 8px #0000001a;
+     max-width: 400px;
+     margin: auto;
+     text-align: center;
+     position: fixed;
+  }
+  
+
+  .validar-header {
+    font-size: 1.125em;
+    font-weight: 400;
+    color: inherit;
+  }
+
+  .validar-header button {
+    background-color: #dc3545; 
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .validar-header button:hover {
+    background-color: #b32534; /* Efecto hover más oscuro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .validar-header button:active {
+    background-color: #3e8e41;
+    transform: translateY(1px);
+  }
