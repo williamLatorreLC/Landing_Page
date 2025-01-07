@@ -551,6 +551,8 @@ export class HomeComponent implements OnInit {
 
   cerrarChatInHouse() {
     this.mostrarChat = false;
+    this.resetChat();
+    this.resetInfo();
   }
 
   consultarCaso() {
@@ -618,6 +620,14 @@ export class HomeComponent implements OnInit {
        Qualification: this.infoUser.User,
        //  Qualification: "45111133",
       });
+
+      if (resHc.response.message) {
+        this.messageError = "Ups, parece que no has creado casos.";
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 500);
+        return false;
+      }
 
       if (resHc?.response?.lastThreeListValues) {
         const sortedValues = resHc.response.lastThreeListValues.sort((a: any, b: any) => {

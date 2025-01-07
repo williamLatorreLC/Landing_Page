@@ -107,18 +107,22 @@
   text-align: left;
   border-radius: 10px;
   padding: 15px;
-  margin: 10px 50px 10px 10px; /* Ajusta para espacio */
+  margin: 10px 50px 10px 10px;
+  /* Ajusta para espacio */
 }
 
 .anita-message::after {
   content: "";
   position: absolute;
-  top: 20px; /* Ajusta la posición vertical */
-  left: -9px; /* Ajusta la posición horizontal */
+  top: 20px;
+  /* Ajusta la posición vertical */
+  left: -9px;
+  /* Ajusta la posición horizontal */
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 10px 10px 10px 0; /* Triángulo hacia la izquierda */
+  border-width: 10px 10px 10px 0;
+  /* Triángulo hacia la izquierda */
   border-color: transparent #878787 transparent transparent;
 }
 
@@ -129,31 +133,47 @@
   text-align: left;
   border-radius: 10px;
   padding: 15px;
-  margin: 10px 10px 10px 50px; /* Ajusta para espacio */
+  margin: 10px 10px 10px 50px;
+  /* Ajusta para espacio */
 }
 
 .user-message::after {
   content: "";
   position: absolute;
-  top: 20px; /* Ajusta la posición vertical */
-  right: -9px; /* Ajusta la posición horizontal */
+  top: 20px;
+  /* Ajusta la posición vertical */
+  right: -9px;
+  /* Ajusta la posición horizontal */
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 10px 0 10px 10px; /* Triángulo hacia la derecha */
+  border-width: 10px 0 10px 10px;
+  /* Triángulo hacia la derecha */
   border-color: transparent transparent transparent #da1024;
 }
- 
+
 
 .chatbot-option {
   color: #00edff;
   cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.chatbot-option:hover {
+  color: #007a83;
+  transform: translateX(3px);
 }
 
 .chatbot-link {
   text-decoration: underline;
   color: #00edff;
   cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.chatbot-link:hover {
+  color: #007a83;
+  transform: translateX(3px);
 }
 
 
@@ -228,48 +248,59 @@
   justify-content: center;
   transition: background-color .3s ease;
 }
-  .validar-container {
-     /* font-family: Arial, sans-serif; */
-     background-color: #f9f9f9;
-     border: 1px solid #ddd;
-     border-radius: 13px;
-     padding: 35px;
-     box-shadow: 0 4px 8px #0000001a;
-     max-width: 400px;
-     margin: auto;
-     text-align: center;
-     position: fixed;
-     left: 37%;
-     top: 37%;
-  }
-  
 
-  .validar-header {
-    font-size: 1.125em;
-    font-weight: 400;
-    color: inherit;
-  }
+.validar-container {
+  /* font-family: Arial, sans-serif; */
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 13px;
+  padding: 35px;
+  box-shadow: 0 4px 8px #0000001a;
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+  position: fixed;
+  left: 37%;
+  top: 37%;
+}
 
-  .validar-header button {
-    background-color: #dc3545; 
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    margin: 5px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
 
-  .validar-header button:hover {
-    background-color: #b32534; /* Efecto hover más oscuro */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
-  }
+.validar-header {
+  font-size: 1.125em;
+  font-weight: 400;
+  color: inherit;
+}
 
-  .validar-header button:active {
-    background-color: #3e8e41;
-    transform: translateY(1px);
-  }
+.validar-header button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.validar-header button:hover {
+  background-color: #b32534;
+  /* Efecto hover más oscuro */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.validar-header button:active {
+  background-color: #3e8e41;
+  transform: translateY(1px);
+}
+
+.logo-consulta {
+  width: 42px;
+  max-width: 42px;
+}
+
+.title-chat {
+  color: #f58131;
+}
