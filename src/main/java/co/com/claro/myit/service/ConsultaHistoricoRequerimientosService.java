@@ -41,10 +41,7 @@ public class ConsultaHistoricoRequerimientosService {
         JsonObject res = new JsonObject();
 
         try {
-            if (!respuesta.has("Envelope") || !respuesta.getAsJsonObject("Envelope").has("Body")) {
-                res.addProperty("message", "Estructura de respuesta no válida: faltan 'Envelope' o 'Body'.");
-                return res;
-            }
+
 
             JsonObject envelope = respuesta.getAsJsonObject("Envelope");
             JsonObject body = envelope.getAsJsonObject("Body");
