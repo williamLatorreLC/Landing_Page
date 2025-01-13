@@ -58,7 +58,7 @@
   color: #ffffff;
   padding: 15px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* Alinea los elementos hacia la derecha */
   align-items: center;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -67,15 +67,27 @@
 .chatbot-title {
   margin: 0;
   font-size: 1.5rem;
+  flex-grow: 1; /* Esto asegura que el título ocupe el espacio restante */
 }
 
-.chatbot-close-btn {
+.chatbot-close-btn,
+.chatbot-minize-btn,
+.chatbot-maximize-btn {
   background-color: transparent;
   border: none;
   color: #ffffff;
-  font-size: 1.5rem;
   cursor: pointer;
 }
+
+.chatbot-close-btn {
+  font-size: 1.3rem;
+}
+
+.chatbot-minize-btn {
+  font-size: 2rem;
+  margin-left: 10px; /* Espacio entre los botones */
+}
+
 
 .chatbot-content {
   display: flex;
@@ -303,4 +315,37 @@
 
 .title-chat {
   color: #e5e6eb;
+}
+
+.chatbot-container-minimize {
+  right: 20px;
+  top: 80%;
+  position: fixed;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 15px 61px 0 0;
+  padding: -10px;
+  width: 18%;
+  height: 9%;
+}
+
+.chatbot-maximize-btn {
+  
+  font-size: 2rem;
+  margin-left: 4px;
+  margin-top: -6px;
+}
+
+.chatbot-header-minimize {
+  margin-bottom: 10px;
+  background-color: #da1024;
+  color: #fff;
+  padding: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }

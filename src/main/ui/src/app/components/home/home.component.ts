@@ -178,6 +178,8 @@ export class HomeComponent implements OnInit {
   fechaInc4: any;
   fechaInc5: any;
 
+  chatMinimizado: boolean = false;  
+
   constructor(
     private _config: NgbCarouselConfig,
     private factoryService: FactoryService,
@@ -1190,6 +1192,10 @@ export class HomeComponent implements OnInit {
 
   validarConsulta() {
     this.validarConsultaDeCaso = true;
+  }
+
+  toggleMinimizar() {
+    this.chatMinimizado = !this.chatMinimizado; 
   }
 
 }
