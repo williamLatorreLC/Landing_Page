@@ -321,7 +321,7 @@
   right: 20px;
   top: 80%;
   position: fixed;
-  background-color: #fff;
+  background-color: transparent;
   border: 1px solid #ccc;
   border-radius: 15px 61px 0 0;
   padding: -10px;
