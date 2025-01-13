@@ -239,10 +239,17 @@
             <img src="./assets/img/home/img-home.png" class="img-fluid" alt="" />
           </div>
           <div class="col-8 position-absolute mt-4" style="right: 0">
-            <div class="btnanita" [hidden]="!chatOpen" [hidden]="!menu">
+
+            <div class="btnanita" [hidden]="!chatOpen && esContingenciaChatbot" [hidden]="!menu">
               <img src="./assets/img/home/anita.png" class="ml-2 cpointer float" alt="" (click)="validarConsulta()"
                 accesskey="a" />
             </div>
+
+            <div class="btnanita" [hidden]="!chatOpen && !esContingenciaChatbot" [hidden]="!menu">
+              <img src="./assets/img/home/anita.png" class="ml-2 cpointer float" alt="" (click)="abrirChat()"
+                accesskey="a" />
+            </div>
+
             <div class="col-12 text-center" style="font-weight: 500">
               <p class="m-0 title-home" style="font-size: 14px; line-height: 14px">
                 Las herramientas de gestión de la mesa de servicios
@@ -257,8 +264,11 @@
     </div>
     <div class="btnanita" style="z-index: 9999">
 
-    <img src="./assets/img/home/anita.png" class="ml-2 cpointer float" alt="" *ngIf="!chatOpen" (click)="validarConsulta()"
+    <img  src="./assets/img/home/anita.png" class="ml-2 cpointer float" alt="" *ngIf="!chatOpen && esContingenciaChatbot" (click)="validarConsulta()"
         accesskey="a" /> 
+     
+    <img src="./assets/img/home/anita.png" class="ml-2 cpointer float" alt="" *ngIf="!chatOpen && !esContingenciaChatbot" (click)="abrirChat()"
+        accesskey="a" />
 
         <div class="validar-container" *ngIf="validarConsultaDeCaso">
           <div class="validar-header">
@@ -746,7 +756,6 @@
       </div>
 
 </div>
-
 
 
     <!-- Fin Chatbot -->
