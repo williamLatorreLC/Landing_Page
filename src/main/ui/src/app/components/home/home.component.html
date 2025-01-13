@@ -324,13 +324,13 @@
                 <h6 (click)="SearchHC(); resetInfo();" class="chatbot-link">Histórico de mis casos</h6>
               </div>
 
-              <!-- Mensaje 5 Anita (Cartilla) -->
+              <!-- Mensaje 5 Anita (Cartilla) 
               <div *ngIf="consultaCaso" class="chatbot-message anita-message">
                 <p><strong>Mesa Ágil:</strong> Nota: Para consultar tu caso, selecciona el tipo de caso que quieres consultar
                   e ingresa todo el código de tu caso. Ejemplo: REQ00000XXXXXXX, WO000000XXXXXXX o INC00000XXXXXX.
                 </p>
               </div>
-
+-->
               <!-- Mensaje 2 User (Si se selecciona consultar Requerimiento) -->
               <div class="chatbot-message user-message" *ngIf="selectReq && !selectInc && !selectWo && !selectHc">
                 <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> REQ - Requerimiento

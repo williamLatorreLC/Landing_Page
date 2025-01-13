@@ -942,6 +942,7 @@ export class HomeComponent implements OnInit {
       this.AppRequestID = res.response.AppRequestID;
 
       if (res.response.message) {
+        this.numeroRequerimientoIngresado = res.response.Request_Number;
         this.messageError = "¡Ups! Parece que este caso no existe. Te sugiero revisar esta información.";
         setTimeout(() => {
           this.scrollToBottom();
@@ -952,6 +953,7 @@ export class HomeComponent implements OnInit {
         if (this.AppRequestID.startsWith("INC")) {
           const resINC = await this.casosService.post('ConsultarINC', { incNumber: this.AppRequestID });
           if (resINC.response?.message) {
+            this.numeroIncIngresado = resINC.response.Incident_Number;
             this.messageError = resINC.response.message;
             return false;
           }
@@ -960,6 +962,7 @@ export class HomeComponent implements OnInit {
         if (this.AppRequestID.startsWith("WO")) {
           const resWO = await this.casosService.post('ConsultarWO', { woNumber: this.AppRequestID });
           if (resWO.response?.message) {
+            this.numeroWoIngresado = resWO.response?.Work_Order_ID || '';
             this.messageError = resWO.response.message;
             return false;
           }
