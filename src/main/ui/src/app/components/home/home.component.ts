@@ -698,6 +698,7 @@ export class HomeComponent implements OnInit {
     this.selectWo = false;
     this.selectHc = false;
     this.crearNota = false;
+    this.chatMinimizado = false;
 
     //Variables para el boton de volver
     this.messageErrorHc = null;
