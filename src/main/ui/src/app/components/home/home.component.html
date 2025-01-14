@@ -318,19 +318,11 @@
                 </p>
                 <h6 disabled="!(selectReq && !selectInc && !selectWo && !selectHc)"
                 (click)="SearchReq(); resetInfo();" class="chatbot-link">REQ - Requerimiento</h6>
-
                 <h6 (click)="SearchInc(); resetInfo();" class="chatbot-link">INC - Incidente</h6>
                 <h6 (click)="SearchWo(); resetInfo();" class="chatbot-link">WO - Orden de trabajo</h6>
                 <h6 (click)="SearchHC(); resetInfo();" class="chatbot-link">Histórico de mis casos</h6>
               </div>
 
-              <!-- Mensaje 5 Anita (Cartilla) 
-              <div *ngIf="consultaCaso" class="chatbot-message anita-message">
-                <p><strong>Mesa Ágil:</strong> Nota: Para consultar tu caso, selecciona el tipo de caso que quieres consultar
-                  e ingresa todo el código de tu caso. Ejemplo: REQ00000XXXXXXX, WO000000XXXXXXX o INC00000XXXXXX.
-                </p>
-              </div>
--->
               <!-- Mensaje 2 User (Si se selecciona consultar Requerimiento) -->
               <div class="chatbot-message user-message" *ngIf="selectReq && !selectInc && !selectWo && !selectHc">
                 <p style="margin: 0;"><strong>{{ infoUser.First_Name }}:</strong> REQ - Requerimiento
@@ -352,7 +344,7 @@
                 </p>
               </div>
 
-              <!-- Mensaje 6 Anita (Si se selecciona consultar Requerimiento)-->
+              <!-- Mensaje 6 Anita (Si se selecciona consultar historico)-->
               <div class="chatbot-message anita-message" *ngIf="selectHc">
                 <p style="margin: 0;"><strong>Mesa Ágil:</strong> Por favor espera un momento mientras revisamos tus
                   casos.
@@ -360,7 +352,7 @@
                   instrucciones.</p>
               </div>
 
-              <!-- Mensaje 6 Anita (Si se selecciona Consulta Historico Casos)-->
+              <!-- Mensaje 6 Anita (Si se selecciona Consulta req, wo o inc)-->
               <div class="chatbot-message anita-message" *ngIf="selectReq || selectInc || selectWo">
                 <p style="margin: 0;"><strong>Mesa Ágil:</strong> Para conocer el estado de tu caso digita todo el código (Ejemplo: REQ00000XXXXXXX, WO000000XXXXXXX o INC00000XXXXXX) 👇
                 </p>
