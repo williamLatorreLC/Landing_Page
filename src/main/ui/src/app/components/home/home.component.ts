@@ -778,7 +778,6 @@ export class HomeComponent implements OnInit {
 
       if (!isValid) {
         this.numeroRequerimientoIngresado = this.numeroRequerimiento;
-        console.log(this.numeroRequerimiento)
         this.scrollToBottom();
         return;
       }
@@ -980,6 +979,7 @@ export class HomeComponent implements OnInit {
     const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
 
     if (resINC.response.message) {
+      this.numeroIncIngresado = this.numeroI;
       this.messageError = resINC.response.message;
       this.numeroI = "";
       setTimeout(() => {
@@ -1041,6 +1041,8 @@ export class HomeComponent implements OnInit {
       const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
 
       if (resWO.response?.message) {
+        this.numeroWoIngresado = this.numeroW;
+        console.log(this.numeroW)
         this.messageError = resWO.response.message;
         this.numeroW = "";
         setTimeout(() => {
