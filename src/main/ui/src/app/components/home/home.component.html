@@ -279,7 +279,7 @@
         </div>
 
       <!-- Inicio ChatBOT -->
-      <div class="chatbot-container" *ngIf="mostrarChat && !chatMinimizado">
+      <div class="chatbot-container" *ngIf="mostrarChat">
 
         <!-- Header -->
         <div #header class="chatbot-header">
@@ -637,7 +637,10 @@
                   caso.
                   <br />
                   <br />
-                  Nota: Si quieres añadir un archivo adjunto, primero selecciona el archivo y luego, ingresa la
+                  <strong class="title-chat">
+                    Nota:
+                  </strong> 
+                  Si quieres añadir un archivo adjunto, primero selecciona el archivo y luego, ingresa la
                   descripción de la nota.
                 </p>
                 <br />
@@ -739,14 +742,14 @@
 
       </div>
 
-      <div class="chatbot-container-minimize" *ngIf="mostrarChat && chatMinimizado"> 
-        <!-- Header cuando se minimiza -->
+      <!-- <div class="chatbot-container-minimize" *ngIf="mostrarChat && chatMinimizado"> 
+        <!-- Header cuando se minimiza 
         <div #header class="chatbot-header-minimize">
           <h2 class="chatbot-title"> &nbsp; Mesa Ágil</h2>
           <button class="chatbot-maximize-btn" (click)="toggleMinimizar()">+</button>
           <button class="chatbot-close-btn" (click)="cerrarChatInHouse()">X</button>
         </div> 
-      </div>
+      </div> -->
 
 </div>
 
@@ -754,7 +757,7 @@
     <!-- Fin Chatbot -->
     <div class="col-md-8 col-12 align-self-center text-right pr-4 d-none d-md-block">
       <div *ngIf="esContingenciaChatbot" class="btnencuestas d-inline-block ml-2" accesskey="y"
-        (click)="abrirChatInHouse()">
+        (click)="abrirChatInHouse();">
         Mesa Ágil
         <img src="./assets/img/home/icn-consultar-caso.png" class="logo-consulta" alt="" />
       </div>

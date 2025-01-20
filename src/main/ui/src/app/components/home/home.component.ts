@@ -178,7 +178,6 @@ export class HomeComponent implements OnInit {
   fechaInc4: any;
   fechaInc5: any;
 
-  chatMinimizado: boolean = false;  
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -560,6 +559,7 @@ export class HomeComponent implements OnInit {
   abrirChatInHouse() {
     this.mostrarChat = true;
     this.validarConsultaDeCaso = false;
+    this.scrollToBottom(); 
   }
 
   cerrarChatInHouse() {
@@ -698,7 +698,6 @@ export class HomeComponent implements OnInit {
     this.selectWo = false;
     this.selectHc = false;
     this.crearNota = false;
-    this.chatMinimizado = false;
 
     //Variables para el boton de volver
     this.messageErrorHc = null;
@@ -936,7 +935,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  async validacionSeguridad(): Promise<boolean> {
+  async validacionSeguridad(): Promise<boolean> { 
     try {
       const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
       this.AppRequestID = res.response.AppRequestID;
@@ -1199,7 +1198,7 @@ export class HomeComponent implements OnInit {
   }
 
   toggleMinimizar() {
-    this.chatMinimizado = !this.chatMinimizado; 
+    this.mostrarChat = false; 
   }
 
 }
