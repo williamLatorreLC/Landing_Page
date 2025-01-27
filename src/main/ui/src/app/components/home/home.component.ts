@@ -1151,7 +1151,7 @@ export class HomeComponent implements OnInit {
     if(statusIncidente === 'Cancelled'){
       console.log(statusIncidente)
       this.crearNota = false;
-      this.messageError = 'Tu caso se encuentra cancelado.'
+      this.messageError = 'El caso ha sido cancelado y actualmente no permite agregar notas adicionales.'
       this.scrollToBottom();
     } else {
       this.crearNota = true;
