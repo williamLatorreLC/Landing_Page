@@ -555,6 +555,7 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+   
 
   abrirChatInHouse() {
     this.mostrarChat = true;
@@ -1098,7 +1099,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  async agregarNota(AppRequestID?: string) {
+  async agregarNota(AppRequestID?: string, ) {
     try {
       if (this.peticionEnCurso) {
         console.log('La petición ya está en curso. Espere a que termine.');
@@ -1146,10 +1147,16 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  dialogoCrearNota() {
-    this.crearNota = true;
-    this.scrollToBottom();
-
+  dialogoCrearNota(statusIncidente: string) {
+    if(statusIncidente === 'Cancelled'){
+      console.log(statusIncidente)
+      this.crearNota = false;
+      this.messageError = 'Tu caso se encuentra cancelado.'
+      this.scrollToBottom();
+    } else {
+      this.crearNota = true;
+      this.scrollToBottom();
+    }
   }
 
   onFileSelected(event: any) {

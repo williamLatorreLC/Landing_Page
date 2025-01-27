@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="17" viewBox="0 0 32 17">
+    <defs>
+        <style>
+            .cls-1{fill:#dc3545}
+        </style>
+    </defs>
+    <g id="ICN_Menu" transform="translate(-6627 -1752)">
+        <g id="icon_menu" transform="translate(6627 1752)">
+            <rect id="Rectángulo_27" width="32" height="3" class="cls-1" rx="1.5"/>
+            <rect id="Rectángulo_28" width="20" height="3" class="cls-1" rx="1.5" transform="translate(12 7)"/>
+            <rect id="Rectángulo_29" width="26" height="3" class="cls-1" rx="1.5" transform="translate(6 14)"/>
+        </g>
+    </g>
+</svg>

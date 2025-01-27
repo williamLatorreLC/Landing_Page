@@ -433,7 +433,7 @@
                       <strong class="title-chat" *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
                   </p>
                   <br />
-                  <button *ngIf="fechaNotaInc1" (click)="dialogoCrearNota()">Agregar Nota</button>
+                  <button *ngIf="fechaNotaInc1" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
                   <br />
                   <br />
                   <p *ngIf="resolution" style="margin: 0;">
@@ -484,7 +484,7 @@
                       <strong class="title-chat" *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
                   </p>
                   <br />
-                  <button (click)="dialogoCrearNota()">Agregar Nota</button>
+                  <button (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
                   <br />
                   <br />
                   <p *ngIf="resolution" style="margin: 0;">
@@ -535,7 +535,7 @@
                     <strong class="title-chat" *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
                   </p>
                   <br />
-                  <button (click)="dialogoCrearNota()">Agregar Nota</button>
+                  <button (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
                   <br />
                   <br />
                   <p *ngIf="resolution" style="margin: 0;">

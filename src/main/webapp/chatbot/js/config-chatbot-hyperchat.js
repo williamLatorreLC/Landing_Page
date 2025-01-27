@@ -1,4 +1,4 @@
-//Version 17 Generada el 27 de Noviembre 2024
+//Version 18.2 Generada el 23 de Enero 2025
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -134,6 +134,9 @@ var var_isIncident = false;
 
 var var_adjuntar_archivo_nota = false;
 var var_flujo_felicitacion = false;
+
+var var_usuario_red_update_profile = false;
+var var_field_update_profile = false;
 
 var categoriesTries = 1;
 
@@ -332,8 +335,6 @@ function stringManipulate(chatBot) {
             messageData.message = messageData.message.replace('{avatar_name}', avatar_name);
 
             if(perfil_inbenta){
-            //console.log('perfil inbenta',perfil_inbenta);
-            //chatBot_action.api.addVariable('USUARIO_PERFIL', perfil_inbenta);
 
             var variableList =
             [
@@ -356,8 +357,6 @@ function stringManipulate(chatBot) {
         } else if (messageData.message == originalString) {
             messageData.message = newString;
             if(perfil_inbenta){
-            //console.log('perfil inbenta',perfil_inbenta);
-            //chatBot_action.api.addVariable('USUARIO_PERFIL', perfil_inbenta);
 
             var variableList =
             [
@@ -379,6 +378,21 @@ function stringManipulate(chatBot) {
         }
 
         switch(messageData.message){
+
+          case "usuario_red_update_profile":
+              next = false;
+
+              console.log("aqui usuario_red_update_profile");
+
+              if(var_usuario_red_update_profile){
+                var usuario_red_update_profile = var_usuario_red_update_profile;
+              } else {
+                var usuario_red_update_profile = usuario_red;
+              }
+
+              chatBot_action.actions.sendMessage({message: usuario_red_update_profile});
+
+              break;
 
             case "usuario_red":
                 next = false;
@@ -410,6 +424,28 @@ function setSite (site){
         var directMessageData = {
             message: site,
             directCall: 'show_customer_types', //seleccionado el site hay que solicitar tipo de usuario
+        }
+
+        xchatbot.actions.sendMessage(directMessageData).then(function(){
+
+          const userMessageData = {
+              message: 'Ubicación: ' + site,
+          }
+
+          xchatbot.actions.displayUserMessage(userMessageData);
+
+        });
+    }
+
+}
+
+
+function setNewSite (site){
+
+    if(site != null){
+
+        var directMessageData = {
+            message: site,
         }
 
         xchatbot.actions.sendMessage(directMessageData).then(function(){
@@ -635,7 +671,7 @@ function setCategory (clr_id){
 }
 
 //Flujo_Personalizacion_Diseño_Servicios
-function setOrganization (org){
+function setOrganization (org,updating){
 
     if(org != null){
 
@@ -649,8 +685,14 @@ function setOrganization (org){
 
         xchatbot.actions.sendMessage(directMessageData).then(function(){
 
+          if(updating){
+            var msg = 'Organización: ' + org;
+          } else {
+            var msg = 'Área: ' + org;
+          }
+
           const userMessageData = {
-              message: 'Área: ' + org,
+              message: msg
           }
 
           xchatbot.actions.displayUserMessage(userMessageData);
@@ -660,7 +702,7 @@ function setOrganization (org){
 }
 
 //Flujo_Personalizacion_Diseño_Servicios
-function setDepartment (dep){
+function setDepartment (dep,updating){
 
     if(dep != null){
 
@@ -674,8 +716,15 @@ function setDepartment (dep){
 
         xchatbot.actions.sendMessage(directMessageData).then(function(){
 
+            if(updating){
+                var msg = 'Departamento: ' + dep;
+              } else {
+                var msg = 'Gerencia: ' + dep;
+              }
+
+
           const userMessageData = {
-              message: 'Gerencia: ' + dep,
+              message: msg,
           }
 
           xchatbot.actions.displayUserMessage(userMessageData);
@@ -742,12 +791,20 @@ function openWindow(chatBot){
 }
 
 
-function showSites(chatbot,un_sites){
+function showSites(chatbot,un_sites,sitesMessage){
 
     //se puede usar el api para obtener las variables generadas por el webhook para mostrar las cuentas del usuario
     //podría hacerse en el callback
     xchatbot = chatbot;
-    var sitesMessage = 'Selecciona tu ubicación:<br/>';
+
+    if(typeof(sitesMessage) == 'undefined'){
+        var sitesMessage = 'Selecciona tu ubicación:<br/>';
+        var bubbleTitle = 'Selecciona sitio';
+        var setFunction = 'setSite';
+    } else {
+        var bubbleTitle = 'Selecciona la nueva ubicación:';
+        var setFunction = 'setNewSite';
+    }
 
     try {
 
@@ -757,7 +814,7 @@ function showSites(chatbot,un_sites){
           sites[key] = un_sites[key];
         });
 
-        var sitesSelect = '<select id="site" onchange="setSite(this.value)">';
+        var sitesSelect = '<select id="site" onchange="'+setFunction+'(this.value)">';
 
         sitesSelect += "<option>--Selecciona--</option>";
 
@@ -775,7 +832,7 @@ function showSites(chatbot,un_sites){
         sitesMessage += '<div style="display:none">'+Date.now()+'</div>';
 
         var contenido = {
-            sideWindowTitle: 'Selecciona sitio',
+            sideWindowTitle: bubbleTitle,
             sideWindowContent: sitesMessage
         };
 
@@ -816,15 +873,21 @@ function showCustomerTypes(chatbot,types){
 };
 
 //Flujo_Personalizacion_Diseño_Servicios
-function showOrganizations(organizations){
+function showOrganizations(organizations,updating){
 
     organizations = JSON.parse(organizations);
 
-    var message = 'Area Solicitante:<br/>';
+    if(updating){
+        var message = '';
+        var setNewOrg = 'true'; //as text
+    } else {
+        var message = 'Area Solicitante:<br/>';
+        var setNewOrg = 'false'; //as text
+    }
 
     try {
 
-        var select = '<select id="organization" onchange="setOrganization(this.value)">';
+        var select = '<select id="organization" onchange="setOrganization(this.value,'+setNewOrg+')">';
 
         select += "<option>--Selecciona--</option>";
         for (var org in organizations.datos) {
@@ -844,14 +907,21 @@ function showOrganizations(organizations){
 };
 
 //Flujo_Personalizacion_Diseño_Servicios
-function showDepartments(departments){
-    var message = 'Gerencia Solicitante:<br/>';
+function showDepartments(departments,updating){
+
+    if(updating){
+        var message = '';
+        var setNewDep = 'true'; //as text
+    } else {
+        var message = 'Gerencia Solicitante:<br/>';
+        var setNewDep = 'false'; //as text
+    }
 
     departments = JSON.parse(departments);
 
     try {
 
-        var select = '<select id="department" onchange="setDepartment(this.value)">';
+        var select = '<select id="department" onchange="setDepartment(this.value,'+setNewDep+')">';
 
         select += "<option>--Selecciona--</option>";
         for (var dep in departments.datos) {
@@ -1228,6 +1298,34 @@ function gestionaRespuesta(chatbot) {
 
                 switch(obj.metodo){
 
+                  case "update-profile":
+
+                    next = false;
+
+                    xchatbot.actions.displayChatbotMessage({type:"answer",message:obj.message});
+
+                    var directMessageData = {
+                        message: 'ignorar',
+                        directCall: obj.directCall,
+                    }
+
+                    xchatbot.actions.sendMessage(directMessageData);
+
+                    break;
+
+                  case "start-update-profile":
+
+                      next = false;
+
+                      var directMessageData = {
+                          message: 'ignorar',
+                          directCall: obj.directCall,
+                      }
+
+                      xchatbot.actions.sendMessage(directMessageData);
+
+                      break;
+
                     case "obtener_sitios":
 
                         categoriesTries = 1;
@@ -1409,16 +1507,38 @@ function gestionaRespuesta(chatbot) {
                         next = false;
                         break;
 
+                    case "select_site":
+
+                        designService.getSites();
+                        next = false;
+
+                        break;
+
+                    case 'select_update_organization':
+
+                        designService.getOrganizations(true); //updating=true
+                        next = false;
+
+                        break;
+
+                    case 'select_update_department':
+
+                        designService.getDepartments(true); //updating=true
+                        next = false;
+
+                        break;
+
+
                     case 'select_request_organization':
 
-                        designService.getOrganizations();
+                        designService.getOrganizations(false); //updating=false
                         next = false;
 
                         break;
 
                     case 'select_request_department':
 
-                        designService.getDepartments();
+                        designService.getDepartments(false); //updating=false
                         next = false;
 
                         break;
@@ -1479,6 +1599,29 @@ function gestionaRespuesta(chatbot) {
                             var_extra_info = "";
 
                             break;
+
+                  case "profile_support_params":
+
+                    next = false;
+
+                    if(var_usuario_red_update_profile){
+                        var user_update = var_usuario_red_update_profile;
+                    } else {
+                        var user_update = usuario_red;
+                    }
+
+                    var paramsObj = {
+                        'user':user_update,
+                        'field': var_field_update_profile
+                    };
+
+                    var params = JSON.stringify(paramsObj);
+
+                    xchatbot.actions.sendMessage({message: params});
+
+                    var_field_update_profile = "";
+
+                    break;
                   case "params":
 
                       next = false;
@@ -2132,7 +2275,56 @@ var changeEmail = (function (window, undefined) {
 
 var designService = (function (window, undefined) {
 
-    var getOrganizations = function(){
+    var getSites = function(){
+
+        xhr = new XMLHttpRequest();
+
+        xhr.open('POST', 'https://asistentevirtual.claro.com.co/webhooks_mesa_servicios/public/webhook/mesaservicio/obtener_sitios');
+        xhr.setRequestHeader('X-REQUEST-KEY', 'RlQojyfYpHOaTSytik0Bk7fgbX0JiPzj');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xchatbot.actions.displayChatbotMessage({type:"answer",message:"Espera mientras cargamos las ubicaciones..."});
+
+        xhr.onload = function() {
+
+            var msj = 'Ocurrió un error al obtener las ubicaciones.';
+
+            if (xhr.status === 200) {
+                var obj = JSON.parse(xhr.responseText);
+
+                try {
+
+                  if(obj.status == 'success'){
+
+                      //FIXME
+                      var respon = JSON.parse(obj.chatbot_response);
+
+                      htmlSites = showSites(xchatbot,respon.datos,'Selecciona la nueva ubicación');
+
+                  } else {
+                      xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+                  }
+
+                } catch (e) {
+                  console.log(e);
+                    xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+                }
+
+            } else {
+                xchatbot.actions.displayChatbotMessage({type:"answer",message:msj});
+            }
+
+            xchatbot.actions.enableInput();
+
+        };
+
+        xchatbot.actions.disableInput();
+
+        xhr.send();
+
+    }
+
+    var getOrganizations = function(updating){
 
         xhr = new XMLHttpRequest();
 
@@ -2142,7 +2334,13 @@ var designService = (function (window, undefined) {
 
         xhr.onload = function() {
 
-            var msj = 'Ocurrió un error al obtener las areas. Porfavor escribe el area';
+            if(updating){
+                var msj = 'Ocurrió un error al obtener las organizaciones';
+                var htmlTitle = 'Selecciona la nueva organización';
+            } else {
+                var msj = 'Ocurrió un error al obtener las areas. Porfavor escribe el area';
+                var htmlTitle = 'Selecciona área';
+            }
 
             if (xhr.status === 200) {
                 var datos = JSON.parse(xhr.responseText);
@@ -2150,10 +2348,11 @@ var designService = (function (window, undefined) {
                 try {
 
                   if(datos.status == 'success'){
-                      htmlOrganizations = showOrganizations(datos.chatbot_response);
+
+                      htmlOrganizations = showOrganizations(datos.chatbot_response,updating);
 
                       var contenido = {
-                          sideWindowTitle: 'Selecciona área',
+                          sideWindowTitle: htmlTitle,
                           sideWindowContent: htmlOrganizations
                       };
 
@@ -2182,7 +2381,7 @@ var designService = (function (window, undefined) {
 
     }
 
-    var getDepartments = function(){
+    var getDepartments = function(updating){
 
         xhr = new XMLHttpRequest();
 
@@ -2192,7 +2391,13 @@ var designService = (function (window, undefined) {
 
         xhr.onload = function() {
 
-            var msj = 'Ocurrió un error al obtener el catalogo de gerencias. Porfavor escribe la gerencia';
+            if(updating){
+                var htmlTitle = 'Selecciona el nuevo departamento';
+                var msj = 'Ocurrió un error al obtener el catalogo de departamentos';
+            } else {
+                var htmlTitle = 'Selecciona el departamento';
+                var msj = 'Ocurrió un error al obtener el catalogo de departamentos. Porfavor escribe la gerencia';
+            }
 
             if (xhr.status === 200) {
                 var datos = JSON.parse(xhr.responseText);
@@ -2200,10 +2405,10 @@ var designService = (function (window, undefined) {
                 try {
 
                     if(datos.status == 'success'){
-                        htmlDepartments = showDepartments(datos.chatbot_response);
+                        htmlDepartments = showDepartments(datos.chatbot_response,updating);
 
                         var contenido = {
-                            sideWindowTitle: 'Selecciona gerencia',
+                            sideWindowTitle: htmlTitle,
                             sideWindowContent: htmlDepartments
                         };
 
@@ -2233,11 +2438,14 @@ var designService = (function (window, undefined) {
     }
 
     return {
-        getOrganizations : function () {
-            return getOrganizations();
+        getOrganizations : function (updating) {
+            return getOrganizations(updating);
         },
-        getDepartments : function () {
-            return getDepartments();
+        getDepartments : function (updating) {
+            return getDepartments(updating);
+        },
+        getSites : function () {
+            return getSites();
         }
     };
 
@@ -2508,3 +2716,54 @@ document.addEventListener("visibilitychange", (event) => {
     userIsActive = false;
   }
 });
+
+
+var setUserIdUpdateProfile = function(values){
+
+  var_usuario_red_update_profile = values.user;
+
+  var directMessageData = {
+      message: var_usuario_red_update_profile,
+      directCall: '_actualizar_profile_por_soporte'
+  }
+
+  xchatbot.actions.sendMessage(directMessageData);
+
+}
+
+var setUserFieldUpdateProfile = function(values){
+
+    if(typeof values['user_field'] !== 'undefined') {
+        var_field_update_profile = values.user_field;
+    } else if(typeof values['support_field'] !== 'undefined') {
+        var_field_update_profile = values.support_field;
+    }
+
+    //default
+    var direct_call_key = '_actualizar_profile_fields_p1';
+
+    switch(var_field_update_profile){
+        case 'Organization':
+        case 'Department':
+
+            direct_call_key = '_actualizar_profile_fields_p2';
+
+            break;
+        case 'Site':
+
+            direct_call_key = '_actualizar_profile_fields_p3';
+
+            break;
+    }
+
+    console.log('setUserFieldUpdateProfile',values,var_field_update_profile);
+    console.log('going to: '+direct_call_key);
+
+    var directMessageData = {
+        message: var_field_update_profile,
+        directCall: direct_call_key
+    }
+
+    xchatbot.actions.sendMessage(directMessageData);
+
+}
