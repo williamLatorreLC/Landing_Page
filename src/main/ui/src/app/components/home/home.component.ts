@@ -165,6 +165,19 @@ export class HomeComponent implements OnInit {
   messageErrorWO: any;
   datosCargados: boolean;
   numeroNotas: any;
+  validarConsultaDeCaso: boolean;
+  messageErrorHc: any;
+  noReq4: any;
+  noReq5: any;
+  noInc4: any;
+  noInc5: any;
+  statusInc4: any;
+  statusInc5: any;
+  sumarryInc4: any;
+  sumarryInc5: any;
+  fechaInc4: any;
+  fechaInc5: any;
+
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -392,6 +405,7 @@ export class HomeComponent implements OnInit {
       });
   }
   abrirChat() {
+    this.validarConsultaDeCaso = false;
     this.GtmServicesService.Tagging('Home', 'bt_home_chatbot');
     const chatURL = encodeURI('./chatbot');
     $('#siteloader').html(
@@ -541,13 +555,18 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+   
 
   abrirChatInHouse() {
     this.mostrarChat = true;
+    this.validarConsultaDeCaso = false;
+    this.scrollToBottom(); 
   }
 
   cerrarChatInHouse() {
     this.mostrarChat = false;
+    this.resetChat();
+    this.resetInfo();
   }
 
   consultarCaso() {
@@ -612,40 +631,60 @@ export class HomeComponent implements OnInit {
   async consultarHistoricoCasos() {
     setTimeout(async () => {
       const resHc = await this.casosService.post('consultarHistoricoRequerimiento', {
-       Qualification: this.infoUser.User,
-       //  Qualification: "45111133",
+        Qualification: this.infoUser.User,
+        //Qualification: "45111133",
       });
 
-      if (resHc?.response?.lastThreeListValues) {
-        const sortedValues = resHc.response.lastThreeListValues.sort((a: any, b: any) => {
+      if (resHc?.response?.message) {
+        this.messageError = resHc.response.message;
+        console.log('Mensaje de error:', this.messageError);
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 500);
+        return false;
+      }
+
+      if (resHc?.response?.lastFiveListValues) {
+        const sortedValues = resHc.response.lastFiveListValues.sort((a: any, b: any) => {
           return new Date(b.Submit_Date).getTime() - new Date(a.Submit_Date).getTime();
         });
+
 
         this.noReq1 = sortedValues[0]?.Request_Number || null;
         this.noReq2 = sortedValues[1]?.Request_Number || null;
         this.noReq3 = sortedValues[2]?.Request_Number || null;
+        this.noReq4 = sortedValues[3]?.Request_Number || null;
+        this.noReq5 = sortedValues[4]?.Request_Number || null;
 
         this.noInc1 = sortedValues[0]?.AppRequestID || null;
         this.noInc2 = sortedValues[1]?.AppRequestID || null;
         this.noInc3 = sortedValues[2]?.AppRequestID || null;
+        this.noInc4 = sortedValues[3]?.AppRequestID || null;
+        this.noInc5 = sortedValues[4]?.AppRequestID || null;
 
         this.statusInc1 = sortedValues[0]?.Status || null;
         this.statusInc2 = sortedValues[1]?.Status || null;
         this.statusInc3 = sortedValues[2]?.Status || null;
+        this.statusInc4 = sortedValues[3]?.Status || null;
+        this.statusInc5 = sortedValues[4]?.Status || null;
 
         this.sumarryInc1 = sortedValues[0]?.Summary || null;
         this.sumarryInc2 = sortedValues[1]?.Summary || null;
         this.sumarryInc3 = sortedValues[2]?.Summary || null;
+        this.sumarryInc4 = sortedValues[3]?.Summary || null;
+        this.sumarryInc5 = sortedValues[4]?.Summary || null;
 
         this.fechaInc1 = sortedValues[0]?.Submit_Date || null;
         this.fechaInc2 = sortedValues[1]?.Submit_Date || null;
         this.fechaInc3 = sortedValues[2]?.Submit_Date || null;
+        this.fechaInc4 = sortedValues[3]?.Submit_Date || null;
+        this.fechaInc5 = sortedValues[4]?.Submit_Date || null;
 
         setTimeout(() => {
           this.scrollToBottom();
         }, 1500);
       } else {
-        console.error("No se encontraron datos en lastThreeListValues.");
+        console.error("No se encontraron datos en lastFiveListValues.");
       }
     }, 1000);
   }
@@ -662,6 +701,7 @@ export class HomeComponent implements OnInit {
     this.crearNota = false;
 
     //Variables para el boton de volver
+    this.messageErrorHc = null;
     this.messageError = null;
     this.messageErrorWO = null;
     this.Request_Number = null;
@@ -689,6 +729,7 @@ export class HomeComponent implements OnInit {
     this.Incident_Number = null;
     this.noReq1 = null;
     this.messageError = null;
+    this.messageErrorHc = null;
     this.messageErrorWO = null;
     this.numeroRequerimiento = '';
     this.numeroW = '';
@@ -706,6 +747,8 @@ export class HomeComponent implements OnInit {
     this.qualification = null;
     this.noReq2 = null;
     this.noReq3 = null;
+    this.noReq4 = null;
+    this.noReq5 = null;
     this.noInc1 = null;
     this.noInc2 = null;
     this.noInc3 = null;
@@ -719,6 +762,14 @@ export class HomeComponent implements OnInit {
     this.fechaInc2 = null;
     this.fechaInc3 = null;
     this.numeroNotas = null;
+    this.noInc4 = null;
+    this.noInc5 = null;
+    this.statusInc4 = null;
+    this.statusInc5 = null;
+    this.sumarryInc4 = null;
+    this.sumarryInc5 = null;
+    this.fechaInc4 = null;
+    this.fechaInc5 = null;
   }
 
   async consultarReq() {
@@ -726,7 +777,7 @@ export class HomeComponent implements OnInit {
       const isValid = await this.validacionSeguridad();
 
       if (!isValid) {
-        this.numeroRequerimiento = "";
+        this.numeroRequerimientoIngresado = this.numeroRequerimiento;
         this.scrollToBottom();
         return;
       }
@@ -885,7 +936,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  async validacionSeguridad(): Promise<boolean> {
+  async validacionSeguridad(): Promise<boolean> { 
     try {
       const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
       this.AppRequestID = res.response.AppRequestID;
@@ -928,6 +979,7 @@ export class HomeComponent implements OnInit {
     const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
 
     if (resINC.response.message) {
+      this.numeroIncIngresado = this.numeroI;
       this.messageError = resINC.response.message;
       this.numeroI = "";
       setTimeout(() => {
@@ -989,6 +1041,8 @@ export class HomeComponent implements OnInit {
       const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
 
       if (resWO.response?.message) {
+        this.numeroWoIngresado = this.numeroW;
+        console.log(this.numeroW)
         this.messageError = resWO.response.message;
         this.numeroW = "";
         setTimeout(() => {
@@ -1045,7 +1099,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  async agregarNota(AppRequestID?: string) {
+  async agregarNota(AppRequestID?: string, ) {
     try {
       if (this.peticionEnCurso) {
         console.log('La petición ya está en curso. Espere a que termine.');
@@ -1093,10 +1147,16 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  dialogoCrearNota() {
-    this.crearNota = true;
-    this.scrollToBottom();
-
+  dialogoCrearNota(statusIncidente: string) {
+    if(statusIncidente === 'Cancelled'){
+      console.log(statusIncidente)
+      this.crearNota = false;
+      this.messageError = 'El caso ha sido cancelado y actualmente no permite agregar notas adicionales.'
+      this.scrollToBottom();
+    } else {
+      this.crearNota = true;
+      this.scrollToBottom();
+    }
   }
 
   onFileSelected(event: any) {
@@ -1138,6 +1198,14 @@ export class HomeComponent implements OnInit {
   scrollToBottom() {
     const element = this.content.nativeElement;
     element.scrollTop = element.scrollHeight;
+  }
+
+  validarConsulta() {
+    this.validarConsultaDeCaso = true;
+  }
+
+  toggleMinimizar() {
+    this.mostrarChat = false; 
   }
 
 }

@@ -40,32 +40,43 @@ public class ConsultaHistoricoRequerimientosService {
     public JsonObject getBody(JsonObject respuesta) {
         JsonObject res = new JsonObject();
 
-        JsonObject getListResponse = respuesta.getAsJsonObject("Envelope")
-                .getAsJsonObject("Body")
-                .getAsJsonObject("GetListResponse");
+        try {
 
-        JsonArray listValues = getListResponse.getAsJsonArray("getListValues");
 
-        // Copiar elementos de JsonArray a una lista de Java
-        List<JsonObject> listValuesList = new ArrayList<>();
-        for (int i = 0; i < listValues.size(); i++) {
-            listValuesList.add(listValues.get(i).getAsJsonObject());
+            JsonObject envelope = respuesta.getAsJsonObject("Envelope");
+            JsonObject body = envelope.getAsJsonObject("Body");
+
+            if (body.has("Fault")) {
+                res.addProperty("message", "Ups, parece que no has creado casos.");
+                return res;
+            }
+
+            JsonObject getListResponse = body.getAsJsonObject("GetListResponse");
+
+            JsonArray listValues = getListResponse.getAsJsonArray("getListValues");
+            List<JsonObject> listValuesList = new ArrayList<>();
+            for (int i = 0; i < listValues.size(); i++) {
+                listValuesList.add(listValues.get(i).getAsJsonObject());
+            }
+
+            Collections.sort(listValuesList, new ListComparator());
+
+            int totalListValues = listValuesList.size();
+            int startIndex = Math.max(0, totalListValues - 5);
+
+            JsonArray lastFiveListValues = new JsonArray();
+            for (int i = startIndex; i < totalListValues; i++) {
+                lastFiveListValues.add(listValuesList.get(i));
+            }
+
+            res.add("lastFiveListValues", lastFiveListValues);
+        } catch (Exception e) {
+            res.addProperty("message", "Se produjo un error al procesar la respuesta: " + e.getMessage());
         }
 
-        // Ordenar la lista por fecha de presentación
-        Collections.sort(listValuesList, new ListComparator());
-
-        int totalListValues = listValuesList.size();
-        int startIndex = Math.max(0, totalListValues - 3); // Últimas 3 getListValues o menos si hay menos de 3
-
-        JsonArray lastThreeListValues = new JsonArray();
-        for (int i = startIndex; i < totalListValues; i++) {
-            lastThreeListValues.add(listValuesList.get(i));
-        }
-
-        res.add("lastThreeListValues", lastThreeListValues);
-
+        System.out.println("Respuesta ConsultaCasosService.java línea 55");
         System.out.println(res);
+
         return res;
     }
 
