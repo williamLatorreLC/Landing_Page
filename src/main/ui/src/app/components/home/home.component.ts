@@ -177,7 +177,7 @@ export class HomeComponent implements OnInit {
   sumarryInc5: any;
   fechaInc4: any;
   fechaInc5: any;
-
+  ocultarInputReq: any
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -558,9 +558,18 @@ export class HomeComponent implements OnInit {
    
 
   abrirChatInHouse() {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil');
     this.mostrarChat = true;
     this.validarConsultaDeCaso = false;
     this.scrollToBottom(); 
+  }
+
+  like(){
+    this.GtmServicesService.Tagging('Home', 'bt_like_mesa_agil');
+  }
+
+  noLike(){
+    this.GtmServicesService.Tagging('Home', 'bt_NO_like_mesa_agil');
   }
 
   cerrarChatInHouse() {
@@ -699,6 +708,7 @@ export class HomeComponent implements OnInit {
     this.selectWo = false;
     this.selectHc = false;
     this.crearNota = false;
+    this.ocultarInputReq = false;
 
     //Variables para el boton de volver
     this.messageErrorHc = null;
@@ -778,11 +788,14 @@ export class HomeComponent implements OnInit {
 
       if (!isValid) {
         this.numeroRequerimientoIngresado = this.numeroRequerimiento;
+        this.ocultarInputReq = true;
+        this.numeroRequerimiento = ""
         this.scrollToBottom();
         return;
       }
 
       const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
+      this.ocultarInputReq = true;
       this.Request_Number = res.response.Request_Number;
       this.AppRequestID = res.response.AppRequestID;
       this.Status = res.response.Status;

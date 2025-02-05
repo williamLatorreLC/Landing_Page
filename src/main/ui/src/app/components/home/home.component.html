@@ -655,9 +655,18 @@
               <div class="chatbot-message anita-message" *ngIf="creadoExitoso">
                 <p style="margin: 0;"><strong>Mesa Ágil:</strong> {{ creadoExitoso }}</p>
               </div>
-              <button class="chatbot-return-button"
-                *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO || selectHc"
-                (click)="resetChat()">Volver</button>
+              <div class="button-container">
+                <button class="chatbot-return-button" *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO || selectHc" (click)="resetChat()">
+                  Volver
+                </button>
+                <button class="chatbot-return-button" *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO || selectHc" (click)="like()">
+                  👍
+                </button>
+                <button class="chatbot-return-button" *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO || selectHc" (click)="noLike()">
+                  👎
+                </button>
+              </div>
+              
                 <br />
             </div>
           </div>
@@ -674,10 +683,14 @@
         <form [formGroup]="numberRequerimiento" (ngSubmit)="consultarReq()" >
           <div *ngIf="selectReq && mostrarChat && !crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
-              <input type="text" [(ngModel)]="numeroRequerimiento"
-                placeholder="Escribe el número de REQ - Requerimiento..." class="chatbot-input"
-                formControlName="reqNumber">
-              <button class="chatbot-send-button" type="submit">➤</button>
+              <input 
+              [attr.disabled]="ocultarInputReq ? true : null" 
+              type="text" 
+              [(ngModel)]="numeroRequerimiento"
+              [attr.placeholder]="ocultarInputReq ? null : 'Escribe el número de REQ - Requerimiento...'"
+              class="chatbot-input"
+              formControlName="reqNumber">
+            <button *ngIf="!ocultarInputReq" class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>

@@ -248,17 +248,29 @@
   box-shadow: 0 0 5px rgba(218, 16, 36, 0.5);
 }
 
+.button-container {
+  display: flex;
+  gap: 10px; /* Espaciado entre los botones */
+  justify-content: start; /* Centrar en la pantalla */
+}
+
 .chatbot-return-button {
-  background-color: #f81d33;
-  color: #ffffff;
-  border: none;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  height: 51px;
-  cursor: pointer;
+  background-color: red;
+  color: white;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color .3s ease;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chatbot-return-button:hover {
+  background-color: rgb(184, 0, 0);
 }
 
 .validar-container {
