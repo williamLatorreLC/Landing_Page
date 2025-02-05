@@ -558,6 +558,7 @@ export class HomeComponent implements OnInit {
    
 
   abrirChatInHouse() {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil');
     this.mostrarChat = true;
     this.validarConsultaDeCaso = false;
     this.scrollToBottom(); 
@@ -1201,6 +1202,7 @@ export class HomeComponent implements OnInit {
   }
 
   validarConsulta() {
+    this.GtmServicesService.Tagging('Home', 'bt_anita');
     this.validarConsultaDeCaso = true;
   }
 
