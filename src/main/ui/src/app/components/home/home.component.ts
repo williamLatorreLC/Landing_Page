@@ -177,7 +177,12 @@ export class HomeComponent implements OnInit {
   sumarryInc5: any;
   fechaInc4: any;
   fechaInc5: any;
-  ocultarInputReq: any
+  ocultarInputReq: any;
+  ocultarInputInc: any;
+  ocultarInputWo: any;
+  ocultarInputNotas: any;
+  calificacion: any;
+  likeDisable: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -566,10 +571,17 @@ export class HomeComponent implements OnInit {
 
   like(){
     this.GtmServicesService.Tagging('Home', 'bt_like_mesa_agil');
+    this.calificacion = "Gracias por tu opinión";
+    this.likeDisable = true;
+    this.scrollToBottom();
+    
   }
 
   noLike(){
     this.GtmServicesService.Tagging('Home', 'bt_NO_like_mesa_agil');
+    this.calificacion = "Gracias por tu opinión";
+    this.likeDisable  = true;
+    this.scrollToBottom();
   }
 
   cerrarChatInHouse() {
@@ -709,6 +721,11 @@ export class HomeComponent implements OnInit {
     this.selectHc = false;
     this.crearNota = false;
     this.ocultarInputReq = false;
+    this.ocultarInputInc = false;
+    this.ocultarInputWo = false;
+    this.ocultarInputNotas = false;
+    this.calificacion = null;
+    this.likeDisable = false;
 
     //Variables para el boton de volver
     this.messageErrorHc = null;
@@ -855,6 +872,11 @@ export class HomeComponent implements OnInit {
               this.descriptionInc3 = null;
             }
 
+            if(this.numeroNotas === 0){
+              this.messageError = "Este caso aún no tiene notas disponibles."
+              this.datosCargados = true;
+            }
+
             this.datosCargados = true;
             this.resolution = resINC.response.Resolution;
             this.fechaResolution = resINC.response.Real_Solution_Date;
@@ -917,6 +939,11 @@ export class HomeComponent implements OnInit {
             } else {
               this.fechaNotaInc3 = null;
               this.descriptionInc3 = null;
+            }
+            
+            if(this.numeroNotas === 0){
+              this.messageError = "Este caso aún no tiene notas disponibles."
+              this.datosCargados = true;
             }
 
             this.datosCargados = true;
@@ -995,6 +1022,7 @@ export class HomeComponent implements OnInit {
       this.numeroIncIngresado = this.numeroI;
       this.messageError = resINC.response.message;
       this.numeroI = "";
+      this.ocultarInputInc = true;
       setTimeout(() => {
         this.scrollToBottom();
       }, 1000);
@@ -1006,6 +1034,7 @@ export class HomeComponent implements OnInit {
       this.descripcionIncidente = resINC.response.Description;
       this.fechaCreacionIncidente = resINC.response.Submit_Date;
       this.numeroIncIngresado = resINC.response.Incident_Number;
+      this.ocultarInputInc = true;
       this.scrollToBottom();
       this.numeroI = "";
 
@@ -1038,6 +1067,11 @@ export class HomeComponent implements OnInit {
         this.descriptionInc3 = null;
       }
 
+      if(this.numeroNotas === 0){
+        this.messageError = "Este caso aún no tiene notas disponibles."
+        this.datosCargados = true;
+      }
+
       this.datosCargados = true;
       // Datos adicionales
       this.resolution = resINC.response.Resolution;
@@ -1055,14 +1089,15 @@ export class HomeComponent implements OnInit {
 
       if (resWO.response?.message) {
         this.numeroWoIngresado = this.numeroW;
-        console.log(this.numeroW)
         this.messageError = resWO.response.message;
         this.numeroW = "";
+        this.ocultarInputWo = true;
         setTimeout(() => {
           this.scrollToBottom();
         }, 1000);
         return;
       }
+
 
       this.WO_Number = resWO.response?.Work_Order_ID || null;
       this.descripcionIncidenteDetallada = resWO.response?.Detailed_Description || '';
@@ -1070,6 +1105,7 @@ export class HomeComponent implements OnInit {
       this.descripcionIncidente = resWO.response?.Summary || '';
       this.fechaCreacionIncidente = resWO.response?.Submit_Date || '';
       this.numeroWoIngresado = resWO.response?.Work_Order_ID || '';
+      this.ocultarInputWo = true;
       this.scrollToBottom();
 
       const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value);
@@ -1102,6 +1138,11 @@ export class HomeComponent implements OnInit {
         this.descriptionInc3 = null;
       }
 
+      if(this.numeroNotas === 0){
+        this.messageError = "Este caso aún no tiene notas disponibles."
+        this.datosCargados = true;
+      }
+
       this.datosCargados = true;
       this.numeroW = "";
       this.scrollToBottom();
@@ -1131,6 +1172,7 @@ export class HomeComponent implements OnInit {
             WorkInfoAttachment1Name: this.nombreArchivo,
             WorkInfoAttachment1Data: this.base64ContentString,
           });
+          this.ocultarInputNotas = true;
           this.creadoExitoso = "Nota creada con éxito";
           this.detailedDescriptionCrearNotas = "";
         } else if (AppRequestID.startsWith("WO")) {
@@ -1142,10 +1184,12 @@ export class HomeComponent implements OnInit {
             WorkInfoAttachment1Name: this.nombreArchivo,
             WorkInfoAttachment1Data: this.base64ContentString,
           });
+          this.ocultarInputNotas = true;
           this.creadoExitoso = "Nota creada con éxito";
           this.detailedDescriptionCrearNotas = "";
         }
       } else {
+        this.ocultarInputNotas = true;
         console.log('AppRequestID no proporcionado. No se puede agregar nota.');
         this.detailedDescriptionCrearNotas = "";
       }
@@ -1153,6 +1197,7 @@ export class HomeComponent implements OnInit {
         this.scrollToBottom();
       }, 1500);
     } catch (error) {
+      this.ocultarInputNotas = true;
       console.error('Error al agregar nota:', error);
       this.creadoExitoso = "No es posible crear la nota";
     } finally {
