@@ -1258,6 +1258,10 @@ export class HomeComponent implements OnInit {
     element.scrollTop = element.scrollHeight;
   }
 
+  redirectToUrl(): void {
+    window.open('https://miasistencia360-portal-prd.claro.com.co/admin/#/landing', '_blank');
+  }
+
   validarConsulta() {
     this.validarConsultaDeCaso = true;
   }
