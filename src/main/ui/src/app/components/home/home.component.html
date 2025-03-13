@@ -413,8 +413,8 @@
                     <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
                   </div>
                   <br />
-                  <div *ngIf="(!fechaNotaInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" class="loading-dots">Cargando notas...</div>
-                  <br *ngIf="(!fechaNotaInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" />
+                  <div *ngIf="(!descriptionInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" class="loading-dots">Cargando notas...</div>
+                  <br *ngIf="(!descriptionInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" />
                   <p *ngIf="fechaNotaInc1" style="margin: 0;">
                     <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
                     <br />
@@ -464,7 +464,7 @@
                     <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
                   </div>
                   <br />
-                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>
+                  <div *ngIf="!descriptionInc1" class="loading-dots">Cargando notas...</div>
                   <br />
                   <p *ngIf="datosCargados && (fechaNotaInc1 || fechaNotaInc2 || fechaNotaInc3)" style="margin: 0;">
                     <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
@@ -515,7 +515,7 @@
                     <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
                   </div>
                   <br />
-                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>
+                  <div *ngIf="!descriptionInc1" class="loading-dots">Cargando notas...</div>
                   <br />
                   <p *ngIf="fechaNotaInc1" style="margin: 0;">
                     <strong class="title-chat">Notas del Incidente / Solicitud:</strong>

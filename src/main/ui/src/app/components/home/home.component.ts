@@ -591,6 +591,7 @@ export class HomeComponent implements OnInit {
   }
 
   consultarCaso() {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso');
     this.consultarOcrearCaso = !this.consultarOcrearCaso;
     setTimeout(() => {
       this.consultaCaso = !this.consultaCaso;
@@ -601,6 +602,7 @@ export class HomeComponent implements OnInit {
   }
 
   SearchReq() {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_req');
     setTimeout(() => {
       this.selectReq = !this.selectReq;
       this.selectInc = false;
@@ -613,7 +615,8 @@ export class HomeComponent implements OnInit {
   }
 
   SearchInc() {
-    setTimeout(() => {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_inc');
+      setTimeout(() => {
       this.selectInc = !this.selectInc;
       this.selectReq = false;
       this.selectWo = false;
@@ -625,7 +628,8 @@ export class HomeComponent implements OnInit {
   }
 
   SearchWo() {
-    setTimeout(() => {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_wo');
+     setTimeout(() => {
       this.selectWo = !this.selectWo;
       this.selectInc = false;
       this.selectReq = false;
@@ -637,6 +641,7 @@ export class HomeComponent implements OnInit {
   }
 
   SearchHC() {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_reqbt_mesa_agil_consulta_caso_historico');
     setTimeout(() => {
       this.selectHc = !this.selectHc;
       this.selectWo = false;
@@ -821,7 +826,7 @@ export class HomeComponent implements OnInit {
       this.Closed_Date = res.response.Closed_Date;
       this.numeroRequerimientoIngresado = res.response.Request_Number;
       this.numberRequerimiento.controls['reqNumber'].setValue('');
-
+      this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_req_success');
       setTimeout(() => {
         this.scrollToBottom();
       }, 1000);
@@ -874,6 +879,7 @@ export class HomeComponent implements OnInit {
 
             if(this.numeroNotas === 0){
               this.messageError = "Este caso aún no tiene notas disponibles."
+              this.descriptionInc1 = null;
               this.datosCargados = true;
             }
 
@@ -943,6 +949,7 @@ export class HomeComponent implements OnInit {
             
             if(this.numeroNotas === 0){
               this.messageError = "Este caso aún no tiene notas disponibles."
+              this.descriptionInc1 = null;
               this.datosCargados = true;
             }
 
@@ -1036,6 +1043,7 @@ export class HomeComponent implements OnInit {
       this.numeroIncIngresado = resINC.response.Incident_Number;
       this.ocultarInputInc = true;
       this.scrollToBottom();
+      this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_inc_success');
       this.numeroI = "";
 
       const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', this.numberINC.value);
@@ -1069,6 +1077,7 @@ export class HomeComponent implements OnInit {
 
       if(this.numeroNotas === 0){
         this.messageError = "Este caso aún no tiene notas disponibles."
+        this.descriptionInc1 = null;
         this.datosCargados = true;
       }
 
@@ -1106,6 +1115,7 @@ export class HomeComponent implements OnInit {
       this.fechaCreacionIncidente = resWO.response?.Submit_Date || '';
       this.numeroWoIngresado = resWO.response?.Work_Order_ID || '';
       this.ocultarInputWo = true;
+      this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_wo_success');
       this.scrollToBottom();
 
       const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value);
@@ -1140,6 +1150,7 @@ export class HomeComponent implements OnInit {
 
       if(this.numeroNotas === 0){
         this.messageError = "Este caso aún no tiene notas disponibles."
+        this.descriptionInc1 = null;
         this.datosCargados = true;
       }
 
