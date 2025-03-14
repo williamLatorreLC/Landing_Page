@@ -376,179 +376,217 @@
                 </p>
               </div>
 
+                <!-- Mensaje 7 Anita (Respuesta del numero de requerimiento) -->
+                <div *ngIf="selectReq || selectInc || selectWo">
 
-              <!-- Mensaje 7 Anita (Respuesta del numero de requerimiento)-->
-              <div *ngIf="selectReq || selectInc || selectWo">
-                <!-- Contenido si selecciona REQ requerimiento -->
-                <div *ngIf="Request_Number" class="chatbot-message anita-message">
-                  <p style="margin: 0;"><strong>Mesa Ágil:</strong>
-                    Descripción del requerimiento:
-                    <br />
-                    <strong class="title-chat" >No. de requerimiento:</strong> {{ Request_Number }}
-                    <br />
-                    <strong class="title-chat" >No. de incidente / solicitud:</strong> {{ AppRequestID }}
-                    <br />
-                    <strong class="title-chat" >Estado:</strong> {{ Status }}
-                    <br />
-                    <strong class="title-chat">Descripción del requerimiento:</strong> {{ Summary }}
-                    <br />
-                    <strong class="title-chat" >Fecha de creación:</strong> {{ Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat" >Fecha de solución:</strong> {{ Closed_Date | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <br />
-                    <strong class="title-chat" >Descripción del Incidente / Solicitud:</strong> {{ Summary }}
-                    <br />
-                    <strong class="title-chat" >No. de INC / WO:</strong> {{ AppRequestID }}
-                    <br />
-                    <strong class="title-chat" >Estado:</strong> {{ statusIncidente }}
-                    <br />
-                    <strong class="title-chat" >Descripción:</strong> {{ descripcionIncidente }}
-                    <br />
-                    <strong class="title-chat" >Fecha de creación:</strong> {{ fechaCreacionIncidente |
-                    date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                  </p>
-                  <div class="descripcion-detallada">
-                    <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                  <!-- REQ -->
+                  <div *ngIf="Request_Number" class="chatbot-message anita-message">
+                    <p style="margin: 0;">
+                      <strong>Mesa Ágil:</strong> Descripción del requerimiento:
+                      <br/>
+                      <strong class="title-chat">No. de requerimiento:</strong> {{ Request_Number }}
+                      <br/>
+                      <strong class="title-chat">No. de incidente / solicitud:</strong> {{ AppRequestID }}
+                      <br/>
+                      <strong class="title-chat">Estado:</strong> {{ Status }}
+                      <br/>
+                      <strong class="title-chat">Descripción del requerimiento:</strong> {{ Summary }}
+                      <br/>
+                      <strong class="title-chat">Fecha de creación:</strong> {{ Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat">Fecha de solución:</strong> {{ Closed_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <br/>
+                      <strong class="title-chat">Descripción del Incidente / Solicitud:</strong> {{ Summary }}
+                      <br/>
+                      <strong class="title-chat">No. de INC / WO:</strong> {{ AppRequestID }}
+                      <br/>
+                      <strong class="title-chat">Estado:</strong> {{ statusIncidente }}
+                      <br/>
+                      <strong class="title-chat">Descripción:</strong> {{ descripcionIncidente }}
+                      <br/>
+                      <strong class="title-chat">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                    </p>
+                    
+                    <div class="descripcion-detallada">
+                      <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                    </div>
+                    
+                    <!-- Mensaje de cargando notas -->
+                    <div *ngIf="cargandoNotas" class="loading-dots">
+                      Cargando notas...
+                    </div>
+                  
+                    <!-- Notas (se muestran solo si ya cargaron y existe al menos la primera) -->
+                    <p *ngIf="!cargandoNotas && fechaNotaInc1" style="margin: 0;">
+                      <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
+                      <br/>
+                      
+                      <!-- Tercera nota -->
+                      <strong class="title-chat" *ngIf="numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat" *ngIf="numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
+                      <br/><br/>
+                      
+                      <!-- Segunda nota -->
+                      <strong class="title-chat" *ngIf="numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat" *ngIf="numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
+                      <br/><br/>
+                      
+                      <!-- Primera nota -->
+                      <strong class="title-chat" *ngIf="numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat" *ngIf="numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
+                    </p>
+                    
+                    <br/>
+                    <!-- Botón Agregar Nota (solo si ya cargamos notas) -->
+                    <button *ngIf="!cargandoNotas && fechaNotaInc1" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
+                    <br/><br/>
+                    
+                    <!-- Solución final -->
+                    <p *ngIf="resolution" style="margin: 0;">
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
+                      <br/>
+                      <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                      <br/>
+                    </p>
                   </div>
-                  <br />
-                  <div *ngIf="(!descriptionInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" class="loading-dots">Cargando notas...</div>
-                  <br *ngIf="(!descriptionInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" />
-                  <p *ngIf="fechaNotaInc1" style="margin: 0;">
-                    <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br /> 
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
-                      <br />
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
-                      <br />
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
-                  </p>
-                  <br />
-                  <button *ngIf="fechaNotaInc1" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
-                  <br />
-                  <br />
-                  <p *ngIf="resolution" style="margin: 0;">
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
-                    <br />
-                  </p>
+
+                  <!-- INC -->
+                  <div *ngIf="Incident_Number" class="chatbot-message anita-message">
+                    <p style="margin: 0;">
+                      <strong>Mesa Ágil:</strong> Descripción del incidente:
+                      <br/><br/>
+                      <strong class="title-chat">No. de incidente:</strong> {{ Incident_Number }}
+                      <br/>
+                      <strong class="title-chat">Estado:</strong> {{ statusIncidente }}
+                      <br/>
+                      <strong class="title-chat">Descripción:</strong> {{ descripcionIncidente }}
+                      <br/>
+                      <strong class="title-chat">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                    </p>
+                    <div class="descripcion-detallada">
+                      <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                    </div>
+                    <br/>
+                    
+                    <!-- Mensaje de cargando notas -->
+                    <div *ngIf="cargandoNotas" class="loading-dots">
+                      Cargando notas...
+                    </div>
+                  
+                    
+                    <!-- Notas (se muestran solo si ya cargaron y existe al menos la primera) -->
+                    <p *ngIf="!cargandoNotas && (fechaNotaInc1 || fechaNotaInc2 || fechaNotaInc3)" style="margin: 0;">
+                      <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
+                      <br/>
+
+                      <!-- Tercera nota -->
+                      <strong class="title-chat" *ngIf="numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat" *ngIf="numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
+                      <br/><br/>
+                      
+                      <!-- Segunda nota -->
+                      <strong class="title-chat" *ngIf="numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat" *ngIf="numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
+                      <br/><br/>
+                      
+                      <!-- Primera nota -->
+                      <strong class="title-chat" *ngIf="numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat" *ngIf="numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
+                    </p>
+                    <br/>
+                    
+                    <!-- Botón Agregar Nota (solo si ya cargamos notas) -->
+                    <button *ngIf="!cargandoNotas" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
+                    <br/><br/>
+                    
+                    <!-- Solución final -->
+                    <p *ngIf="resolution" style="margin: 0;">
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
+                      <br/>
+                      <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                      <br/>
+                    </p>
+                  </div>
+
+                  <!-- WO -->
+                  <div *ngIf="WO_Number" class="chatbot-message anita-message">
+                    <p style="margin: 0;">
+                      <strong>Mesa Ágil:</strong> Descripción de la solicitud:
+                      <br/><br/>
+                      <strong class="title-chat">No. de incidente:</strong> {{ WO_Number }}
+                      <br/>
+                      <strong class="title-chat">Estado:</strong> {{ statusIncidente }}
+                      <br/>
+                      <strong class="title-chat">Descripción:</strong> {{ descripcionIncidente }}
+                      <br/>
+                      <strong class="title-chat">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                    </p>
+                    <div class="descripcion-detallada">
+                      <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                    </div>
+                    <br/>
+                    
+                    <!-- Mensaje de cargando notas -->
+                    <div *ngIf="cargandoNotas" class="loading-dots">
+                      Cargando notas...
+                    </div>
+                    
+                    
+                    <!-- Notas (se muestran solo si ya cargaron y existe al menos la primera) -->
+                    <p *ngIf="!cargandoNotas && fechaNotaInc1" style="margin: 0;">
+                      <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
+                      <br/>
+                      
+                      <!-- Tercera nota -->
+                      <strong class="title-chat" *ngIf="numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat" *ngIf="numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
+                      <br/><br/>
+                      
+                      <!-- Segunda nota -->
+                      <strong class="title-chat" *ngIf="numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat" *ngIf="numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
+                      <br/><br/>
+                      
+                      <!-- Primera nota -->
+                      <strong class="title-chat" *ngIf="numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat" *ngIf="numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
+                    </p>
+                    <br/>
+                    
+                    <!-- Botón Agregar Nota (solo si ya cargamos notas) -->
+                    <button *ngIf="!cargandoNotas" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
+                    <br/><br/>
+                    
+                    <!-- Solución final -->
+                    <p *ngIf="resolution" style="margin: 0;">
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
+                      <br/>
+                      <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                      <br/>
+                    </p>
+                  </div>
+
                 </div>
 
-                <div *ngIf="Incident_Number" class="chatbot-message anita-message">
-                  <p style="margin: 0;"><strong>Mesa Ágil:</strong>
-                    Descripción del incidente:
-                    <br />
-                    <br />
-                    <strong class="title-chat">No. de incidente:</strong> {{ Incident_Number }}
-                    <br />
-                    <strong class="title-chat">Estado:</strong> {{ statusIncidente }}
-                    <br />
-                    <strong class="title-chat">Descripción:</strong> {{ descripcionIncidente }}
-                    <br />
-                    <strong class="title-chat">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                  </p>
-                  <div class="descripcion-detallada">
-                    <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
-                  </div>
-                  <br />
-                  <div *ngIf="!descriptionInc1" class="loading-dots">Cargando notas...</div>
-                  <br />
-                  <p *ngIf="datosCargados && (fechaNotaInc1 || fechaNotaInc2 || fechaNotaInc3)" style="margin: 0;">
-                    <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
-                       <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
-                      <br />
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
-                      <br />
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
-                  </p>
-                  <br />
-                  <button (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
-                  <br />
-                  <br />
-                  <p *ngIf="resolution" style="margin: 0;">
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
-                    <br />
-                  </p>
-                </div>
-
-                <div *ngIf="WO_Number" class="chatbot-message anita-message">
-                  <p style="margin: 0;"><strong>Mesa Ágil:</strong>
-                    Descripción de la solicitud:
-                    <br />
-                    <br />
-                    <strong class="title-chat">No. de incidente:</strong> {{ WO_Number }}
-                    <br />
-                    <strong class="title-chat" >Estado:</strong> {{ statusIncidente }}
-                    <br />
-                    <strong class="title-chat" >Descripción:</strong> {{ descripcionIncidente }}
-                    <br />
-                    <strong class="title-chat" >Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                  </p>
-                  <div class="descripcion-detallada">
-                    <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
-                  </div>
-                  <br />
-                  <div *ngIf="!descriptionInc1" class="loading-dots">Cargando notas...</div>
-                  <br />
-                  <p *ngIf="fechaNotaInc1" style="margin: 0;">
-                    <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
-                    <br />
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}    
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
-                    <br />
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
-                  </p>
-                  <br />
-                  <button (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
-                  <br />
-                  <br />
-                  <p *ngIf="resolution" style="margin: 0;">
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
-                    <br />
-                  </p>
-                </div>
-               
-              </div>
 
               <!-- Mensaje 7 Anita (Si se selecciona hisotico Casos)-->
               <div *ngIf="noReq1" class="chatbot-message anita-message">

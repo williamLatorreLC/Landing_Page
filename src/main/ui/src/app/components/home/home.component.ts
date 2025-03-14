@@ -183,6 +183,7 @@ export class HomeComponent implements OnInit {
   ocultarInputNotas: any;
   calificacion: any;
   likeDisable: any;
+  cargandoNotas: boolean;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -804,184 +805,6 @@ export class HomeComponent implements OnInit {
     this.fechaInc5 = null;
   }
 
-  async consultarReq() {
-    try {
-      const isValid = await this.validacionSeguridad();
-
-      if (!isValid) {
-        this.numeroRequerimientoIngresado = this.numeroRequerimiento;
-        this.ocultarInputReq = true;
-        this.numeroRequerimiento = ""
-        this.scrollToBottom();
-        return;
-      }
-
-      const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
-      this.ocultarInputReq = true;
-      this.Request_Number = res.response.Request_Number;
-      this.AppRequestID = res.response.AppRequestID;
-      this.Status = res.response.Status;
-      this.Summary = res.response.Summary;
-      this.Submit_Date = res.response.Submit_Date;
-      this.Closed_Date = res.response.Closed_Date;
-      this.numeroRequerimientoIngresado = res.response.Request_Number;
-      this.numberRequerimiento.controls['reqNumber'].setValue('');
-      this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_req_success');
-      setTimeout(() => {
-        this.scrollToBottom();
-      }, 1000);
-
-      this.resolution = null
-      if (this.AppRequestID.startsWith("INC")) {
-        this.resolution
-        try {
-          const resINC = await this.casosService.post('ConsultarINC', {
-            incNumber: this.AppRequestID,
-          });
-
-          if (resINC.response.Status) {
-            this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
-            this.statusIncidente = resINC.response.Status;
-            this.descripcionIncidente = resINC.response.Description;
-            this.fechaCreacionIncidente = resINC.response.Submit_Date;
-            this.scrollToBottom();
-
-            const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', {
-              incNumber: this.AppRequestID,
-            })
-
-            this.datosCargados = false;
-            this.numeroNotas = consultarNotaInc.response.lastThreeListValues.length
-
-            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 0) {
-              this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Submit_Date?.trim() || null;
-              this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc1 = null;
-              this.descriptionInc1 = null;
-            }
-
-            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 1) {
-              this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Submit_Date?.trim() || null;
-              this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc2 = null;
-              this.descriptionInc2 = null;
-            }
-
-            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 2) {
-              this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Submit_Date?.trim() || null;
-              this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc3 = null;
-              this.descriptionInc3 = null;
-            }
-
-            if(this.numeroNotas === 0){
-              this.messageError = "Este caso aún no tiene notas disponibles."
-              this.descriptionInc1 = null;
-              this.datosCargados = true;
-            }
-
-            this.datosCargados = true;
-            this.resolution = resINC.response.Resolution;
-            this.fechaResolution = resINC.response.Real_Solution_Date;
-            this.scrollToBottom();
-
-
-          } else {
-            this.Incident_Number = null
-            this.fechaNotaInc1 = null
-
-          }
-
-        } catch (err) {
-          console.error(err);
-          this.Incident_Number = null
-          this.fechaNotaInc1 = null
-        }
-
-
-      } else if (this.AppRequestID.startsWith("WO")) {
-        try {
-          const resWO = await this.casosService.post('ConsultarWO', {
-            woNumber: this.AppRequestID,
-          });
-
-          if (resWO.response.Status) {
-            this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
-            this.statusIncidente = resWO.response.Status;
-            this.descripcionIncidente = resWO.response.Summary;
-            this.fechaCreacionIncidente = resWO.response.Submit_Date;
-            this.scrollToBottom();
-
-            const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', {
-              woNumber: this.AppRequestID,
-            })
-
-            this.datosCargados = false;
-
-            this.numeroNotas = consultarNotaWO.response.lastThreeListValues.length
-
-            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 0) {
-              this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Work_Log_Submit_Date?.trim() || null;
-              this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc1 = null;
-              this.descriptionInc1 = null;
-            }
-
-            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 1) {
-              this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Work_Log_Submit_Date?.trim() || null;
-              this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc2 = null;
-              this.descriptionInc2 = null;
-            }
-
-            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 2) {
-              this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Work_Log_Submit_Date?.trim() || null;
-              this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc3 = null;
-              this.descriptionInc3 = null;
-            }
-            
-            if(this.numeroNotas === 0){
-              this.messageError = "Este caso aún no tiene notas disponibles."
-              this.descriptionInc1 = null;
-              this.datosCargados = true;
-            }
-
-            this.datosCargados = true;
-            this.scrollToBottom();
-
-
-          } else {
-            this.WO_Number = null
-            this.fechaNotaInc1 = null
-          }
-
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 1000);
-
-
-        }
-        catch (err) {
-          console.error(err);
-          this.WO_Number = null
-          this.fechaNotaInc1 = null
-        }
-
-      }
-    } catch (err) {
-      console.error(err);
-      this.WO_Number = null
-      this.fechaNotaInc1 = null
-    }
-  }
-
 
   async validacionSeguridad(): Promise<boolean> { 
     try {
@@ -1018,84 +841,253 @@ export class HomeComponent implements OnInit {
       return false;
     }
   }
+  async consultarReq() {
+    try {
+      // Validación de seguridad previa
+      const isValid = await this.validacionSeguridad();
+      if (!isValid) {
+        this.numeroRequerimientoIngresado = this.numeroRequerimiento;
+        this.ocultarInputReq = true;
+        this.numeroRequerimiento = "";
+        this.scrollToBottom();
+        return;
+      }
 
+      // Consultar requerimiento
+      const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
+      this.ocultarInputReq = true;
 
-  async consultarInc() {
-    this.resolution = null;
+      // Llenar datos del REQ
+      this.Request_Number = res.response.Request_Number;
+      this.AppRequestID = res.response.AppRequestID;
+      this.Status = res.response.Status;
+      this.Summary = res.response.Summary;
+      this.Submit_Date = res.response.Submit_Date;
+      this.Closed_Date = res.response.Closed_Date;
+      this.numeroRequerimientoIngresado = res.response.Request_Number;
 
-    const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
+      // Limpiar input
+      this.numberRequerimiento.controls['reqNumber'].setValue('');
+      this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_req_success');
 
-    if (resINC.response.message) {
-      this.numeroIncIngresado = this.numeroI;
-      this.messageError = resINC.response.message;
-      this.numeroI = "";
-      this.ocultarInputInc = true;
       setTimeout(() => {
         this.scrollToBottom();
       }, 1000);
-    } else {
 
-      this.Incident_Number = resINC.response.Incident_Number;
-      this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
-      this.statusIncidente = resINC.response.Status;
-      this.descripcionIncidente = resINC.response.Description;
-      this.fechaCreacionIncidente = resINC.response.Submit_Date;
-      this.numeroIncIngresado = resINC.response.Incident_Number;
-      this.ocultarInputInc = true;
-      this.scrollToBottom();
-      this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_inc_success');
-      this.numeroI = "";
+      // Reset resolución y notas
+      this.resolution = null;
+      this.fechaResolution = null;
+      this.fechaNotaInc1 = null;
+      this.fechaNotaInc2 = null;
+      this.fechaNotaInc3 = null;
+      this.descriptionInc1 = null;
+      this.descriptionInc2 = null;
+      this.descriptionInc3 = null;
+      this.numeroNotas = -1;
+      this.cargandoNotas = false;
 
-      const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', this.numberINC.value);
+      // Si es un INC
+      if (this.AppRequestID.startsWith("INC")) {
+        try {
+          // Consultamos incidente
+          const resINC = await this.casosService.post('ConsultarINC', { incNumber: this.AppRequestID });
+          if (resINC.response.Status) {
+            this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
+            this.statusIncidente = resINC.response.Status;
+            this.descripcionIncidente = resINC.response.Description;
+            this.fechaCreacionIncidente = resINC.response.Submit_Date;
 
-      this.datosCargados = false;
-      this.numeroNotas = consultarNotaInc.response.lastThreeListValues.length
+            this.scrollToBottom();
 
-      if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 0) {
-        this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Submit_Date?.trim() || null;
-        this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
-      } else {
-        this.fechaNotaInc1 = null;
-        this.descriptionInc1 = null;
+            // Ahora consultamos las notas
+            this.cargandoNotas = true;
+            const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', { incNumber: this.AppRequestID });
+            this.numeroNotas = consultarNotaInc.response.lastThreeListValues.length;
+
+            if (this.numeroNotas > 0) {
+              this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Submit_Date?.trim() || null;
+              this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
+            }
+            if (this.numeroNotas > 1) {
+              this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Submit_Date?.trim() || null;
+              this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
+            }
+            if (this.numeroNotas > 2) {
+              this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Submit_Date?.trim() || null;
+              this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
+            }
+
+            // Si la cantidad de notas es 0, mostramos error (opcional)
+            if (this.numeroNotas === 0) {
+              this.messageError = "Este caso aún no tiene notas disponibles.";
+            }
+
+            // Solución
+            this.resolution = resINC.response.Resolution;
+            this.fechaResolution = resINC.response.Real_Solution_Date;
+
+            this.cargandoNotas = false;
+            this.scrollToBottom();
+          } else {
+            // No se encontró el INC
+            this.Incident_Number = null;
+          }
+        } catch (err) {
+          console.error(err);
+          this.Incident_Number = null;
+          this.cargandoNotas = false;
+        }
+
+      // Si es un WO
+      } else if (this.AppRequestID.startsWith("WO")) {
+        try {
+          // Consultamos la Work Order
+          const resWO = await this.casosService.post('ConsultarWO', { woNumber: this.AppRequestID });
+          if (resWO.response.Status) {
+            this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
+            this.statusIncidente = resWO.response.Status;
+            this.descripcionIncidente = resWO.response.Summary;
+            this.fechaCreacionIncidente = resWO.response.Submit_Date;
+
+            this.scrollToBottom();
+
+            // Cargar notas
+            this.cargandoNotas = true;
+            const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', { woNumber: this.AppRequestID });
+            this.numeroNotas = consultarNotaWO.response.lastThreeListValues.length;
+
+            if (this.numeroNotas > 0) {
+              this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Work_Log_Submit_Date?.trim() || null;
+              this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
+            }
+            if (this.numeroNotas > 1) {
+              this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Work_Log_Submit_Date?.trim() || null;
+              this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
+            }
+            if (this.numeroNotas > 2) {
+              this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Work_Log_Submit_Date?.trim() || null;
+              this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
+            }
+
+            if (this.numeroNotas === 0) {
+              this.messageError = "Este caso aún no tiene notas disponibles.";
+            }
+
+            this.cargandoNotas = false;
+            this.scrollToBottom();
+          } else {
+            // No se encontró la WO
+            this.WO_Number = null;
+            this.cargandoNotas = false;
+          }
+
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 1000);
+        } catch (err) {
+          console.error(err);
+          this.WO_Number = null;
+          this.cargandoNotas = false;
+        }
       }
-
-      if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 1) {
-        this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Submit_Date?.trim() || null;
-        this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
-      } else {
-        this.fechaNotaInc2 = null;
-        this.descriptionInc2 = null;
-      }
-
-      if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 2) {
-        this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Submit_Date?.trim() || null;
-        this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
-      } else {
-        this.fechaNotaInc3 = null;
-        this.descriptionInc3 = null;
-      }
-
-      if(this.numeroNotas === 0){
-        this.messageError = "Este caso aún no tiene notas disponibles."
-        this.descriptionInc1 = null;
-        this.datosCargados = true;
-      }
-
-      this.datosCargados = true;
-      // Datos adicionales
-      this.resolution = resINC.response.Resolution;
-      this.fechaResolution = resINC.response.Real_Solution_Date;
-      this.scrollToBottom();
-
+    } catch (err) {
+      console.error(err);
+      this.WO_Number = null;
+      this.fechaNotaInc1 = null;
+      this.cargandoNotas = false;
     }
+  }
 
+
+  async consultarInc() {
+    try {
+      // Reiniciar estados
+      this.resolution = null;
+      this.fechaResolution = null;
+      this.cargandoNotas = false;
+      this.numeroNotas = -1;
+
+      // Consultar Incidente
+      const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
+
+      if (resINC.response.message) {
+        // Error al consultar
+        this.numeroIncIngresado = this.numeroI;
+        this.messageError = resINC.response.message;
+        this.numeroI = "";
+        this.ocultarInputInc = true;
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 1000);
+        return;
+      } else {
+        // Datos del incidente
+        this.Incident_Number = resINC.response.Incident_Number;
+        this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
+        this.statusIncidente = resINC.response.Status;
+        this.descripcionIncidente = resINC.response.Description;
+        this.fechaCreacionIncidente = resINC.response.Submit_Date;
+        this.numeroIncIngresado = resINC.response.Incident_Number;
+        this.ocultarInputInc = true;
+        this.scrollToBottom();
+        this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_inc_success');
+        this.numeroI = "";
+
+        // Consultar notas
+        this.cargandoNotas = true;
+        const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', this.numberINC.value);
+        this.numeroNotas = consultarNotaInc.response.lastThreeListValues.length;
+
+        if (this.numeroNotas > 0) {
+          this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Submit_Date?.trim() || null;
+          this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
+        } else {
+          this.fechaNotaInc1 = null;
+          this.descriptionInc1 = null;
+        }
+
+        if (this.numeroNotas > 1) {
+          this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Submit_Date?.trim() || null;
+          this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
+        } else {
+          this.fechaNotaInc2 = null;
+          this.descriptionInc2 = null;
+        }
+
+        if (this.numeroNotas > 2) {
+          this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Submit_Date?.trim() || null;
+          this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
+        } else {
+          this.fechaNotaInc3 = null;
+          this.descriptionInc3 = null;
+        }
+
+        if (this.numeroNotas === 0) {
+          this.messageError = "Este caso aún no tiene notas disponibles.";
+        }
+
+        // Datos adicionales
+        this.resolution = resINC.response.Resolution;
+        this.fechaResolution = resINC.response.Real_Solution_Date;
+
+        this.cargandoNotas = false;
+        this.scrollToBottom();
+      }
+    } catch (error) {
+      console.error(error);
+      this.cargandoNotas = false;
+    }
   }
 
 
   async consultarWo() {
     try {
-      const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
+      // Reiniciar estados
+      this.cargandoNotas = false;
+      this.numeroNotas = -1;
 
+      // Consultar Work Order
+      const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
       if (resWO.response?.message) {
         this.numeroWoIngresado = this.numeroW;
         this.messageError = resWO.response.message;
@@ -1107,7 +1099,7 @@ export class HomeComponent implements OnInit {
         return;
       }
 
-
+      // Datos de la WO
       this.WO_Number = resWO.response?.Work_Order_ID || null;
       this.descripcionIncidenteDetallada = resWO.response?.Detailed_Description || '';
       this.statusIncidente = resWO.response?.Status || '';
@@ -1118,13 +1110,12 @@ export class HomeComponent implements OnInit {
       this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_wo_success');
       this.scrollToBottom();
 
+      // Consultar notas
+      this.cargandoNotas = true;
       const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value);
+      this.numeroNotas = consultarNotaWO.response.lastThreeListValues.length;
 
-      this.datosCargados = false;
-
-      this.numeroNotas = consultarNotaWO.response.lastThreeListValues.length
-
-      if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 0) {
+      if (this.numeroNotas > 0) {
         this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Work_Log_Submit_Date?.trim() || null;
         this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
       } else {
@@ -1132,7 +1123,7 @@ export class HomeComponent implements OnInit {
         this.descriptionInc1 = null;
       }
 
-      if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 1) {
+      if (this.numeroNotas > 1) {
         this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Work_Log_Submit_Date?.trim() || null;
         this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
       } else {
@@ -1140,7 +1131,7 @@ export class HomeComponent implements OnInit {
         this.descriptionInc2 = null;
       }
 
-      if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 2) {
+      if (this.numeroNotas > 2) {
         this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Work_Log_Submit_Date?.trim() || null;
         this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
       } else {
@@ -1148,21 +1139,21 @@ export class HomeComponent implements OnInit {
         this.descriptionInc3 = null;
       }
 
-      if(this.numeroNotas === 0){
-        this.messageError = "Este caso aún no tiene notas disponibles."
-        this.descriptionInc1 = null;
-        this.datosCargados = true;
+      if (this.numeroNotas === 0) {
+        this.messageError = "Este caso aún no tiene notas disponibles.";
       }
 
-      this.datosCargados = true;
+      this.cargandoNotas = false;
       this.numeroW = "";
       this.scrollToBottom();
 
     } catch (error) {
-      this.resetInfo()
+      console.error(error);
+      this.resetInfo();
+      this.cargandoNotas = false;
     }
-
   }
+
 
   async agregarNota(AppRequestID?: string, ) {
     try {
