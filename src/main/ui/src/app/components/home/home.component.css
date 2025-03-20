@@ -58,7 +58,8 @@
   color: #ffffff;
   padding: 15px;
   display: flex;
-  justify-content: flex-end; /* Alinea los elementos hacia la derecha */
+  justify-content: flex-end;
+  /* Alinea los elementos hacia la derecha */
   align-items: center;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -67,7 +68,8 @@
 .chatbot-title {
   margin: 0;
   font-size: 1.5rem;
-  flex-grow: 1; /* Esto asegura que el título ocupe el espacio restante */
+  flex-grow: 1;
+  /* Esto asegura que el título ocupe el espacio restante */
 }
 
 .chatbot-close-btn,
@@ -85,7 +87,8 @@
 
 .chatbot-minize-btn {
   font-size: 2rem;
-  margin-left: 10px; /* Espacio entre los botones */
+  margin-left: 10px;
+  /* Espacio entre los botones */
 }
 
 
@@ -250,8 +253,10 @@
 
 .button-container {
   display: flex;
-  gap: 10px; /* Espaciado entre los botones */
-  justify-content: start; /* Centrar en la pantalla */
+  gap: 10px;
+  /* Espaciado entre los botones */
+  justify-content: start;
+  /* Centrar en la pantalla */
 }
 
 .chatbot-return-button {
@@ -342,7 +347,7 @@
 }
 
 .chatbot-maximize-btn {
-  
+
   font-size: 2rem;
   margin-left: 4px;
   margin-top: -9px;
@@ -360,4 +365,25 @@
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+ #fileInput {
+  display: none;
+}
+
+.custom-file-button {
+  border: 0;
+  border-radius: .25em;
+  background: initial;
+  color: #fff;
+  font-size: 1em;
+  display: inline-block;
+  background-color: rgb(255, 0, 24);
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-file-button:hover {
+  background-color: rgb(200, 0, 20);
 }
