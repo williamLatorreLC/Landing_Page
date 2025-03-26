@@ -56,7 +56,7 @@
   margin-bottom: 10px;
   background-color: #da1024;
   color: #ffffff;
-  padding: 15px;
+  padding: 8px;
   display: flex;
   justify-content: flex-end;
   /* Alinea los elementos hacia la derecha */
@@ -83,11 +83,13 @@
 
 .chatbot-close-btn {
   font-size: 1.3rem;
+  font-weight: 700;
 }
 
 .chatbot-minize-btn {
   font-size: 2rem;
   margin-left: 10px;
+  font-weight: 700;
   /* Espacio entre los botones */
 }
 

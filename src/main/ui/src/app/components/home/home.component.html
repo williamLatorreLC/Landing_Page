@@ -303,12 +303,12 @@
               <div class="chatbot-message anita-message">
                 <p><strong>Mesa Ágil:</strong> Selecciona una opción:
                 </p>
-                <h6 class="chatbot-link" (click)="consultarCaso(); resetInfo();">Consultar caso de MyIT</h6>
+                <h6 class="chatbot-link" (click)="consultarCaso(); resetInfo();">Consultar caso de Mi Asistencia 360</h6>
               </div>
 
               <!-- Mensaje User 1-->
               <div *ngIf="consultarOcrearCaso" class="chatbot-message user-message">
-                <p><strong>{{ infoUser.First_Name }}:</strong> Consultar o crear caso de MyIT</p>
+                <p><strong>{{ infoUser.First_Name }}:</strong> Consultar caso de Mi Asistencia 360</p>
               </div>
 
               <!-- Mensaje 4 Anita (Consultar o Crear Caso) -->
@@ -416,7 +416,7 @@
                     <div *ngIf="cargandoNotas" class="loading-dots">
                       Cargando notas...
                     </div>
-                    
+                    <br/>
                     <!-- Notas (renderizado dinámico) -->
                     <div *ngIf="!cargandoNotas && notas?.length">
                       <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
@@ -431,7 +431,7 @@
                     
                     <br/>
                     <!-- Botón Agregar Nota (solo si existen notas cargadas) -->
-                    <button class="custom-file-button" *ngIf="!cargandoNotas && notas?.length" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
+                    <button class="custom-file-button" *ngIf="!cargandoNotas" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
                     <br/><br/>
                     
                     <!-- Solución final -->
@@ -484,7 +484,7 @@
                     
                     <br/>
                     <!-- Botón Agregar Nota -->
-                    <button class="custom-file-button" *ngIf="!cargandoNotas && notas?.length" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
+                    <button class="custom-file-button" *ngIf="!cargandoNotas" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
                     <br/><br/>
                     
                     <!-- Solución final -->
@@ -537,7 +537,7 @@
                     
                     <br/>
                     <!-- Botón Agregar Nota -->
-                    <button class="custom-file-button" *ngIf="!cargandoNotas && notas?.length" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
+                    <button class="custom-file-button" *ngIf="!cargandoNotas" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
                     <br/><br/>
                     
                     <!-- Solución final -->
@@ -849,7 +849,7 @@
           </div>
           <div class="derechos col-md-7 col-12 text-center p-2 d-none d-md-block"
             style="z-index: -1; background-color: #da1024">
-            Claro Colombia 2024. Todos los derechos reservados
+            Claro Colombia 2025. Todos los derechos reservados
           </div>
           <div class="col-md-7 col-12 mt-5">
             <div class="container-fluid p-0">
