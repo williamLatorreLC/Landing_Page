@@ -177,7 +177,14 @@ export class HomeComponent implements OnInit {
   sumarryInc5: any;
   fechaInc4: any;
   fechaInc5: any;
-
+  ocultarInputReq: any;
+  ocultarInputInc: any;
+  ocultarInputWo: any;
+  ocultarInputNotas: any;
+  calificacion: any;
+  likeDisable: any;
+  cargandoNotas: boolean;
+  notas: any;
 
   constructor(
     private _config: NgbCarouselConfig,
@@ -265,6 +272,7 @@ export class HomeComponent implements OnInit {
         console.log(err);
       });
   }
+
   getInfo() {
     this.factoryService
       .post('utils/dec', { token: sessionStorage.getItem('X_MYIT_LAND') })
@@ -279,6 +287,7 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
   open(content: any) {
     if (content._declarationTContainer.localNames[0] == 'mymodal') {
       this.GtmServicesService.Tagging('Home', 'bt_home_it');
@@ -305,6 +314,7 @@ export class HomeComponent implements OnInit {
       );
     }
   }
+
   goToContinue(modal: any) {
     window.open(
       this.infoUser.MyItStore
@@ -319,6 +329,7 @@ export class HomeComponent implements OnInit {
       this.menu = true;
     }
   }
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -328,16 +339,19 @@ export class HomeComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+
   goToUsuRes() {
     window.open(
       this.infoUser.MyItResolutor
     );
     this.modalService.dismissAll();
   }
+
   goToUsuMyIt() {
     window.open(this.infoUser.MyItUser);
     this.modalService.dismissAll();
   }
+
   getSurveys() {
     this.GtmServicesService.Tagging('Home', 'bt_home_encuestas');
     $('#siteloader').html('');
@@ -385,6 +399,7 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
   cerrarsesion() {
     this.GtmServicesService.Tagging('Home', 'bt_home_cerrarsesion');
     this.factoryService
@@ -404,6 +419,7 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
   abrirChat() {
     this.validarConsultaDeCaso = false;
     this.GtmServicesService.Tagging('Home', 'bt_home_chatbot');
@@ -558,9 +574,25 @@ export class HomeComponent implements OnInit {
    
 
   abrirChatInHouse() {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil');
     this.mostrarChat = true;
     this.validarConsultaDeCaso = false;
     this.scrollToBottom(); 
+  }
+
+  like(){
+    this.GtmServicesService.Tagging('Home', 'bt_like_mesa_agil');
+    this.calificacion = "Gracias por tu opinión";
+    this.likeDisable = true;
+    this.scrollToBottom();
+    
+  }
+
+  noLike(){
+    this.GtmServicesService.Tagging('Home', 'bt_NO_like_mesa_agil');
+    this.calificacion = "Gracias por tu opinión";
+    this.likeDisable  = true;
+    this.scrollToBottom();
   }
 
   cerrarChatInHouse() {
@@ -570,6 +602,7 @@ export class HomeComponent implements OnInit {
   }
 
   consultarCaso() {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso');
     this.consultarOcrearCaso = !this.consultarOcrearCaso;
     setTimeout(() => {
       this.consultaCaso = !this.consultaCaso;
@@ -580,6 +613,7 @@ export class HomeComponent implements OnInit {
   }
 
   SearchReq() {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_req');
     setTimeout(() => {
       this.selectReq = !this.selectReq;
       this.selectInc = false;
@@ -592,7 +626,8 @@ export class HomeComponent implements OnInit {
   }
 
   SearchInc() {
-    setTimeout(() => {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_inc');
+      setTimeout(() => {
       this.selectInc = !this.selectInc;
       this.selectReq = false;
       this.selectWo = false;
@@ -604,7 +639,8 @@ export class HomeComponent implements OnInit {
   }
 
   SearchWo() {
-    setTimeout(() => {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_wo');
+     setTimeout(() => {
       this.selectWo = !this.selectWo;
       this.selectInc = false;
       this.selectReq = false;
@@ -616,6 +652,7 @@ export class HomeComponent implements OnInit {
   }
 
   SearchHC() {
+    this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_historico');
     setTimeout(() => {
       this.selectHc = !this.selectHc;
       this.selectWo = false;
@@ -699,6 +736,12 @@ export class HomeComponent implements OnInit {
     this.selectWo = false;
     this.selectHc = false;
     this.crearNota = false;
+    this.ocultarInputReq = false;
+    this.ocultarInputInc = false;
+    this.ocultarInputWo = false;
+    this.ocultarInputNotas = false;
+    this.calificacion = null;
+    this.likeDisable = false;
 
     //Variables para el boton de volver
     this.messageErrorHc = null;
@@ -709,6 +752,8 @@ export class HomeComponent implements OnInit {
     this.WO_Number = null;
     this.noReq1 = null;
     this.creadoExitoso = null;
+    this.notas = null;
+
   }
 
   resetInfo() {
@@ -772,169 +817,6 @@ export class HomeComponent implements OnInit {
     this.fechaInc5 = null;
   }
 
-  async consultarReq() {
-    try {
-      const isValid = await this.validacionSeguridad();
-
-      if (!isValid) {
-        this.numeroRequerimientoIngresado = this.numeroRequerimiento;
-        this.scrollToBottom();
-        return;
-      }
-
-      const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
-      this.Request_Number = res.response.Request_Number;
-      this.AppRequestID = res.response.AppRequestID;
-      this.Status = res.response.Status;
-      this.Summary = res.response.Summary;
-      this.Submit_Date = res.response.Submit_Date;
-      this.Closed_Date = res.response.Closed_Date;
-      this.numeroRequerimientoIngresado = res.response.Request_Number;
-      this.numberRequerimiento.controls['reqNumber'].setValue('');
-
-      setTimeout(() => {
-        this.scrollToBottom();
-      }, 1000);
-
-      this.resolution = null
-      if (this.AppRequestID.startsWith("INC")) {
-        this.resolution
-        try {
-          const resINC = await this.casosService.post('ConsultarINC', {
-            incNumber: this.AppRequestID,
-          });
-
-          if (resINC.response.Status) {
-            this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
-            this.statusIncidente = resINC.response.Status;
-            this.descripcionIncidente = resINC.response.Description;
-            this.fechaCreacionIncidente = resINC.response.Submit_Date;
-            this.scrollToBottom();
-
-            const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', {
-              incNumber: this.AppRequestID,
-            })
-
-            this.datosCargados = false;
-            this.numeroNotas = consultarNotaInc.response.lastThreeListValues.length
-
-            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 0) {
-              this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Submit_Date?.trim() || null;
-              this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc1 = null;
-              this.descriptionInc1 = null;
-            }
-
-            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 1) {
-              this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Submit_Date?.trim() || null;
-              this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc2 = null;
-              this.descriptionInc2 = null;
-            }
-
-            if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 2) {
-              this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Submit_Date?.trim() || null;
-              this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc3 = null;
-              this.descriptionInc3 = null;
-            }
-
-            this.datosCargados = true;
-            this.resolution = resINC.response.Resolution;
-            this.fechaResolution = resINC.response.Real_Solution_Date;
-            this.scrollToBottom();
-
-
-          } else {
-            this.Incident_Number = null
-            this.fechaNotaInc1 = null
-
-          }
-
-        } catch (err) {
-          console.error(err);
-          this.Incident_Number = null
-          this.fechaNotaInc1 = null
-        }
-
-
-      } else if (this.AppRequestID.startsWith("WO")) {
-        try {
-          const resWO = await this.casosService.post('ConsultarWO', {
-            woNumber: this.AppRequestID,
-          });
-
-          if (resWO.response.Status) {
-            this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
-            this.statusIncidente = resWO.response.Status;
-            this.descripcionIncidente = resWO.response.Summary;
-            this.fechaCreacionIncidente = resWO.response.Submit_Date;
-            this.scrollToBottom();
-
-            const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', {
-              woNumber: this.AppRequestID,
-            })
-
-            this.datosCargados = false;
-
-            this.numeroNotas = consultarNotaWO.response.lastThreeListValues.length
-
-            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 0) {
-              this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Work_Log_Submit_Date?.trim() || null;
-              this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc1 = null;
-              this.descriptionInc1 = null;
-            }
-
-            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 1) {
-              this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Work_Log_Submit_Date?.trim() || null;
-              this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc2 = null;
-              this.descriptionInc2 = null;
-            }
-
-            if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 2) {
-              this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Work_Log_Submit_Date?.trim() || null;
-              this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
-            } else {
-              this.fechaNotaInc3 = null;
-              this.descriptionInc3 = null;
-            }
-
-            this.datosCargados = true;
-            this.scrollToBottom();
-
-
-          } else {
-            this.WO_Number = null
-            this.fechaNotaInc1 = null
-          }
-
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 1000);
-
-
-        }
-        catch (err) {
-          console.error(err);
-          this.WO_Number = null
-          this.fechaNotaInc1 = null
-        }
-
-      }
-    } catch (err) {
-      console.error(err);
-      this.WO_Number = null
-      this.fechaNotaInc1 = null
-    }
-  }
-
 
   async validacionSeguridad(): Promise<boolean> { 
     try {
@@ -972,132 +854,244 @@ export class HomeComponent implements OnInit {
     }
   }
 
-
-  async consultarInc() {
-    this.resolution = null;
-
-    const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
-
-    if (resINC.response.message) {
-      this.numeroIncIngresado = this.numeroI;
-      this.messageError = resINC.response.message;
-      this.numeroI = "";
+  async consultarReq() {
+    try {
+      // Validación de seguridad previa
+      const isValid = await this.validacionSeguridad();
+      if (!isValid) {
+        this.numeroRequerimientoIngresado = this.numeroRequerimiento;
+        this.ocultarInputReq = true;
+        this.numeroRequerimiento = "";
+        this.scrollToBottom();
+        return;
+      }
+  
+      // Consultar requerimiento
+      const res = await this.casosService.post('ConsultarReq', this.numberRequerimiento.value);
+      this.ocultarInputReq = true;
+      this.Request_Number = res.response.Request_Number;
+      this.AppRequestID = res.response.AppRequestID;
+      this.Status = res.response.Status;
+      this.Summary = res.response.Summary;
+      this.Submit_Date = res.response.Submit_Date;
+      this.Closed_Date = res.response.Closed_Date;
+      this.numeroRequerimientoIngresado = res.response.Request_Number;
+      this.numberRequerimiento.controls['reqNumber'].setValue('');
+      this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_req_success');
+  
       setTimeout(() => {
         this.scrollToBottom();
       }, 1000);
-    } else {
-
-      this.Incident_Number = resINC.response.Incident_Number;
-      this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
-      this.statusIncidente = resINC.response.Status;
-      this.descripcionIncidente = resINC.response.Description;
-      this.fechaCreacionIncidente = resINC.response.Submit_Date;
-      this.numeroIncIngresado = resINC.response.Incident_Number;
-      this.scrollToBottom();
-      this.numeroI = "";
-
-      const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', this.numberINC.value);
-
-      this.datosCargados = false;
-      this.numeroNotas = consultarNotaInc.response.lastThreeListValues.length
-
-      if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 0) {
-        this.fechaNotaInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Submit_Date?.trim() || null;
-        this.descriptionInc1 = consultarNotaInc.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
-      } else {
-        this.fechaNotaInc1 = null;
-        this.descriptionInc1 = null;
+  
+      // Resetear resolución y notas
+      this.resolution = null;
+      this.fechaResolution = null;
+      this.notas = []; // Array dinámico para las notas
+      this.cargandoNotas = false;
+  
+      // Si es un INC
+      if (this.AppRequestID.startsWith("INC")) {
+        try {
+          // Consultamos incidente
+          const resINC = await this.casosService.post('ConsultarINC', { incNumber: this.AppRequestID });
+          if (resINC.response.Status) {
+            this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
+            this.statusIncidente = resINC.response.Status;
+            this.descripcionIncidente = resINC.response.Description;
+            this.fechaCreacionIncidente = resINC.response.Submit_Date;
+  
+            this.scrollToBottom();
+  
+            // Consultamos las notas
+            this.cargandoNotas = true;
+            const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', { incNumber: this.AppRequestID });
+            this.notas = consultarNotaInc.response.lastThreeListValues.map((nota: { Submit_Date: string; Detailed_Description: string; }) => ({
+              Submit_Date: nota.Submit_Date?.trim() || null,
+              Detailed_Description: nota.Detailed_Description?.trim() || null
+            }));
+  
+            if (this.notas.length === 0) {
+              this.messageError = "Este caso aún no tiene notas disponibles.";
+            }
+  
+            // Solución
+            this.resolution = resINC.response.Resolution;
+            this.fechaResolution = resINC.response.Real_Solution_Date;
+  
+            this.cargandoNotas = false;
+            this.scrollToBottom();
+          } else {
+            // No se encontró el INC
+            this.Incident_Number = null;
+          }
+        } catch (err) {
+          console.error(err);
+          this.Incident_Number = null;
+          this.cargandoNotas = false;
+        }
+  
+      // Si es un WO
+      } else if (this.AppRequestID.startsWith("WO")) {
+        try {
+          // Consultamos la Work Order
+          const resWO = await this.casosService.post('ConsultarWO', { woNumber: this.AppRequestID });
+          if (resWO.response.Status) {
+            this.descripcionIncidenteDetallada = resWO.response.Detailed_Description;
+            this.statusIncidente = resWO.response.Status;
+            this.descripcionIncidente = resWO.response.Summary;
+            this.fechaCreacionIncidente = resWO.response.Submit_Date;
+  
+            this.scrollToBottom();
+  
+            // Consultamos las notas
+            this.cargandoNotas = true;
+            const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', { woNumber: this.AppRequestID });
+            this.notas = consultarNotaWO.response.lastThreeListValues.map((nota: { Work_Log_Submit_Date: string; Detailed_Description: string; }) => ({
+              Submit_Date: nota.Work_Log_Submit_Date?.trim() || null,
+              Detailed_Description: nota.Detailed_Description?.trim() || null
+            }));
+  
+            if (this.notas.length === 0) {
+              this.messageError = "Este caso aún no tiene notas disponibles.";
+            }
+  
+            this.cargandoNotas = false;
+            this.scrollToBottom();
+          } else {
+            // No se encontró la WO
+            this.WO_Number = null;
+            this.cargandoNotas = false;
+          }
+  
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 1000);
+        } catch (err) {
+          console.error(err);
+          this.WO_Number = null;
+          this.cargandoNotas = false;
+        }
       }
-
-      if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 1) {
-        this.fechaNotaInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Submit_Date?.trim() || null;
-        this.descriptionInc2 = consultarNotaInc.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
-      } else {
-        this.fechaNotaInc2 = null;
-        this.descriptionInc2 = null;
-      }
-
-      if (consultarNotaInc.response.lastThreeListValues && consultarNotaInc.response.lastThreeListValues.length > 2) {
-        this.fechaNotaInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Submit_Date?.trim() || null;
-        this.descriptionInc3 = consultarNotaInc.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
-      } else {
-        this.fechaNotaInc3 = null;
-        this.descriptionInc3 = null;
-      }
-
-      this.datosCargados = true;
-      // Datos adicionales
-      this.resolution = resINC.response.Resolution;
-      this.fechaResolution = resINC.response.Real_Solution_Date;
-      this.scrollToBottom();
-
+    } catch (err) {
+      console.error(err);
+      this.WO_Number = null;
+      this.cargandoNotas = false;
     }
-
   }
+  
 
+  async consultarInc() {
+    try {
+      // Reiniciar estados
+      this.resolution = null;
+      this.fechaResolution = null;
+      this.cargandoNotas = false;
+      this.notas = []; // Array para las notas
+  
+      // Consultar Incidente
+      const resINC = await this.casosService.post('ConsultarINC', this.numberINC.value);
+  
+      if (resINC.response.message) {
+        // Error al consultar
+        this.numeroIncIngresado = this.numeroI;
+        this.messageError = resINC.response.message;
+        this.numeroI = "";
+        this.ocultarInputInc = true;
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 1000);
+        return;
+      } else {
+        // Datos del incidente
+        this.Incident_Number = resINC.response.Incident_Number;
+        this.descripcionIncidenteDetallada = resINC.response.Detailed_Decription;
+        this.statusIncidente = resINC.response.Status;
+        this.descripcionIncidente = resINC.response.Description;
+        this.fechaCreacionIncidente = resINC.response.Submit_Date;
+        this.numeroIncIngresado = resINC.response.Incident_Number;
+        this.ocultarInputInc = true;
+        this.scrollToBottom();
+        this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_inc_success');
+        this.numeroI = "";
+  
+        // Consultar notas
+        this.cargandoNotas = true;
+        const consultarNotaInc = await this.casosService.post('ConsultarNotasINC', this.numberINC.value);
+        this.notas = consultarNotaInc.response.lastThreeListValues.map((nota: { Submit_Date: string; Detailed_Description: string; }) => ({
+          Submit_Date: nota.Submit_Date?.trim() || null,
+          Detailed_Description: nota.Detailed_Description?.trim() || null
+        }));
+  
+        if (this.notas.length === 0) {
+          this.messageError = "Este caso aún no tiene notas disponibles.";
+        }
+  
+        // Datos adicionales
+        this.resolution = resINC.response.Resolution;
+        this.fechaResolution = resINC.response.Real_Solution_Date;
+  
+        this.cargandoNotas = false;
+        this.scrollToBottom();
+      }
+    } catch (error) {
+      console.error(error);
+      this.cargandoNotas = false;
+    }
+  }
+  
 
   async consultarWo() {
     try {
+      // Reiniciar estados
+      this.cargandoNotas = false;
+      this.notas = []; // Array para las notas
+  
+      // Consultar Work Order
       const resWO = await this.casosService.post('ConsultarWO', this.numberWO.value);
-
       if (resWO.response?.message) {
         this.numeroWoIngresado = this.numeroW;
-        console.log(this.numeroW)
         this.messageError = resWO.response.message;
         this.numeroW = "";
+        this.ocultarInputWo = true;
         setTimeout(() => {
           this.scrollToBottom();
         }, 1000);
         return;
       }
-
+  
+      // Datos de la WO
       this.WO_Number = resWO.response?.Work_Order_ID || null;
       this.descripcionIncidenteDetallada = resWO.response?.Detailed_Description || '';
       this.statusIncidente = resWO.response?.Status || '';
       this.descripcionIncidente = resWO.response?.Summary || '';
       this.fechaCreacionIncidente = resWO.response?.Submit_Date || '';
       this.numeroWoIngresado = resWO.response?.Work_Order_ID || '';
+      this.ocultarInputWo = true;
+      this.GtmServicesService.Tagging('Home', 'bt_mesa_agil_consulta_caso_wo_success');
       this.scrollToBottom();
-
+  
+      // Consultar notas
+      this.cargandoNotas = true;
       const consultarNotaWO = await this.casosService.post('ConsultarNotasWO', this.numberWO.value);
-
-      this.datosCargados = false;
-
-      this.numeroNotas = consultarNotaWO.response.lastThreeListValues.length
-
-      if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 0) {
-        this.fechaNotaInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Work_Log_Submit_Date?.trim() || null;
-        this.descriptionInc1 = consultarNotaWO.response.lastThreeListValues[0]?.Detailed_Description?.trim() || null;
-      } else {
-        this.fechaNotaInc1 = null;
-        this.descriptionInc1 = null;
+      this.notas = consultarNotaWO.response.lastThreeListValues.map((nota: { Work_Log_Submit_Date: string; Detailed_Description: string; }) => ({
+        Submit_Date: nota.Work_Log_Submit_Date?.trim() || null,
+        Detailed_Description: nota.Detailed_Description?.trim() || null
+      }));
+  
+      if (this.notas.length === 0) {
+        this.messageError = "Este caso aún no tiene notas disponibles.";
       }
-
-      if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 1) {
-        this.fechaNotaInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Work_Log_Submit_Date?.trim() || null;
-        this.descriptionInc2 = consultarNotaWO.response.lastThreeListValues[1]?.Detailed_Description?.trim() || null;
-      } else {
-        this.fechaNotaInc2 = null;
-        this.descriptionInc2 = null;
-      }
-
-      if (consultarNotaWO.response.lastThreeListValues && consultarNotaWO.response.lastThreeListValues.length > 2) {
-        this.fechaNotaInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Work_Log_Submit_Date?.trim() || null;
-        this.descriptionInc3 = consultarNotaWO.response.lastThreeListValues[2]?.Detailed_Description?.trim() || null;
-      } else {
-        this.fechaNotaInc3 = null;
-        this.descriptionInc3 = null;
-      }
-
-      this.datosCargados = true;
+  
+      this.cargandoNotas = false;
       this.numeroW = "";
       this.scrollToBottom();
-
     } catch (error) {
-      this.resetInfo()
+      console.error(error);
+      this.resetInfo();
+      this.cargandoNotas = false;
     }
-
   }
+  
 
   async agregarNota(AppRequestID?: string, ) {
     try {
@@ -1118,6 +1112,7 @@ export class HomeComponent implements OnInit {
             WorkInfoAttachment1Name: this.nombreArchivo,
             WorkInfoAttachment1Data: this.base64ContentString,
           });
+          this.ocultarInputNotas = true;
           this.creadoExitoso = "Nota creada con éxito";
           this.detailedDescriptionCrearNotas = "";
         } else if (AppRequestID.startsWith("WO")) {
@@ -1129,10 +1124,12 @@ export class HomeComponent implements OnInit {
             WorkInfoAttachment1Name: this.nombreArchivo,
             WorkInfoAttachment1Data: this.base64ContentString,
           });
+          this.ocultarInputNotas = true;
           this.creadoExitoso = "Nota creada con éxito";
           this.detailedDescriptionCrearNotas = "";
         }
       } else {
+        this.ocultarInputNotas = true;
         console.log('AppRequestID no proporcionado. No se puede agregar nota.');
         this.detailedDescriptionCrearNotas = "";
       }
@@ -1140,6 +1137,7 @@ export class HomeComponent implements OnInit {
         this.scrollToBottom();
       }, 1500);
     } catch (error) {
+      this.ocultarInputNotas = true;
       console.error('Error al agregar nota:', error);
       this.creadoExitoso = "No es posible crear la nota";
     } finally {
@@ -1160,21 +1158,24 @@ export class HomeComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    const selectedFile = event.target.files[0];
-
+    const selectedFile = event.target.files.length > 0 ? event.target.files[0] : null;
+  
     if (selectedFile) {
       this.readFileAsBase64(selectedFile)
         .then(base64Content => {
-          this.nombreArchivo = `${selectedFile.name}`
-          this.base64ContentString = (base64Content)
+          this.nombreArchivo = selectedFile.name; // Asigna el nombre del archivo seleccionado
+          this.base64ContentString = base64Content;
         })
         .catch(error => {
           console.error('Error al leer archivo como Base64:', error);
         });
+    } else {
+      this.nombreArchivo = 'Ningún archivo seleccionado'; // Si no se selecciona archivo, muestra un mensaje predeterminado
     }
+  
     this.scrollToBottom();
-
   }
+  
 
   private readFileAsBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -1198,6 +1199,10 @@ export class HomeComponent implements OnInit {
   scrollToBottom() {
     const element = this.content.nativeElement;
     element.scrollTop = element.scrollHeight;
+  }
+
+  redirectToUrl(): void {
+    window.open('https://miasistencia360-portal-prd.claro.com.co/admin/#/landing', '_blank');
   }
 
   validarConsulta() {
