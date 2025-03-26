@@ -245,7 +245,7 @@ function initChatbot(type){
                 'escalate-chat' : '¿Quieres comunicarte con un asesor?',
                 'generic-error-message': 'Por favor intente con otra pregunta',
                 'enter-question': 'Pregunta aquí',
-                'interface-title': 'MyIT',//titulo del header del Chatbot
+                'interface-title': 'AnITa',//titulo del header del Chatbot
                 'guest-name': 'Tu',
                 'help-question': '¿Cómo te puedo ayudar?',
                 'thanks': 'Gracias!',

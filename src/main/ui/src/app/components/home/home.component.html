@@ -118,13 +118,13 @@
           </div>
           <div class="btnoption inner w-50 text-center" accesskey="h" (click)="goToUsuMyIt()">
             <span class="h maletin inner"></span>
-            <span class="inner ml-2">Usuario de MyIT</span>
+            <span class="inner ml-2">Usuario MiAsistencia360 </span>
           </div>
         </div>
         <div class="column align-self-center align-content-center text-center mt-4">
           <div class="btnoption inner w-50 text-center" accesskey="r" (click)="goToUsuRes()">
             <span class="h hombre inner"></span>
-            <span class="inner ml-2">Usuario Resolutor</span>
+            <span class="inner ml-2">Usuario Resolutor MiAsistencia360</span>
           </div>
         </div>
       </div>
@@ -303,12 +303,12 @@
               <div class="chatbot-message anita-message">
                 <p><strong>Mesa Ágil:</strong> Selecciona una opción:
                 </p>
-                <h6 class="chatbot-link" (click)="consultarCaso(); resetInfo();">Consultar caso de MyIT</h6>
+                <h6 class="chatbot-link" (click)="consultarCaso(); resetInfo();">Consultar caso de Mi Asistencia 360</h6>
               </div>
 
               <!-- Mensaje User 1-->
               <div *ngIf="consultarOcrearCaso" class="chatbot-message user-message">
-                <p><strong>{{ infoUser.First_Name }}:</strong> Consultar o crear caso de MyIT</p>
+                <p><strong>{{ infoUser.First_Name }}:</strong> Consultar caso de Mi Asistencia 360</p>
               </div>
 
               <!-- Mensaje 4 Anita (Consultar o Crear Caso) -->
@@ -376,179 +376,183 @@
                 </p>
               </div>
 
+                <!-- Mensaje 7 Anita (Respuesta del numero de requerimiento) -->
+                <div *ngIf="selectReq || selectInc || selectWo">
 
-              <!-- Mensaje 7 Anita (Respuesta del numero de requerimiento)-->
-              <div *ngIf="selectReq || selectInc || selectWo">
-                <!-- Contenido si selecciona REQ requerimiento -->
-                <div *ngIf="Request_Number" class="chatbot-message anita-message">
-                  <p style="margin: 0;"><strong>Mesa Ágil:</strong>
-                    Descripción del requerimiento:
-                    <br />
-                    <strong class="title-chat" >No. de requerimiento:</strong> {{ Request_Number }}
-                    <br />
-                    <strong class="title-chat" >No. de incidente / solicitud:</strong> {{ AppRequestID }}
-                    <br />
-                    <strong class="title-chat" >Estado:</strong> {{ Status }}
-                    <br />
-                    <strong class="title-chat">Descripción del requerimiento:</strong> {{ Summary }}
-                    <br />
-                    <strong class="title-chat" >Fecha de creación:</strong> {{ Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat" >Fecha de solución:</strong> {{ Closed_Date | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <br />
-                    <strong class="title-chat" >Descripción del Incidente / Solicitud:</strong> {{ Summary }}
-                    <br />
-                    <strong class="title-chat" >No. de INC / WO:</strong> {{ AppRequestID }}
-                    <br />
-                    <strong class="title-chat" >Estado:</strong> {{ statusIncidente }}
-                    <br />
-                    <strong class="title-chat" >Descripción:</strong> {{ descripcionIncidente }}
-                    <br />
-                    <strong class="title-chat" >Fecha de creación:</strong> {{ fechaCreacionIncidente |
-                    date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                  </p>
-                  <div class="descripcion-detallada">
-                    <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                  <!-- REQ -->
+                  <div *ngIf="Request_Number" class="chatbot-message anita-message">
+                    <p style="margin: 0;">
+                      <strong>Mesa Ágil:</strong> Descripción del requerimiento:
+                      <br/>
+                      <strong class="title-chat">No. de requerimiento:</strong> {{ Request_Number }}
+                      <br/>
+                      <strong class="title-chat">No. de incidente / solicitud:</strong> {{ AppRequestID }}
+                      <br/>
+                      <strong class="title-chat">Estado:</strong> {{ Status }}
+                      <br/>
+                      <strong class="title-chat">Descripción del requerimiento:</strong> {{ Summary }}
+                      <br/>
+                      <strong class="title-chat">Fecha de creación:</strong> {{ Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat">Fecha de solución:</strong> {{ Closed_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/><br/>
+                      <strong class="title-chat">Descripción del Incidente / Solicitud:</strong> {{ Summary }}
+                      <br/>
+                      <strong class="title-chat">No. de INC / WO:</strong> {{ AppRequestID }}
+                      <br/>
+                      <strong class="title-chat">Estado:</strong> {{ statusIncidente }}
+                      <br/>
+                      <strong class="title-chat">Descripción:</strong> {{ descripcionIncidente }}
+                      <br/>
+                      <strong class="title-chat">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                    </p>
+                    
+                    <div class="descripcion-detallada">
+                      <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                    </div>
+                    
+                    <!-- Mensaje de cargando notas -->
+                    <div *ngIf="cargandoNotas" class="loading-dots">
+                      Cargando notas...
+                    </div>
+                    <br/>
+                    <!-- Notas (renderizado dinámico) -->
+                    <div *ngIf="!cargandoNotas && notas?.length">
+                      <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
+                      <br/>
+                      <div *ngFor="let nota of notas">
+                        <strong class="title-chat">Fecha de la nota:</strong> {{ nota.Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                        <br/>
+                        <strong class="title-chat">Información:</strong> {{ nota.Detailed_Description }}
+                        <br/><br/>
+                      </div>
+                    </div>
+                    
+                    <br/>
+                    <!-- Botón Agregar Nota (solo si existen notas cargadas) -->
+                    <button class="custom-file-button" *ngIf="!cargandoNotas" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
+                    <br/><br/>
+                    
+                    <!-- Solución final -->
+                    <p *ngIf="resolution" style="margin: 0;">
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
+                      <br/>
+                      <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                      <br/>
+                    </p>
                   </div>
-                  <br />
-                  <div *ngIf="(!fechaNotaInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" class="loading-dots">Cargando notas...</div>
-                  <br *ngIf="(!fechaNotaInc1 || WO_Number !== null) && (![1, 2, 0].includes(numeroNotas))" />
-                  <p *ngIf="fechaNotaInc1" style="margin: 0;">
-                    <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br /> 
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
-                      <br />
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
-                      <br />
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
-                  </p>
-                  <br />
-                  <button *ngIf="fechaNotaInc1" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
-                  <br />
-                  <br />
-                  <p *ngIf="resolution" style="margin: 0;">
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
-                    <br />
-                  </p>
-                </div>
-
-                <div *ngIf="Incident_Number" class="chatbot-message anita-message">
-                  <p style="margin: 0;"><strong>Mesa Ágil:</strong>
-                    Descripción del incidente:
-                    <br />
-                    <br />
-                    <strong class="title-chat">No. de incidente:</strong> {{ Incident_Number }}
-                    <br />
-                    <strong class="title-chat">Estado:</strong> {{ statusIncidente }}
-                    <br />
-                    <strong class="title-chat">Descripción:</strong> {{ descripcionIncidente }}
-                    <br />
-                    <strong class="title-chat">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                  </p>
-                  <div class="descripcion-detallada">
-                    <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                
+                  <!-- INC -->
+                  <div *ngIf="Incident_Number" class="chatbot-message anita-message">
+                    <p style="margin: 0;">
+                      <strong>Mesa Ágil:</strong> Descripción del incidente:
+                      <br/><br/>
+                      <strong class="title-chat">No. de incidente:</strong> {{ Incident_Number }}
+                      <br/>
+                      <strong class="title-chat">Estado:</strong> {{ statusIncidente }}
+                      <br/>
+                      <strong class="title-chat">Descripción:</strong> {{ descripcionIncidente }}
+                      <br/>
+                      <strong class="title-chat">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                    </p>
+                    
+                    <div class="descripcion-detallada">
+                      <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                    </div>
+                    
+                    <br/>
+                    <!-- Mensaje de cargando notas -->
+                    <div *ngIf="cargandoNotas" class="loading-dots">
+                      Cargando notas...
+                    </div>
+                    
+                    <!-- Notas (renderizado dinámico) -->
+                    <div *ngIf="!cargandoNotas && notas?.length">
+                      <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
+                      <br/>
+                      <div *ngFor="let nota of notas">
+                        <strong class="title-chat">Fecha de la nota:</strong> {{ nota.Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                        <br/>
+                        <strong class="title-chat">Información:</strong> {{ nota.Detailed_Description }}
+                        <br/><br/>
+                      </div>
+                    </div>
+                    
+                    <br/>
+                    <!-- Botón Agregar Nota -->
+                    <button class="custom-file-button" *ngIf="!cargandoNotas" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
+                    <br/><br/>
+                    
+                    <!-- Solución final -->
+                    <p *ngIf="resolution" style="margin: 0;">
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
+                      <br/>
+                      <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                      <br/>
+                    </p>
                   </div>
-                  <br />
-                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>
-                  <br />
-                  <p *ngIf="datosCargados && (fechaNotaInc1 || fechaNotaInc2 || fechaNotaInc3)" style="margin: 0;">
-                    <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
-                       <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
-                      <br />
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
-                      <br />
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
-                      <br />
-                      <strong class="title-chat" *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
-                  </p>
-                  <br />
-                  <button (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
-                  <br />
-                  <br />
-                  <p *ngIf="resolution" style="margin: 0;">
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
-                    <br />
-                  </p>
-                </div>
-
-                <div *ngIf="WO_Number" class="chatbot-message anita-message">
-                  <p style="margin: 0;"><strong>Mesa Ágil:</strong>
-                    Descripción de la solicitud:
-                    <br />
-                    <br />
-                    <strong class="title-chat">No. de incidente:</strong> {{ WO_Number }}
-                    <br />
-                    <strong class="title-chat" >Estado:</strong> {{ statusIncidente }}
-                    <br />
-                    <strong class="title-chat" >Descripción:</strong> {{ descripcionIncidente }}
-                    <br />
-                    <strong class="title-chat" >Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                  </p>
-                  <div class="descripcion-detallada">
-                    <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                
+                  <!-- WO -->
+                  <div *ngIf="WO_Number" class="chatbot-message anita-message">
+                    <p style="margin: 0;">
+                      <strong>Mesa Ágil:</strong> Descripción de la solicitud:
+                      <br/><br/>
+                      <strong class="title-chat">No. de incidente:</strong> {{ WO_Number }}
+                      <br/>
+                      <strong class="title-chat">Estado:</strong> {{ statusIncidente }}
+                      <br/>
+                      <strong class="title-chat">Descripción:</strong> {{ descripcionIncidente }}
+                      <br/>
+                      <strong class="title-chat">Fecha de creación:</strong> {{ fechaCreacionIncidente | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                    </p>
+                    
+                    <div class="descripcion-detallada">
+                      <strong class="title-chat">Descripción detallada:</strong> {{ descripcionIncidenteDetallada }}
+                    </div>
+                    
+                    <br/>
+                    <!-- Mensaje de cargando notas -->
+                    <div *ngIf="cargandoNotas" class="loading-dots">
+                      Cargando notas...
+                    </div>
+                    
+                    <!-- Notas (renderizado dinámico) -->
+                    <div *ngIf="!cargandoNotas && notas?.length">
+                      <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
+                      <br/>
+                      <div *ngFor="let nota of notas">
+                        <strong class="title-chat">Fecha de la nota:</strong> {{ nota.Submit_Date | date:'yyyy-MM-dd HH:mm:ss' }}
+                        <br/>
+                        <strong class="title-chat">Información:</strong> {{ nota.Detailed_Description }}
+                        <br/><br/>
+                      </div>
+                    </div>
+                    
+                    <br/>
+                    <!-- Botón Agregar Nota -->
+                    <button class="custom-file-button" *ngIf="!cargandoNotas" (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
+                    <br/><br/>
+                    
+                    <!-- Solución final -->
+                    <p *ngIf="resolution" style="margin: 0;">
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
+                      <br/>
+                      <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
+                      <br/>
+                      <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
+                      <br/>
+                    </p>
                   </div>
-                  <br />
-                  <div *ngIf="!fechaNotaInc1" class="loading-dots">Cargando notas...</div>
-                  <br />
-                  <p *ngIf="fechaNotaInc1" style="margin: 0;">
-                    <strong class="title-chat">Notas del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 2">Fecha de la nota:</strong> {{ fechaNotaInc3 | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 2">Información:</strong> {{ descriptionInc3 }}
-                    <br />
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 1">Fecha de la nota:</strong> {{ fechaNotaInc2 | date:'yyyy-MM-dd HH:mm:ss' }}    
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 1">Información:</strong> {{ descriptionInc2 }}
-                    <br />
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 0">Fecha de la nota:</strong> {{ fechaNotaInc1 | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat" *ngIf="this.numeroNotas > 0">Información:</strong> {{ descriptionInc1 }}
-                  </p>
-                  <br />
-                  <button (click)="dialogoCrearNota(statusIncidente)">Agregar Nota</button>
-                  <br />
-                  <br />
-                  <p *ngIf="resolution" style="margin: 0;">
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong>
-                    <br />
-                    <strong class="title-chat">Fecha de solución:</strong> {{ fechaResolution | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br />
-                    <strong class="title-chat">Solución del Incidente / Solicitud:</strong> {{ resolution }}
-                    <br />
-                  </p>
+                
                 </div>
-               
-              </div>
+                
 
               <!-- Mensaje 7 Anita (Si se selecciona hisotico Casos)-->
               <div *ngIf="noReq1" class="chatbot-message anita-message">
@@ -630,6 +634,7 @@
                 </p>
               </div>
 
+
               <!-- Mensaje 8 Anita (Si se selecciona crear Nota)-->
               <div class="chatbot-message anita-message" *ngIf="crearNota">
                 <p style="margin: 0;"><strong>Mesa Ágil:</strong> Ingresa la descripción de la nota que quieres agregar
@@ -645,9 +650,10 @@
                 </p>
                 <br />
                 <div>
-                  <label for="fileInput">Seleccionar archivo:</label>
+                  <label for="fileInput" class="custom-file-button">Seleccionar archivo</label>
+                  <span id="fileName">{{ nombreArchivo || 'Ningún archivo seleccionado' }}</span>
                   <input type="file" id="fileInput" (change)="onFileSelected($event)"
-                    accept=".eml,.msg,.xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf,image/*">
+                    accept=".eml,.msg,.xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf,image/*">                  
                 </div>
               </div>
 
@@ -655,9 +661,32 @@
               <div class="chatbot-message anita-message" *ngIf="creadoExitoso">
                 <p style="margin: 0;"><strong>Mesa Ágil:</strong> {{ creadoExitoso }}</p>
               </div>
-              <button class="chatbot-return-button"
-                *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO || selectHc"
-                (click)="resetChat()">Volver</button>
+
+              <div *ngIf="calificacion" class="chatbot-message anita-message">
+                <p style="margin: 0;"><strong>Mesa Ágil:</strong>
+                  {{ calificacion }}
+                </p>
+              </div>
+
+              <div class="button-container">
+                <button class="chatbot-return-button" 
+                        *ngIf="Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO || selectHc" 
+                        (click)="resetChat()">
+                  Volver
+                </button>
+                <button class="chatbot-return-button" 
+                        *ngIf="!likeDisable && (Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO || selectHc)" 
+                        (click)="like()">
+                  👍
+                </button>
+                <button class="chatbot-return-button" 
+                        *ngIf="!likeDisable && (Request_Number || Incident_Number || WO_Number || noReq1 || messageError || messageErrorWO || selectHc)" 
+                        (click)="noLike()">
+                  👎
+                </button>
+              </div>
+              
+              
                 <br />
             </div>
           </div>
@@ -674,10 +703,14 @@
         <form [formGroup]="numberRequerimiento" (ngSubmit)="consultarReq()" >
           <div *ngIf="selectReq && mostrarChat && !crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
-              <input type="text" [(ngModel)]="numeroRequerimiento"
-                placeholder="Escribe el número de REQ - Requerimiento..." class="chatbot-input"
-                formControlName="reqNumber">
-              <button class="chatbot-send-button" type="submit">➤</button>
+              <input 
+              [attr.disabled]="ocultarInputReq ? true : null" 
+              type="text" 
+              [(ngModel)]="numeroRequerimiento"
+              [attr.placeholder]="ocultarInputReq ? null : 'Escribe el número de REQ - Requerimiento...'"
+              class="chatbot-input"
+              formControlName="reqNumber">
+            <button *ngIf="!ocultarInputReq" class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>
@@ -686,9 +719,13 @@
         <form [formGroup]="numberINC" (ngSubmit)="consultarInc()"  >
           <div *ngIf="selectInc && mostrarChat && !crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
-              <input type="text" [(ngModel)]="numeroI" placeholder="Escribe el número de INC - Incidente..."
-                class="chatbot-input" formControlName="incNumber">
-              <button class="chatbot-send-button" type="submit">➤</button>
+              <input
+                [attr.disabled]="ocultarInputInc ? true : null" 
+                type="text" [(ngModel)]="numeroI" 
+                [attr.placeholder]="ocultarInputInc ? null : 'Escribe el número de INC - Incidente...'"
+                class="chatbot-input" 
+                formControlName="incNumber">
+              <button *ngIf="!ocultarInputInc" class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>
@@ -697,9 +734,13 @@
         <form [formGroup]="numberWO" (ngSubmit)="consultarWo()"  >
           <div *ngIf="selectWo && mostrarChat && !crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
-              <input type="text" [(ngModel)]="numeroW" placeholder="Escribe el número de WO - Orden de trabajo..."
-                class="chatbot-input" formControlName="woNumber">
-              <button class="chatbot-send-button" type="submit">➤</button>
+              <input 
+              [attr.disabled]="ocultarInputWo ? true : null"
+              type="text" [(ngModel)]="numeroW" 
+              [attr.placeholder]="ocultarInputWo ? null : 'Escribe el número de WO - Orden de trabajo...'"
+               class="chatbot-input" 
+               formControlName="woNumber">
+              <button *ngIf="!ocultarInputWo" class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>
@@ -708,10 +749,13 @@
         <form *ngIf="Request_Number" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(AppRequestID)"  >
           <div *ngIf="crearNota && Request_Number" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
-              <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
-                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..." class="chatbot-input"
-                formControlName="reqNumber">
-              <button class="chatbot-send-button" type="submit">➤</button>
+              <input 
+              [attr.disabled]="ocultarInputNotas ? true : null"
+              type="text" [(ngModel)]="detailedDescriptionCrearNotas"
+              [attr.placeholder]="ocultarInputNotas ? null : 'Ingresa la descripción de la nota que quieres agregar al caso...'"
+              class="chatbot-input"
+              formControlName="reqNumber">
+              <button *ngIf="!ocultarInputNotas" class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>
@@ -720,10 +764,14 @@
         <form *ngIf="Incident_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(Incident_Number)" >
           <div *ngIf="crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
-              <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
-                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..." class="chatbot-input"
-                formControlName="reqNumber">
-              <button class="chatbot-send-button" type="submit">➤</button>
+              <input 
+              [attr.disabled]="ocultarInputNotas ? true : null"
+              type="text"
+              [(ngModel)]="detailedDescriptionCrearNotas"
+              [attr.placeholder]="ocultarInputNotas ? null :' Ingresa la descripción de la nota que quieres agregar al caso...'" 
+              class="chatbot-input"
+              formControlName="reqNumber">
+              <button *ngIf="!ocultarInputNotas" class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>
@@ -732,10 +780,13 @@
         <form *ngIf="WO_Number && crearNota" [formGroup]="CrearNotas" (ngSubmit)="agregarNota(WO_Number)" >
           <div *ngIf="crearNota" class="chatbot-input-container">
             <div class="chatbot-input-wrapper">
-              <input type="text" [(ngModel)]="detailedDescriptionCrearNotas"
-                placeholder="Ingresa la descripción de la nota que quieres agregar al caso..." class="chatbot-input"
-                formControlName="reqNumber">
-              <button class="chatbot-send-button" type="submit">➤</button>
+              <input 
+              [attr.disabled]="ocultarInputNotas ? true : null"
+              type="text" [(ngModel)]="detailedDescriptionCrearNotas"
+              [attr.placeholder]="ocultarInputNotas ? null :' Ingresa la descripción de la nota que quieres agregar al caso...'" 
+              class="chatbot-input"
+              formControlName="reqNumber">
+              <button *ngIf="!ocultarInputNotas" class="chatbot-send-button" type="submit">➤</button>
             </div>
           </div>
         </form>
@@ -798,7 +849,7 @@
           </div>
           <div class="derechos col-md-7 col-12 text-center p-2 d-none d-md-block"
             style="z-index: -1; background-color: #da1024">
-            Claro Colombia 2024. Todos los derechos reservados
+            Claro Colombia 2025. Todos los derechos reservados
           </div>
           <div class="col-md-7 col-12 mt-5">
             <div class="container-fluid p-0">
@@ -814,25 +865,32 @@
                     <div class="row justify-content-around">
                       <div class="col-md-5 p10 col-10 box-my text-center cpointer" (click)="open(mymodal)"
                         accesskey="i">
-                        <img src="./assets/img/home/img-pcdesktop.png" alt="" style="width: 100px" />
-                        <p class="font-weight-bold my-1">
-                          My<span style="color: #dc3545">IT</span>
-                        </p>
-                        <p class="mt-2">
-                          Con MyIT reporta tus casos de manera sencilla. Registra y
-                          consulta tus casos asociados a servicios de IT.
-                        </p>
-                      </div>
-                      <div class="col-md-5 p10 col-10 box-my text-center mt-3 mt-md-0 cpointer"
-                        (click)="open(mymodalStore)" accesskey="s">
-                        <img src="./assets/img/home/icon-store.png" alt="" style="width: 100px" />
-                        <p class="font-weight-bold my-1">
-                          MyIT <span style="color: #dc3545">Store</span>
-                        </p>
-                        <p class="mt-2">
-                          Ingresa a la tienda desde un navegador Internet Explorer.
-                        </p>
-                      </div>
+                      <img src="./assets/img/home/img-pcdesktop.png" alt="" style="width: 75px" />
+                      <p class="font-weight-bold my-1">
+                        <span style="color: #dc3545">MiA</span>sistencia360
+                      </p>
+                      <p class="mt-2">
+                        Con MiAsistencia360 reporta tus casos de manera sencilla. Registra y
+                        consulta tus casos asociados a servicios de IT.
+                      </p>
+                  </div>
+                  
+              <!-- 
+<div class="col-md-5 p10 col-10 box-my text-center mt-3 mt-md-0 cpointer"
+     (click)="open(mymodalStore)" accesskey="s">
+     
+    <img src="./assets/img/home/icon-store.png" alt="" style="width: 100px" />
+    
+    <p class="font-weight-bold my-1">
+        Mesa <span style="color: #dc3545">Store</span>
+    </p>
+    
+    <p class="mt-2">
+        Ingresa a la tienda desde un navegador Internet Explorer.
+    </p>
+</div>
+-->
+
                     </div>
                   </div>
                 </div>

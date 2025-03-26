@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
           this.isCloseSession = false;
           this.userData = res.response;
           this.router.navigateByUrl('/home');   
+          this.GtmServicesService.Tagging("Login","bt_login_successful");
         } else {
           let dataAuth = res.data ? res.data : ""; 
           if(dataAuth == "true"){         
