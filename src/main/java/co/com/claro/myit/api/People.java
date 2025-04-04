@@ -10,6 +10,7 @@ import co.com.claro.myit.util.OracleUtils;
 import co.com.claro.myit.util.functions;
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,14 +75,30 @@ public class People {
             // Se realiza la búsqueda del usuario en LDAP
             String searchBase = BASE_DN;
             String searchFilter = "(userPrincipalName=" + userDN + ")";
-            com.unboundid.ldap.sdk.SearchResult searchResult =
-                    connection.search(searchBase, com.unboundid.ldap.sdk.SearchScope.SUB, searchFilter);
+            com.unboundid.ldap.sdk.SearchResult searchResult
+                    = connection.search(searchBase, com.unboundid.ldap.sdk.SearchScope.SUB, searchFilter);
 
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("authenticated", true);
 
             if (!searchResult.getSearchEntries().isEmpty()) {
                 com.unboundid.ldap.sdk.SearchResultEntry entry = searchResult.getSearchEntries().get(0);
+
+                System.out.println("=== Atributos completos del usuario ===");
+                Collection<com.unboundid.ldap.sdk.Attribute> attributes = entry.getAttributes();
+                for (com.unboundid.ldap.sdk.Attribute attr : attributes) {
+                    String name = attr.getName();
+                    String[] values = attr.getValues();
+                    System.out.print(name + ": ");
+                    for (int j = 0; j < values.length; j++) {
+                        System.out.print(values[j]);
+                        if (j < values.length - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.println();
+                }
+                System.out.println("=======================================");
 
                 // Se extraen los atributos retornados por LDAP
                 String firstName = entry.getAttributeValue("givenName");
