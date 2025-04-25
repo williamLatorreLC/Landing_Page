@@ -1206,6 +1206,7 @@ export class HomeComponent implements OnInit {
   }
 
   validarConsulta() {
+    this.GtmServicesService.Tagging('Home', 'bt_anita');
     this.validarConsultaDeCaso = true;
   }
 
