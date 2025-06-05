@@ -19,6 +19,8 @@ import org.json.XML;
  *
  * @author dussan.palma
  */
+
+//Ruta servicio Consulta REQ
 @Path("/ConsultarReq")
 public class Casos {
 
