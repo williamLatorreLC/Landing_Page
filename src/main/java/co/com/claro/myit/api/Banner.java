@@ -28,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//Ruta Servioo REST Banners
 @Path("/banners")
 @Produces(MediaType.APPLICATION_JSON)
 public class Banner {
