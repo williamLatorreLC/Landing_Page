@@ -12,8 +12,19 @@ import co.com.claro.myit.models.*;
 import co.com.claro.myit.service.CasoService;
 import co.com.claro.myit.util.OracleUtils;
 import co.com.claro.myit.util.functions;
+import static com.sun.activation.registries.LogSupport.log;
+import jakarta.enterprise.inject.Produces;
+import jakarta.servlet.ServletContext;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import static java.lang.Math.log;
+import static java.lang.StrictMath.log;
 
 import java.math.BigDecimal;
+import static java.rmi.server.LogStream.log;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -23,20 +34,8 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletContext;
 import javax.sql.rowset.serial.SerialBlob;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * @author JD

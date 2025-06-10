@@ -7,9 +7,9 @@ package co.com.claro.myit.service;
 import co.com.claro.myit.api.CTMSupportGroupPeopleRequest;
 import co.com.claro.myit.api.Const;
 import co.com.claro.myit.util.functions;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+
 
 /**
  *

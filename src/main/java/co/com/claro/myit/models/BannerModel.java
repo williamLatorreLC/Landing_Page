@@ -6,7 +6,7 @@
 package co.com.claro.myit.models;
 
 import com.google.gson.annotations.SerializedName;
-import com.sun.istack.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  *

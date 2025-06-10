@@ -7,7 +7,7 @@ package co.com.claro.myit.service;
 import co.com.claro.myit.api.Const;
 import co.com.claro.myit.api.ConsultaRequerimientoRequest;
 import co.com.claro.myit.util.functions;
-import com.google.gson.JsonObject;
+import jakarta.json.JsonObject;
 
 /**
  *

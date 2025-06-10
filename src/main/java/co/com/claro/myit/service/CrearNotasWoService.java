@@ -8,7 +8,8 @@ import co.com.claro.myit.api.Const;
 import co.com.claro.myit.api.CrearNotasIncRequest;
 import co.com.claro.myit.api.CrearNotasWoRequest;
 import co.com.claro.myit.util.functions;
-import com.google.gson.JsonObject;
+import jakarta.json.JsonObject;
+
 
 /**
  *

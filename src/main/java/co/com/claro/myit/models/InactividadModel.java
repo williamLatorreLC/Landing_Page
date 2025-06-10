@@ -6,7 +6,7 @@
 package co.com.claro.myit.models;
 
 import com.google.gson.annotations.SerializedName;
-import javax.persistence.Column;
+
 
 /**
  *

@@ -8,10 +8,9 @@ import co.com.claro.myit.api.LogoutRequest;
 import co.com.claro.myit.api.SurveyRequest;
 import co.com.claro.myit.util.AES;
 import co.com.claro.myit.util.functions;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.core.JsonParser;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -20,8 +19,7 @@ import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 
 /**
  *

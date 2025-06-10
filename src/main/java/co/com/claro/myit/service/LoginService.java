@@ -4,7 +4,7 @@ import co.com.claro.myit.api.Const;
 import co.com.claro.myit.api.LoginRequest;
 import co.com.claro.myit.util.AES;
 import co.com.claro.myit.util.functions;
-import com.google.gson.JsonObject;
+import jakarta.json.JsonObject;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
