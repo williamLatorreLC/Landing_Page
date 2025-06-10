@@ -9,7 +9,6 @@ import co.com.claro.myit.db.AvatarEntity;
 import co.com.claro.myit.models.AvatarModel;
 import co.com.claro.myit.util.MySqlUtils;
 import co.com.claro.myit.util.functions;
-import jakarta.enterprise.inject.Produces;
 import jakarta.servlet.ServletContext;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -21,8 +20,10 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import java.util.List;
-import lombok.externs.slf4j.Slf4j;
-
+import lombok.extern.slf4j.Slf4j;
+import jakarta.ws.rs.Produces;
+import org.json.JSONException;
+import org.json.JSONObject;
 /**
  *
  * @author kompl

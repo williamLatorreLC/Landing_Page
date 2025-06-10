@@ -9,12 +9,12 @@ import co.com.claro.myit.util.AES;
 import co.com.claro.myit.util.MySqlUtils;
 import co.com.claro.myit.util.functions;
 import static co.com.claro.myit.util.functions.getData;
+import jakarta.servlet.ServletContext;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import java.util.List;
-import javax.servlet.ServletContext;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import org.json.JSONObject;
 
 /**

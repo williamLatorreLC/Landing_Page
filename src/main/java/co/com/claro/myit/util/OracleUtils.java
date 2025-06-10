@@ -5,10 +5,8 @@
  */
 package co.com.claro.myit.util;
 
-import jakarta.persistence.Query;
-import jakarta.transaction.Transaction;
-import jakarta.websocket.Session;
-import jakarta.ws.rs.SeBootstrap.Configuration;
+import org.hibernate.query.Query;
+import org.hibernate.Transaction;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,8 +18,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import javax.imageio.spi.ServiceRegistry;
 
+import org.hibernate.Session; // ✅ Usar esta clase
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.transform.AliasToEntityMapResultTransformer;
 
 /**
  *
