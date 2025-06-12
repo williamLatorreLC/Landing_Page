@@ -1,7 +1,13 @@
 package co.com.claro.myit.db;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 

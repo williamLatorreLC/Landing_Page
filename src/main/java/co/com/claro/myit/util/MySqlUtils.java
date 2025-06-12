@@ -233,7 +233,8 @@ public class MySqlUtils {
 
                 if (item.getValue().getClass() == Date.class) {
                     System.out.println("Date");
-                    q.setDate(item.getKey().toString(), (Date) item.getValue());
+                    //q.setDate(item.getKey().toString(), (Date) item.getValue());
+                    q.setParameter(item.getKey().toString(), (Date) item.getValue());
                 }
 
                 if (item.getValue().getClass() == Long.class) {
@@ -288,7 +289,8 @@ public class MySqlUtils {
 
                 if (item.getValue().getClass() == Date.class) {
                     System.out.println("Date");
-                    q.setDate(item.getKey().toString(), (Date) item.getValue());
+                    //q.setDate(item.getKey().toString(), (Date) item.getValue());
+                    q.setParameter(item.getKey().toString(), (Date) item.getValue());
                 }
 
                 if (item.getValue().getClass() == Long.class) {
