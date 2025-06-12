@@ -159,6 +159,23 @@ public class MySqlUtils {
     }
 
     public void delete(Object data) {
+        Transaction tx = null;
+        Session session = getSession(); // Asegúrate de tener este método implementado correctamente
+
+        try {
+            tx = session.beginTransaction();
+            session.delete(data); // Usamos el parámetro 'data' como entidad
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+    
+     /* Anttes el de arriba fue el cambio
+    public void delete(Object data) {  
         Transaction tran = null;
         } finally {
         Session sess = getSession();
@@ -167,12 +184,12 @@ public class MySqlUtils {
             sess.delete(data);
             tran.commit();
         } catch (Exception e) {
-            if (tran != null) {
+            if (tran != null) { 
                 throw e;
             }
             sess.close();
         }
-    }
+    }*/
     
     
     public void deleteBy(String tablaClass, String where) {

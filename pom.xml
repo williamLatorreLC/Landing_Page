@@ -104,12 +104,12 @@
             <artifactId>jersey-hk2</artifactId>
             <version>3.1.4</version>
         </dependency>
-        <!-- Hibernate -->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.6.15.Final</version> <!-- o la versión compatible con tu proyecto -->
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>3.0.2</version>
         </dependency>
+        <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -171,6 +171,26 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-frontend</id>
+                        <phase>prepare-package</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/webapp/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/frontend/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- Frontend Plugin for Angular integration -->
             <plugin>
@@ -180,24 +200,32 @@
                 <executions>
                     <execution>
                         <id>install node and npm</id>
-                        <goals><goal>install-node-and-npm</goal></goals>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
                         <configuration>
-                            <nodeVersion>v20.11.1</nodeVersion>
+                            <nodeVersion>v18.18.0</nodeVersion>
                             <npmVersion>10.5.0</npmVersion>
+                            <workingDirectory>src/main/ui</workingDirectory>
                         </configuration>
                     </execution>
                     <execution>
                         <id>npm install</id>
                         <goals><goal>npm</goal></goals>
+                        <phase>generate-resources</phase>
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>install --legacy-peer-deps</arguments>
+                            <workingDirectory>src/main/ui</workingDirectory>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>npm run build</id>
                         <goals><goal>npm</goal></goals>
+                        <phase>generate-resources</phase>
                         <configuration>
                             <arguments>run build</arguments>
+                            <workingDirectory>src/main/ui</workingDirectory>
                         </configuration>
                     </execution>
                 </executions>
