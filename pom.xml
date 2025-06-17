@@ -206,7 +206,7 @@
                         <configuration>
                             <nodeVersion>v18.18.0</nodeVersion>
                             <npmVersion>10.5.0</npmVersion>
-                            <workingDirectory>src/main/ui</workingDirectory>
+                            <workingDirectory>${basedir}/src/main/ui</workingDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -215,7 +215,7 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <arguments>install --legacy-peer-deps</arguments>
-                            <workingDirectory>src/main/ui</workingDirectory>
+                            <workingDirectory>${basedir}/src/main/ui</workingDirectory>
                         </configuration>
                     </execution>
 
@@ -225,7 +225,7 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <arguments>run build</arguments>
-                            <workingDirectory>src/main/ui</workingDirectory>
+                            <workingDirectory>${basedir}/src/main/ui</workingDirectory>
                         </configuration>
                     </execution>
                 </executions>
